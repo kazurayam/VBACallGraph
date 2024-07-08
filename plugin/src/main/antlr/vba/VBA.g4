@@ -98,12 +98,13 @@
 grammar VBA;
 
 options {
-    //caseInsensitive = true;
+    caseInsensitive = true;
 }
 
 // module ----------------------------------
 
-startRule
+// startRule
+prog
     : module EOF
     ;
 
