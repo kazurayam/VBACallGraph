@@ -14,18 +14,26 @@ plugins {
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
+    // ANTLR, the latest version
     antlr "org.antlr:antlr4:4.13.1"
+
+    // Use SLF4J for logging
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+    testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.13'
+
     // Use TestNG framework, also requires calling test.useTestNG() below.
     testImplementation 'org.testng:testng:7.10.2'
-    testImplementation 'com.kazurayam:unittest-helper:0.5.0'
-    testImplementation 'org.slf4j:slf4j-api:2.0.13'
-    testRuntimeOnly 'org.slf4j:slf4j-simple:2.0.13'
+
+    // Use kazurayam's library that supports unit-tests
+    testImplementation 'com.kazurayam:unittest-helper:0.5.1'
 }
 
 tasks.withType(JavaCompile) {
+    // options for javac
     options.compilerArgs << "-Xlint:deprecation"
 }
 
