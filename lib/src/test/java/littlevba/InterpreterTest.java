@@ -13,6 +13,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class InterpreterTest {
 
     private static Logger logger = LoggerFactory.getLogger(InterpreterTest.class);
@@ -27,15 +29,26 @@ public class InterpreterTest {
         Path outDir = too.cleanMethodOutputDirectory("testWriteFile");
         Path outFile = outDir.resolve("foo.txt");
         Files.writeString(outFile, "Hello, world!");
+        assertThat(outFile.toFile()).exists();
+    }
+
+    private Value interpret(Path bas) throws IOException {
+        InputStream progrIn = new FileInputStream(bas.toFile());
+        Interpreter interpreter = new Interpreter(System.in, System.out, System.err);
+        return interpreter.run(progrIn);
+    }
+    @Test
+    public void testVisitingExample01() throws IOException {
+        logger.debug("[testVisitingExample01]");
+        Path bas = basDir.resolve("example01.bas");
+        Value value = interpret(bas);
     }
 
     @Test
-    public void testVisitingExample01bas() throws IOException {
-        logger.debug("[testVisitingExample01bas]");
-        System.out.println("Hello, how are you?");
-        Path bas = basDir.resolve("example01.bas");
-        InputStream progrIn = new FileInputStream(bas.toFile());
-        Interpreter interpreter = new Interpreter(System.in, System.out, System.err);
-        Value value = interpreter.run(progrIn);
+    public void testVisitingExample06dateliteral() throws IOException {
+        logger.debug("[testVisitingExample06dateliteral]");
+        Path bas = basDir.resolve("example06dateliteral.bas");
+        Value value = interpret(bas);
     }
+
 }

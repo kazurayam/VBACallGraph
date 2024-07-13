@@ -6,7 +6,7 @@ Refer to https://qiita.com/opengl-8080/items/49719f2d35171f017aa9
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{hh:mm:ss} %c [%5p] %msg%n</pattern>
+            <pattern>%d{hh:mm:ss} %c [%p] %msg%n</pattern>
         </encoder>
     </appender>
 

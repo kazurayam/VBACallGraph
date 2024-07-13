@@ -29,8 +29,15 @@ public class LittleVBAVisitor extends VBABaseVisitor<Value> {
     }
 
     @Override
+    public Value visitFunctionStmt(VBAParser.FunctionStmtContext ctx) {
+        logger.info("Function " + ctx.ambiguousIdentifier().getText());   // "Module" from "Public Sub Module()"
+        return visitChildren(ctx);
+    }
+
+
+    @Override
     public Value visitSubStmt(VBAParser.SubStmtContext ctx) {
-        logger.error(ctx.ambiguousIdentifier().getText());   // "Module" from "Public Sub Module()"
+        logger.info("Sub " + ctx.ambiguousIdentifier().getText());   // "Module" from "Public Sub Module()"
         return visitChildren(ctx);
     }
 

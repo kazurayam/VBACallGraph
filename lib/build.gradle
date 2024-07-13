@@ -12,6 +12,7 @@ dependencies {
 
     testImplementation 'ch.qos.logback:logback-classic:1.5.6'
     testImplementation 'org.testng:testng:7.10.2'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
     testImplementation 'com.kazurayam:unittest-helper:0.5.0'
 }
 
