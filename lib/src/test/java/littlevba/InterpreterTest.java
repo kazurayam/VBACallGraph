@@ -1,12 +1,13 @@
-package com.kazurayam.littlevba;
+package littlevba;
 
+import com.kazurayam.littlevba.Interpreter;
+import com.kazurayam.littlevba.Value;
 import com.kazurayam.unittest.TestOutputOrganizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -30,7 +31,7 @@ public class InterpreterTest {
 
     @Test
     public void testVisitingExample01bas() throws IOException {
-        logger.info("[testVisitingExample01bas]");
+        logger.debug("[testVisitingExample01bas]");
         System.out.println("Hello, how are you?");
         Path bas = basDir.resolve("example01.bas");
         InputStream progrIn = new FileInputStream(bas.toFile());

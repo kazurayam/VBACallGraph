@@ -6,4 +6,4 @@
  */
 
 rootProject.name = 'VBAProceduresIndexer'
-include('plugin')
+include('lib', 'app', 'plugin')
