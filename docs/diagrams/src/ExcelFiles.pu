@@ -26,4 +26,6 @@ package aobgan_vba_lib {
 会費納入状況チェック o-- Member会員名簿のためのVBAライブラリ
 会費納入のお願いletterを作成する o-- Member会員名簿のためのVBAライブラリ
 会員名簿からIDパスワード管理情報を生成する o-- Member会員名簿のためのVBAライブラリ
+Member会員名簿のためのVBAライブラリ o-- Backboneライブラリ
+Cashbook現金出納帳のためのVBAライブラリ o-- Backboneライブラリ
 @enduml
