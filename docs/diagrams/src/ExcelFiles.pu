@@ -1,0 +1,31 @@
+@startuml 事務局Excelブック関連図
+left to right direction
+
+package kazurayam_vba_lib {
+    object Backboneライブラリ
+}
+
+package aomori_gankaikai_jimukyoku {
+    object 決算算出ワークブック
+    object 会費納入状況チェック
+    object 会費納入のお願いletterを作成する
+    object 会員名簿からIDパスワード管理情報を生成する
+}
+
+package aobgan_vba_lib {
+    object Member会員名簿のためのVBAライブラリ
+    object Cashbook現金出納帳のためのVBAライブラリ
+}
+
+決算算出ワークブック o-- Backboneライブラリ
+会費納入状況チェック o-- Backboneライブラリ
+会費納入のお願いletterを作成する o-- Backboneライブラリ
+会員名簿からIDパスワード管理情報を生成する o-- Backboneライブラリ
+決算算出ワークブック o-- Cashbook現金出納帳のためのVBAライブラリ
+会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ
+会費納入状況チェック o-- Member会員名簿のためのVBAライブラリ
+会費納入のお願いletterを作成する o-- Member会員名簿のためのVBAライブラリ
+会員名簿からIDパスワード管理情報を生成する o-- Member会員名簿のためのVBAライブラリ
+Member会員名簿のためのVBAライブラリ o-- Backboneライブラリ
+Cashbook現金出納帳のためのVBAライブラリ o-- Backboneライブラリ
+@enduml

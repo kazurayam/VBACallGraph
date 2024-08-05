@@ -1,0 +1,54 @@
+== VBAProceduresIndexer
+
+=== このプロジェクトの背景
+
+わたくし kazurayam は仕事としてMicrosoft Excelでアプリケーションをいくつか作った。ワークブック・ファイルに Visual Basic for Application 言語（以下、VBAと略記する）でコードを書いた。その仕事の中でkazurayamはいくつかVBAの難問にぶち当たった。この VBAProceduresIndexer プロジェクトはkazurayamが経験したVBAの難問のひとつを取り上げて解決することを目標としている。その難問とは何か？そこから説明を始めよう。
+
+=== 解決すべき問題
+
+ひとつのアプリケーションを実現するのに、ひとつのxlsmファイルを作り、その中にすべてのVBAコード(SubやFunc)を格納するのが単純で実現しやすい。しかしアプリケーションを２つ、３つと開発してみるとすぐわかる。３つのアプリすべてで似たようなSubやFuncを使いたくなるのだ。ひとつのxlsmファイルで書いたSubを別のxlsmファイルにコピーすることはもちろんできる。しかしDon't Repeat Yourselfの原則を破ってしまう。プロフェッショナルなプログラマとして気持ち悪くてたまらない。だからアプリケーションのxlsmファイルから共用可能なSubやFunctionを括り出して別のxlsmファイルに収めた。ライブラリとしてのxlsmファイルからxlaファイルを生成した。これをMicrosoft用語ではAddinという。アプリケーションとしてのxlsmファイルがAddinの中のSubやFunctionを参照する構成にした。このやり方は珍しくない。VBAプログラミングの教科書に書いてある方法だ。そうやってkazurayamはライブラリとしてのxlsmファイルを３つとアプリケーションとしてのxlsmファイルを４つ作った。イメージを明確にするために具体的なファイル名を下記にあげておこう。
+
+image::https://kazurayam.github.io/VBAProceduresIndexer/diagrams/out/ExcelFiles/事務局Excelブック関連図.png[]
+
+`kazurayam_vba_lib` というのがGitHubレポジトリの名前で、その中に `Backboneライブラリ.xlsm` というExcelワークブックファイルがある、と了解してほしい。
+
+さて、全部で7つのxlsmファイルがあって、その中にたくさんのモジュールやクラスがある。そしてそのモジュールがたくさんのSubとFunctionを宣言している。いったいいくつ、kazurayamはSubとFunctionを作ったろうか？ここに全部列挙してみよう。2024年7月末の時点でこうだ。
+
+- link:https://kazurayam.github.io/VBAProceduresIndexer/MyVBASourceDirs.md[]
+
+ざっと数えて70個ぐらいのSubとFuncをkazurayamが作った
+ことを了解してほしい。結構多いな。
+
+さて、ここからが問題です。
+
+kazurayamが7つのxlsmファイルの中に作り込んだたくさんのSubとFuncの大半は、アプリケーションの機能を実現するのに必要なものだ。しかし全部がぜんぶ必要なもの・価値あるものかといえばそうではない。ゴミが混ざっているのだ。kazurayamがVBAを習うために教科書のサンプルを写経したSubが残っている。Subをひとつ作っている途中で名前を変更したくなったが、ちょっと訳があって、新しい名前のSubを別に作った、そして古いSubを削除するのを怠ったので残っている。何ヶ月もの時間をかけて書いたので、ひとつひとつのSubやFunctionがどんな中身だったか、もう忘れてしまった。何はともあれ **ゴミのSub、不要なFunctionを特定して削除したい。しかし、どれがゴミでどれがゴミでないか、どうやって見分ければいいのか?**　
+
+Java言語ならIntelliJ IDEAの link:https://www.jetbrains.com/help/idea/find-highlight-usages.html[Search for usage]が使える。ところがVBA言語の開発環境は貧弱で、一つ一つのSubやFunctionがゴミであるかゴミでないかを見分ける手段を提供してくれない。 困った。
+
+=== 解決方法
+
+７つのxlsmファイルに含まれたSubやFunctionが相互に参照する関係をグラフにして可視化するツールを開発しよう。そのグラフがあればひとつひとつのSubとFunctionが他のProceduresとどういう関係を持っているかが見えてくる。他と密な関係にあるSubやFunctionは重要なもの・価値あるProcedureだとわかる。他のProcedureによって参照される頻度が少ないProcedureはゴミなんじゃないかと疑っていい。そういうProcedureを見つけたら、コードを注意深く読み返してみよう。ゴミかゴミでないかを判断するのはコードを書いた当人がすべきだ。
+
+link:https://qiita.com/mochimo/items/e9be36619a76e15bc898[Rubberduck]を使えばExcelワークブックファイルの中に閉じ込められたVBAのソースコードを個別のテキストファイルとして取り出すことができる。これを利用してVBAのソースコードをexportしよう。
+
+Javaのパーサー・ジェネレータ ANTLR を使ってVisual Basicで書かれたソースコードを構文解析するParserを作ることができる。VBA言語の文法ファイルが下記で公開されている。
+
+- link:https://github.com/antlr/grammars-v4/blob/master/vba/vba6/vba.g4[VBA.g4]
+
+VBAのSubやFunctionをノードとして、ノードとノードの参照関係を有向グラフで表そう。有向グラフを可視化するツールとして link:https://graphviz.org/[GraphViz] がある。
+
+これらを基盤として、kazurayamが自作した７つのxlsmファイルに含まれた約70個のSubとFunctionをノードとして相互の参照関係をグラフ化する、そういうツールをJavaで作ろう。そのプログラムを `VBAProceduresIndexer` と名付ける。
+
+そのグラフを見れば個々のProcedureと他のProcedureとの関係性を一目瞭然に見ることができるだろう。そのグラフがあれば個々のProcedureが重要なものかそうでないかを判断する手掛かりになるだろう。
+
+さて、VBAProceduresIndexerを実装する上で、下記のような段階を踏むことになる。
+
+1. ANTLRの文法ファイルをinputとしてVBAソースコードを構文解析するparserモジュールを生成する。
+2. ひとつのVBAソースコードをparserに渡すとtokenのstreamが生成される。tokenのストリームを受け取るhandlerを開発する。handlerはtokenのstreamの中から有用な情報を抽出してデータ構造を構築する。
+3. VBAのソースコードを解析し情報を抽出することにより生成されたデータ構造をinputとして、GraphVizに渡すべきdot言語のソースを生成する。
+
+2024年7月末現在、(1)のparserを生成することまではできた。(2)をやらねばならない。ここが一番技術的にハードルの高いところなんだよな。面白味があるところだともいえる。
+
+=== 参考情報
+
+- link:https://github.com/kazurayam/VBAProceduresIndexer

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE logback>
+<!--
+Refer to https://qiita.com/opengl-8080/items/49719f2d35171f017aa9
+-->
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{hh:mm:ss} %c [%5p] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.kazurayam.littlevba" level="debug"/>
+
+    <root>
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

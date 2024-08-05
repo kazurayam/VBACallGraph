@@ -1,0 +1,36 @@
+plugins {
+    id 'antlr'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    antlr "org.antlr:antlr4:4.13.1"
+    implementation 'org.slf4j:slf4j-api:2.0.13'
+
+    testImplementation 'ch.qos.logback:logback-classic:1.5.6'
+    testImplementation 'org.testng:testng:7.10.2'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'com.kazurayam:unittest-helper:0.5.0'
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:deprecation"
+}
+
+tasks.named('test') {
+    // Use TestNG for unit tests.
+    useTestNG()
+}
+
+generateGrammarSource {
+    arguments += [
+            "-lib", "src/main/antlr/vba",
+            "-package", "vba",
+            "-visitor",
+            "-long-messages"
+    ]
+    maxHeapSize = "64m"
+}
