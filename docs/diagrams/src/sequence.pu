@@ -1,0 +1,26 @@
+@startuml VBAProceduresIndexerシーケンス図
+actor kazurayam as developer
+entity xlsm as xlsm
+participant Rubberduck as rubberduck
+entity "VBA source" as vbaSource
+entity "VBA.g4" as grammar
+participant ANTLR as antlr
+entity Parser as parser
+control Indexer as indexer
+entity Dot as dot
+participant GraphViz as graphviz
+database Graph as graph
+
+developer -> xlsm : develop
+xlsm -> rubberduck
+rubberduck -> vbaSource: export
+developer -> grammar : author
+grammar -> antlr : consume
+antlr -> parser : generate
+parser -> indexer: used by
+vbaSource -> indexer: parse and analyze
+indexer -> dot : generate
+dot -> graphviz : consume
+graphviz -> graph : draw
+@enduml
+
