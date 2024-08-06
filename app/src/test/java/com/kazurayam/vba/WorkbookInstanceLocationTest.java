@@ -26,7 +26,7 @@ public class WorkbookInstanceLocationTest {
         for (int i = 0; i < values.length; i++) {
             WorkbookInstanceLocation ex = values[i];
             assertThat(ex.resolveWorkbookBasedOn(baseDir)).exists();
-            assertThat(ex.resolveVBASourceDirBasedOn(baseDir)).exists();
+            assertThat(ex.resolveSourceDirBasedOn(baseDir)).exists();
         }
     }
 

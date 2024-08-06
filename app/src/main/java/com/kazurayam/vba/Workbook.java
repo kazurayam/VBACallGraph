@@ -8,10 +8,8 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.DataInput;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,11 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.nio.file.Path;
 
-public class VBAWorkbook {
+public class Workbook {
 
     private final Path baseDir;
     private final WorkbookInstanceLocation workbook;
-    private final List<VBAProcedure> procedureList;
+    private final List<Procedure> procedureList;
     private static final String SHEET_NAME = "プロシージャ一覧";
 
     private final static ObjectMapper mapper;
@@ -31,11 +29,11 @@ public class VBAWorkbook {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(VBAWorkbook.class, new VBAWorkbookSerializer());
+        module.addSerializer(Workbook.class, new WorkbookSerializer());
         mapper.registerModule(module);
     }
 
-    public VBAWorkbook(Path baseDir, WorkbookInstanceLocation workbook) throws IOException {
+    public Workbook(Path baseDir, WorkbookInstanceLocation workbook) throws IOException {
         this.baseDir = baseDir;
         this.workbook = workbook;
         Path xlsm = workbook.resolveWorkbookBasedOn(baseDir);
@@ -51,13 +49,13 @@ public class VBAWorkbook {
         return workbook;
     }
 
-    public List<VBAProcedure> getCoppiedList() {
+    public List<Procedure> getCoppiedList() {
         return new ArrayList<>(procedureList);
     }
 
-    List<VBAProcedure> load(InputStream inputStream) throws IOException {
-        List<VBAProcedure> list = new ArrayList<>();
-        Workbook wb = new XSSFWorkbook(inputStream);
+    List<Procedure> load(InputStream inputStream) throws IOException {
+        List<Procedure> list = new ArrayList<>();
+        org.apache.poi.ss.usermodel.Workbook wb = new XSSFWorkbook(inputStream);
         Sheet sheet = wb.getSheet(SHEET_NAME);
         int r = 0;
         for (Row row : sheet) {
@@ -70,8 +68,8 @@ public class VBAWorkbook {
                 Integer lineNo = ((Double)dvalue).intValue();
                 String source = row.getCell(5, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
                 String comment = row.getCell(6, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                VBAProcedure proc =
-                        new VBAProcedure.Builder()
+                Procedure proc =
+                        new Procedure.Builder()
                                 .name(name)
                                 .module(module)
                                 .scope(Scope.valueOf(scope))
@@ -106,12 +104,12 @@ public class VBAWorkbook {
     /**
      *
      */
-    private static class VBAWorkbookSerializer extends StdSerializer<VBAWorkbook> {
-        public VBAWorkbookSerializer() { this(null); }
-        public VBAWorkbookSerializer(Class<VBAWorkbook> t) { super(t); }
+    private static class WorkbookSerializer extends StdSerializer<Workbook> {
+        public WorkbookSerializer() { this(null); }
+        public WorkbookSerializer(Class<Workbook> t) { super(t); }
         @Override
         public void serialize(
-                VBAWorkbook wb, JsonGenerator jgen, SerializerProvider provider)
+                Workbook wb, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
             jgen.writeStringField("baseDir", wb.getBaseDir().toString());

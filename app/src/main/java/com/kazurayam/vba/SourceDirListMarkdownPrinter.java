@@ -11,37 +11,37 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VBASourceListMarkdownPrinter {
+public class SourceDirListMarkdownPrinter {
 
-    private final List<WorkbookInstance> vbaSourceDirList;
+    private final List<WorkbookInstance> sourceDirList;
 
-    public VBASourceListMarkdownPrinter() {
-         vbaSourceDirList = new ArrayList<>();
+    public SourceDirListMarkdownPrinter() {
+         sourceDirList = new ArrayList<>();
     }
 
     public void add(WorkbookInstance vbaSource) {
-        vbaSourceDirList.add(vbaSource);
+        sourceDirList.add(vbaSource);
     }
 
-    public void printAllVBASourceDirs(Writer writer) throws IOException {
+    public void printAllSourceDirs(Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
-        for (WorkbookInstance resolved : vbaSourceDirList) {
+        for (WorkbookInstance resolved : sourceDirList) {
             Path baseDir = resolved.getBaseDir();
-            Path targetDir = resolved.getWorkbookInstanceLocation().resolveVBASourceDirBasedOn(baseDir);
-            VBASourceDirVisitor visitor =
-                    new VBASourceDirVisitor();
+            Path targetDir = resolved.getWorkbookInstanceLocation().resolveSourceDirBasedOn(baseDir);
+            SourceDirVisitor visitor =
+                    new SourceDirVisitor();
             Files.walkFileTree(targetDir, visitor);
             List<Path> sources = visitor.getList();
-            this.printVBASourceDir(resolved, sources, bw);
+            this.printSourceDir(resolved, sources, bw);
             bw.write("\n\n");
         }
         bw.flush();
         bw.close();
     }
 
-    public void printVBASourceDir(WorkbookInstance resolved,
-                                  List<Path> sources,
-                                  Writer writer) {
+    public void printSourceDir(WorkbookInstance resolved,
+                               List<Path> sources,
+                               Writer writer) {
         PrintWriter pw = new PrintWriter(new BufferedWriter(writer));
         pw.println("### " + resolved.getWorkbookInstanceLocation().getId());
         pw.println("|No.|file name|");
@@ -59,11 +59,11 @@ public class VBASourceListMarkdownPrinter {
 
     public static void main(String[] args) throws IOException {
         TestOutputOrganizer too =
-                new TestOutputOrganizer.Builder(VBASourceListMarkdownPrinter.class)
-                        .subOutputDirectory(VBASourceListMarkdownPrinter.class)
+                new TestOutputOrganizer.Builder(SourceDirListMarkdownPrinter.class)
+                        .subOutputDirectory(SourceDirListMarkdownPrinter.class)
                         .build();
         Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
-        VBASourceListMarkdownPrinter printer = new VBASourceListMarkdownPrinter();
+        SourceDirListMarkdownPrinter printer = new SourceDirListMarkdownPrinter();
         printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Backbone));
         printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Member));
         printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Cashbook));
@@ -75,6 +75,6 @@ public class VBASourceListMarkdownPrinter {
         Path report = too.getProjectDirectory().resolve("../../docs/MyVBASourceDirs.md");
         assert Files.exists(report.getParent());
         Writer writer = Files.newBufferedWriter(report);
-        printer.printAllVBASourceDirs(writer);
+        printer.printAllSourceDirs(writer);
     }
 }

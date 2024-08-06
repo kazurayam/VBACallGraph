@@ -8,15 +8,15 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VBAProcedureTest {
+public class ProcedureTest {
 
-    Logger logger = LoggerFactory.getLogger(VBAProcedureTest.class);
+    Logger logger = LoggerFactory.getLogger(ProcedureTest.class);
 
-    private VBAProcedure proc;
+    private Procedure proc;
 
     @BeforeTest
     public void beforeTest() {
-        proc = new VBAProcedure.Builder()
+        proc = new Procedure.Builder()
                 .name("AccountName")
                 .module("Account")
                 .scope(Scope.Public)

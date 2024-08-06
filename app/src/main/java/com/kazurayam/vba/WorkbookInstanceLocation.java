@@ -43,7 +43,7 @@ public enum WorkbookInstanceLocation {
     private final String id;
     private final String repositoryName;
     private final String workbookSubPath;
-    private final String vbaSourceDirSubPath;
+    private final String sourceDirSubPath;
 
     private static final ObjectMapper mapper;
 
@@ -60,7 +60,7 @@ public enum WorkbookInstanceLocation {
         this.id = id;
         this.repositoryName = repositoryName;
         this.workbookSubPath = workbookSubPath;
-        this.vbaSourceDirSubPath = vbaSourceDirSubPath;
+        this.sourceDirSubPath = vbaSourceDirSubPath;
     }
     public String getId() {
         return id;
@@ -69,14 +69,14 @@ public enum WorkbookInstanceLocation {
         return repositoryName;
     }
     public String getWorkbookSubPath() { return workbookSubPath; }
-    public String getVbaSourceDirSubPath() {
-        return vbaSourceDirSubPath;
+    public String getSourceDirSubPath() {
+        return sourceDirSubPath;
     }
     public Path resolveWorkbookBasedOn(Path baseDir) {
         return baseDir.resolve(getRepositoryName()).resolve(getWorkbookSubPath());
     }
-    public Path resolveVBASourceDirBasedOn(Path baseDir) {
-        return baseDir.resolve(getRepositoryName()).resolve(getVbaSourceDirSubPath());
+    public Path resolveSourceDirBasedOn(Path baseDir) {
+        return baseDir.resolve(getRepositoryName()).resolve(getSourceDirSubPath());
     }
 
     @Override
@@ -109,7 +109,7 @@ public enum WorkbookInstanceLocation {
             jgen.writeStringField("id", wil.getId());
             jgen.writeStringField("repositoryName", wil.getRepositoryName());
             jgen.writeStringField("workbookSubpath", wil.getWorkbookSubPath());
-            jgen.writeStringField("vbaSourceDirSubPath", wil.getVbaSourceDirSubPath());
+            jgen.writeStringField("vbaSourceDirSubPath", wil.getSourceDirSubPath());
             jgen.writeEndObject();
         }
     }

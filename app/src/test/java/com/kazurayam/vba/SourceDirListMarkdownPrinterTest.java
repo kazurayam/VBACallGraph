@@ -11,11 +11,11 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VBASourceListMarkdownPrinterTest {
+public class SourceDirListMarkdownPrinterTest {
 
     private TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(VBASourceListMarkdownPrinterTest.class)
-                    .subOutputDirectory(VBASourceListMarkdownPrinterTest.class)
+            new TestOutputOrganizer.Builder(SourceDirListMarkdownPrinterTest.class)
+                    .subOutputDirectory(SourceDirListMarkdownPrinterTest.class)
                     .build();
     private Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     private Path classOutputDir;
@@ -24,8 +24,8 @@ public class VBASourceListMarkdownPrinterTest {
         classOutputDir = too.cleanClassOutputDirectory();
     }
     @Test
-    public void test_printAllVBASourceDirs() throws IOException {
-        VBASourceListMarkdownPrinter printer = new VBASourceListMarkdownPrinter();
+    public void test_printAllSourceDirs() throws IOException {
+        SourceDirListMarkdownPrinter printer = new SourceDirListMarkdownPrinter();
         printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Backbone));
         printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Member));
         printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Cashbook));
@@ -36,7 +36,7 @@ public class VBASourceListMarkdownPrinterTest {
         //
         Path report = classOutputDir.resolve("MyVBASourceDirs.md");
         Writer writer = Files.newBufferedWriter(report);
-        printer.printAllVBASourceDirs(writer);
+        printer.printAllSourceDirs(writer);
         assertThat(report).exists();
     }
 

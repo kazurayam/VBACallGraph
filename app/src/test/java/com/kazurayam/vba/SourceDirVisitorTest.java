@@ -11,18 +11,18 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VBASourceDirVisitorTest {
+public class SourceDirVisitorTest {
 
-    private Logger logger = Logger.getLogger(VBASourceDirVisitorTest.class);
+    private Logger logger = Logger.getLogger(SourceDirVisitorTest.class);
 
     private final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(VBASourceDirVisitorTest.class)
-                    .subOutputDirectory(VBASourceDirVisitorTest.class).build();
+            new TestOutputOrganizer.Builder(SourceDirVisitorTest.class)
+                    .subOutputDirectory(SourceDirVisitorTest.class).build();
     private final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     @Test
     public void test_visit_Backbone() throws IOException {
-        Path vbaSourceDir = WorkbookInstanceLocation.Backbone.resolveVBASourceDirBasedOn(baseDir);
-        VBASourceDirVisitor visitor = new VBASourceDirVisitor();
+        Path vbaSourceDir = WorkbookInstanceLocation.Backbone.resolveSourceDirBasedOn(baseDir);
+        SourceDirVisitor visitor = new SourceDirVisitor();
         Files.walkFileTree(vbaSourceDir, visitor);
         List<Path> list = visitor.getList();
         logger.info("[test_visit_Backbone] : " + list.toString());
