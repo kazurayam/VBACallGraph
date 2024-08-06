@@ -1,5 +1,6 @@
 package com.kazurayam.vba;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeTest;
@@ -53,6 +54,11 @@ public class VBAProcedureTest {
     @Test
     public void test_comment() {
         assertThat(proc.getComment()).contains("Sun also rises");
+    }
+    @Test
+    public void test_toJson() throws JsonProcessingException {
+        logger.info("[test_toJson] " + proc.toJson());
+        assertThat(proc.toJson()).contains("Sun also rises");
     }
     @Test
     public void test_toString() {

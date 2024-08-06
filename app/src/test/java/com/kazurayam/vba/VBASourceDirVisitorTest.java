@@ -21,7 +21,7 @@ public class VBASourceDirVisitorTest {
     private final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     @Test
     public void test_visit_Backbone() throws IOException {
-        Path vbaSourceDir = MyWorkbook.Backbone.resolveVBASourceDirBasedOn(baseDir);
+        Path vbaSourceDir = WorkbookInstanceLocation.Backbone.resolveVBASourceDirBasedOn(baseDir);
         VBASourceDirVisitor visitor = new VBASourceDirVisitor();
         Files.walkFileTree(vbaSourceDir, visitor);
         List<Path> list = visitor.getList();

@@ -1,8 +1,16 @@
 package com.kazurayam.vba;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
+import java.io.IOException;
 import java.nio.file.Path;
 
-public enum MyWorkbook {
+public enum WorkbookInstanceLocation {
     Backbone("Backboneライブラリ",
             "kazurayam-vba-lib",
             "office/kazurayam-vba-lib.xlsm",
@@ -37,9 +45,18 @@ public enum MyWorkbook {
     private final String workbookSubPath;
     private final String vbaSourceDirSubPath;
 
-    private MyWorkbook(String id, String repositoryName,
-                       String workbookSubPath,
-                       String vbaSourceDirSubPath) {
+    private static final ObjectMapper mapper;
+
+    static {
+        mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(WorkbookInstanceLocation.class, new WorkbookInstanceLocationSerializer());
+        mapper.registerModule(module);
+    }
+
+    WorkbookInstanceLocation(String id, String repositoryName,
+                                     String workbookSubPath,
+                                     String vbaSourceDirSubPath) {
         this.id = id;
         this.repositoryName = repositoryName;
         this.workbookSubPath = workbookSubPath;
@@ -60,5 +77,40 @@ public enum MyWorkbook {
     }
     public Path resolveVBASourceDirBasedOn(Path baseDir) {
         return baseDir.resolve(getRepositoryName()).resolve(getVbaSourceDirSubPath());
+    }
+
+    @Override
+    public String toString() {
+        // pretty print
+        try {
+            Object json = mapper.readValue(this.toJson(), Object.class);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String toJson() throws JsonProcessingException {
+        return mapper.writeValueAsString(this);
+    }
+
+    /**
+     * Serializer of WorkbookInstanceLocation into Json based on the Jackson Databind
+     */
+    private static class WorkbookInstanceLocationSerializer
+            extends StdSerializer<WorkbookInstanceLocation> {
+        public WorkbookInstanceLocationSerializer() { this(null); }
+        public WorkbookInstanceLocationSerializer(Class<WorkbookInstanceLocation> t) { super(t); }
+        @Override
+        public void serialize(
+                WorkbookInstanceLocation wil, JsonGenerator jgen, SerializerProvider provider)
+            throws IOException {
+            jgen.writeStartObject();
+            jgen.writeStringField("id", wil.getId());
+            jgen.writeStringField("repositoryName", wil.getRepositoryName());
+            jgen.writeStringField("workbookSubpath", wil.getWorkbookSubPath());
+            jgen.writeStringField("vbaSourceDirSubPath", wil.getVbaSourceDirSubPath());
+            jgen.writeEndObject();
+        }
     }
 }

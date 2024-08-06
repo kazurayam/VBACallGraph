@@ -11,23 +11,23 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VBASourceMarkdownPrinter {
+public class VBASourceListMarkdownPrinter {
 
-    private final List<ResolvedMyWorkbook> vbaSourceDirList;
+    private final List<WorkbookInstance> vbaSourceDirList;
 
-    public VBASourceMarkdownPrinter() {
+    public VBASourceListMarkdownPrinter() {
          vbaSourceDirList = new ArrayList<>();
     }
 
-    public void add(ResolvedMyWorkbook vbaSource) {
+    public void add(WorkbookInstance vbaSource) {
         vbaSourceDirList.add(vbaSource);
     }
 
     public void printAllVBASourceDirs(Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
-        for (ResolvedMyWorkbook resolved : vbaSourceDirList) {
+        for (WorkbookInstance resolved : vbaSourceDirList) {
             Path baseDir = resolved.getBaseDir();
-            Path targetDir = resolved.getVBASourceDir().resolveVBASourceDirBasedOn(baseDir);
+            Path targetDir = resolved.getWorkbookInstanceLocation().resolveVBASourceDirBasedOn(baseDir);
             VBASourceDirVisitor visitor =
                     new VBASourceDirVisitor();
             Files.walkFileTree(targetDir, visitor);
@@ -39,11 +39,11 @@ public class VBASourceMarkdownPrinter {
         bw.close();
     }
 
-    public void printVBASourceDir(ResolvedMyWorkbook resolved,
+    public void printVBASourceDir(WorkbookInstance resolved,
                                   List<Path> sources,
                                   Writer writer) {
         PrintWriter pw = new PrintWriter(new BufferedWriter(writer));
-        pw.println("### " + resolved.getVBASourceDir().getId());
+        pw.println("### " + resolved.getWorkbookInstanceLocation().getId());
         pw.println("|No.|file name|");
         pw.println("|--:|:--------|");
         List<String> sortedFileNames =
@@ -59,18 +59,18 @@ public class VBASourceMarkdownPrinter {
 
     public static void main(String[] args) throws IOException {
         TestOutputOrganizer too =
-                new TestOutputOrganizer.Builder(VBASourceMarkdownPrinter.class)
-                        .subOutputDirectory(VBASourceMarkdownPrinter.class)
+                new TestOutputOrganizer.Builder(VBASourceListMarkdownPrinter.class)
+                        .subOutputDirectory(VBASourceListMarkdownPrinter.class)
                         .build();
         Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
-        VBASourceMarkdownPrinter printer = new VBASourceMarkdownPrinter();
-        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Backbone));
-        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Member));
-        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Cashbook));
-        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Settlement));
-        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.FeePaymentCheck));
-        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.PleasePayFeeLetter));
-        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.WebCredentials));
+        VBASourceListMarkdownPrinter printer = new VBASourceListMarkdownPrinter();
+        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Backbone));
+        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Member));
+        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Cashbook));
+        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Settlement));
+        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.FeePaymentCheck));
+        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.PleasePayFeeLetter));
+        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.WebCredentials));
         //
         Path report = too.getProjectDirectory().resolve("../../docs/MyVBASourceDirs.md");
         assert Files.exists(report.getParent());

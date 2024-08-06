@@ -1,19 +1,24 @@
 package com.kazurayam.vba;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
+import java.io.IOException;
 
 public class VBAProcedure {
-    private String name;
-    private String module;
-    private Scope scope;
-    private SubOrFunc subOrFunc;
-    private int lineNo;
-    private String source;
-    private String comment;
+    private final String name;
+    private final String module;
+    private final Scope scope;
+    private final SubOrFunc subOrFunc;
+    private final int lineNo;
+    private final String source;
+    private final String comment;
 
-    private static ObjectMapper mapper;
+    private final static ObjectMapper mapper;
 
     static {
         mapper = new ObjectMapper();
@@ -41,13 +46,16 @@ public class VBAProcedure {
     public String getComment() { return comment; }
     @Override
     public String toString() {
+        //pretty print
         try {
-            return this.toJson();
+            Object json = mapper.readValue(this.toJson(), Object.class);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
     public String toJson() throws JsonProcessingException {
+        // without indent
         return mapper.writeValueAsString(this);
     }
 
@@ -83,7 +91,7 @@ public class VBAProcedure {
         public Builder subOrFunc(SubOrFunc subOrFunc) {
             this.subOrFunc = subOrFunc;
             return this;
-        };
+        }
         public Builder lineNo(int lineNo) {
             this.lineNo = lineNo;
             return this;
@@ -99,10 +107,33 @@ public class VBAProcedure {
         public VBAProcedure build() {
             return new VBAProcedure(this);
         }
+    }
 
 
-
-
+    /**
+     *
+     */
+    private static class VBAProcedureSerializer extends StdSerializer<VBAProcedure> {
+        public VBAProcedureSerializer() {
+            this(null);
+        }
+        public VBAProcedureSerializer(Class<VBAProcedure> t) {
+            super(t);
+        }
+        @Override
+        public void serialize(
+                VBAProcedure proc, JsonGenerator jgen, SerializerProvider provider)
+                throws IOException {
+            jgen.writeStartObject();
+            jgen.writeStringField("name", proc.getName());
+            jgen.writeStringField("module", proc.getModule());
+            jgen.writeStringField("scope", proc.getScope().toString());
+            jgen.writeStringField("subOrFunc", proc.getSubOrFunc().toString());
+            jgen.writeNumberField("lineNo", proc.getLineNo());
+            jgen.writeStringField("source", proc.getSource());
+            jgen.writeStringField("comment", proc.getComment());
+            jgen.writeEndObject();
+        }
     }
 
 }
