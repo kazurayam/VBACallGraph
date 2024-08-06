@@ -2,25 +2,25 @@ package com.kazurayam.vba;
 
 import java.nio.file.Path;
 
-public class ResolvedVBASourceDir implements Comparable<ResolvedVBASourceDir> {
+public class ResolvedMyWorkbook implements Comparable<ResolvedMyWorkbook> {
     private final Path baseDir;
-    private final VBASourceDir vbaSourceDir;
-    public ResolvedVBASourceDir(Path baseDir, VBASourceDir myExcelFile) {
+    private final MyWorkbook vbaSourceDir;
+    public ResolvedMyWorkbook(Path baseDir, MyWorkbook myExcelFile) {
         this.baseDir = baseDir;
         this.vbaSourceDir = myExcelFile;
     }
     public Path getBaseDir() {
         return baseDir;
     }
-    public VBASourceDir getVBASourceDir() {
+    public MyWorkbook getVBASourceDir() {
         return vbaSourceDir;
     }
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ResolvedVBASourceDir)) {
+        if (!(obj instanceof ResolvedMyWorkbook)) {
             return false;
         }
-        ResolvedVBASourceDir other = (ResolvedVBASourceDir)obj;
+        ResolvedMyWorkbook other = (ResolvedMyWorkbook)obj;
         if (this.baseDir == other.baseDir) {
             return (this.vbaSourceDir == other.vbaSourceDir);
         } else {
@@ -43,7 +43,7 @@ public class ResolvedVBASourceDir implements Comparable<ResolvedVBASourceDir> {
     }
 
     @Override
-    public int compareTo(ResolvedVBASourceDir other) {
+    public int compareTo(ResolvedMyWorkbook other) {
         int baseDirComparison = this.baseDir.compareTo(other.baseDir);
         if (baseDirComparison == 0) {
             return this.vbaSourceDir.compareTo(other.vbaSourceDir);

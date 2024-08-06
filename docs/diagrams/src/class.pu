@@ -1,0 +1,30 @@
+' https://zenn.dev/kitabatake/articles/ff586edd162789862d71
+
+@startuml
+left to right direction
+
+class VBANamespace {
+  - private Set<Workspace> workspaces
+  # protectedField
+  ~ packagePrivateField
+  + publicMethod()
+}
+note top of VBANamespace: 名前空間
+class Workbook
+class Module
+class Procedure
+class Sub
+class Function
+
+
+
+class ユーザー
+class 記事
+class カード情報 {
+  - カード番号
+  - カード名義
+}
+ユーザー "1" -up- "0..1" カード情報
+
+
+@enduml

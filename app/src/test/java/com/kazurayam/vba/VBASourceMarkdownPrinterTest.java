@@ -26,13 +26,13 @@ public class VBASourceMarkdownPrinterTest {
     @Test
     public void test_printAllVBASourceDirs() throws IOException {
         VBASourceMarkdownPrinter printer = new VBASourceMarkdownPrinter();
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Backbone));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Member));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Cashbook));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Settlement));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.FeePaymentCheck));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.PleasePayFeeLetter));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.WebCredentials));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Backbone));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Member));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Cashbook));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Settlement));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.FeePaymentCheck));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.PleasePayFeeLetter));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.WebCredentials));
         //
         Path report = classOutputDir.resolve("MyVBASourceDirs.md");
         Writer writer = Files.newBufferedWriter(report);

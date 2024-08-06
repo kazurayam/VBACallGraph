@@ -5,7 +5,6 @@ import org.testng.annotations.Test;
 import org.testng.log4testng.Logger;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -22,7 +21,7 @@ public class VBASourceDirVisitorTest {
     private final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     @Test
     public void test_visit_Backbone() throws IOException {
-        Path vbaSourceDir = VBASourceDir.Backbone.resolveBasedOn(baseDir);
+        Path vbaSourceDir = MyWorkbook.Backbone.resolveVBASourceDirBasedOn(baseDir);
         VBASourceDirVisitor visitor = new VBASourceDirVisitor();
         Files.walkFileTree(vbaSourceDir, visitor);
         List<Path> list = visitor.getList();

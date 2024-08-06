@@ -13,21 +13,21 @@ import java.util.List;
 
 public class VBASourceMarkdownPrinter {
 
-    private final List<ResolvedVBASourceDir> vbaSourceDirList;
+    private final List<ResolvedMyWorkbook> vbaSourceDirList;
 
     public VBASourceMarkdownPrinter() {
          vbaSourceDirList = new ArrayList<>();
     }
 
-    public void add(ResolvedVBASourceDir vbaSource) {
+    public void add(ResolvedMyWorkbook vbaSource) {
         vbaSourceDirList.add(vbaSource);
     }
 
     public void printAllVBASourceDirs(Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
-        for (ResolvedVBASourceDir resolved : vbaSourceDirList) {
+        for (ResolvedMyWorkbook resolved : vbaSourceDirList) {
             Path baseDir = resolved.getBaseDir();
-            Path targetDir = resolved.getVBASourceDir().resolveBasedOn(baseDir);
+            Path targetDir = resolved.getVBASourceDir().resolveVBASourceDirBasedOn(baseDir);
             VBASourceDirVisitor visitor =
                     new VBASourceDirVisitor();
             Files.walkFileTree(targetDir, visitor);
@@ -39,7 +39,7 @@ public class VBASourceMarkdownPrinter {
         bw.close();
     }
 
-    public void printVBASourceDir(ResolvedVBASourceDir resolved,
+    public void printVBASourceDir(ResolvedMyWorkbook resolved,
                                   List<Path> sources,
                                   Writer writer) {
         PrintWriter pw = new PrintWriter(new BufferedWriter(writer));
@@ -64,13 +64,13 @@ public class VBASourceMarkdownPrinter {
                         .build();
         Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
         VBASourceMarkdownPrinter printer = new VBASourceMarkdownPrinter();
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Backbone));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Member));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Cashbook));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.Settlement));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.FeePaymentCheck));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.PleasePayFeeLetter));
-        printer.add(new ResolvedVBASourceDir(baseDir, VBASourceDir.WebCredentials));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Backbone));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Member));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Cashbook));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.Settlement));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.FeePaymentCheck));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.PleasePayFeeLetter));
+        printer.add(new ResolvedMyWorkbook(baseDir, MyWorkbook.WebCredentials));
         //
         Path report = too.getProjectDirectory().resolve("../../docs/MyVBASourceDirs.md");
         assert Files.exists(report.getParent());
