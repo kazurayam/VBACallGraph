@@ -14,14 +14,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 public class Workbook {
 
-    private final Path baseDir;
-    private final WorkbookInstanceLocation workbook;
-    private final List<Procedure> procedureList;
+    private final String id;
+    private final Path workbookPath;
+    private final Path sourceDirPath;
+    private final SortedMap<VBAModule, List<Procedure>> moduleProcedures;
     private static final String SHEET_NAME = "プロシージャ一覧";
     private final static ObjectMapper mapper;
 
@@ -32,31 +37,34 @@ public class Workbook {
         mapper.registerModule(module);
     }
 
-    public Workbook(Path baseDir, WorkbookInstanceLocation workbook) throws IOException {
-        this.baseDir = baseDir;
-        this.workbook = workbook;
-        Path xlsm = workbook.resolveWorkbookBasedOn(baseDir);
-        InputStream is = Files.newInputStream(xlsm);
-        procedureList = this.load(is);
+    public Workbook(String id, Path workbookPath, Path sourceDirPath) throws IOException {
+        this.id = id;
+        this.workbookPath = workbookPath;
+        this.sourceDirPath = sourceDirPath;
+        InputStream is = Files.newInputStream(workbookPath);
+        moduleProcedures = this.load(is);
     }
 
-    public Path getBaseDir() {
-        return baseDir;
+    public String getId() {
+        return id;
     }
 
-    public WorkbookInstanceLocation getWorkbook() {
-        return workbook;
+    public Path getWorkbookPath() {
+        return workbookPath;
     }
 
-    public List<Procedure> getCoppiedList() {
-        return new ArrayList<>(procedureList);
+    public Path getSourceDirPath() {
+        return sourceDirPath;
     }
 
-    List<Procedure> load(InputStream inputStream) throws IOException {
-        List<Procedure> list = new ArrayList<>();
+    public SortedMap<VBAModule, List<Procedure>> getModuleProcedures() {
+        return this.moduleProcedures;
+    }
+
+    SortedMap<VBAModule, List<Procedure>> load(InputStream inputStream) throws IOException {
+        SortedMap<VBAModule, List<Procedure>> moduleProcedures = new TreeMap<>();
         org.apache.poi.ss.usermodel.Workbook wb = new XSSFWorkbook(inputStream);
         Sheet sheet = wb.getSheet(SHEET_NAME);
-        int r = 0;
         for (Row row : sheet) {
             if (row.getRowNum() > 0) { // we will skip the first row = header
                 String name = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
@@ -76,11 +84,19 @@ public class Workbook {
                                 .source(source)
                                 .comment(comment)
                                 .build();
+                VBAModule key = new VBAModule(module);
+                //
+                List<Procedure> list;
+                if (moduleProcedures.containsKey(key)) {
+                    list = moduleProcedures.get(key);
+                } else {
+                    list = new ArrayList<>();
+                }
                 list.add(proc);
+                moduleProcedures.put(key, list);
             }
-            r++;
         }
-        return list;
+        return moduleProcedures;
     }
 
     @Override
@@ -111,8 +127,9 @@ public class Workbook {
                 Workbook wb, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
-            jgen.writeStringField("baseDir", wb.getBaseDir().toString());
-            jgen.writeObjectField("workbook", wb.getWorkbook().toString());
+            jgen.writeStringField("id", wb.getId());
+            jgen.writeStringField("workbookPath", wb.getWorkbookPath().toString());
+            jgen.writeStringField("sourceDirPath", wb.getSourceDirPath().toString());
             jgen.writeEndObject();
         }
     }

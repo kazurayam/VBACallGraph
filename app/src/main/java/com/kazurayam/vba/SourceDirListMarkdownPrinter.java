@@ -1,6 +1,7 @@
 package com.kazurayam.vba;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
+import com.kazurayam.vbaexample.MyWorkbook;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -13,37 +14,35 @@ import java.util.List;
 
 public class SourceDirListMarkdownPrinter {
 
-    private final List<WorkbookInstance> sourceDirList;
+    private final List<Workbook> workbookList;
 
     public SourceDirListMarkdownPrinter() {
-         sourceDirList = new ArrayList<>();
+         workbookList = new ArrayList<>();
     }
 
-    public void add(WorkbookInstance vbaSource) {
-        sourceDirList.add(vbaSource);
+    public void add(Workbook workbook) {
+        workbookList.add(workbook);
     }
 
     public void printAllSourceDirs(Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
-        for (WorkbookInstance resolved : sourceDirList) {
-            Path baseDir = resolved.getBaseDir();
-            Path targetDir = resolved.getWorkbookInstanceLocation().resolveSourceDirBasedOn(baseDir);
+        for (Workbook wb : workbookList) {
             SourceDirVisitor visitor =
                     new SourceDirVisitor();
-            Files.walkFileTree(targetDir, visitor);
+            Files.walkFileTree(wb.getSourceDirPath(), visitor);
             List<Path> sources = visitor.getList();
-            this.printSourceDir(resolved, sources, bw);
+            this.printSourceDir(wb, sources, bw);
             bw.write("\n\n");
         }
         bw.flush();
         bw.close();
     }
 
-    public void printSourceDir(WorkbookInstance resolved,
+    public void printSourceDir(Workbook wb,
                                List<Path> sources,
                                Writer writer) {
         PrintWriter pw = new PrintWriter(new BufferedWriter(writer));
-        pw.println("### " + resolved.getWorkbookInstanceLocation().getId());
+        pw.println("### " + wb.getId());
         pw.println("|No.|file name|");
         pw.println("|--:|:--------|");
         List<String> sortedFileNames =
@@ -64,14 +63,35 @@ public class SourceDirListMarkdownPrinter {
                         .build();
         Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
         SourceDirListMarkdownPrinter printer = new SourceDirListMarkdownPrinter();
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Backbone));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Member));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Cashbook));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Settlement));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.FeePaymentCheck));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.PleasePayFeeLetter));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.WebCredentials));
-        //
+        printer.add(new Workbook(
+                MyWorkbook.Backbone.getId(),
+                MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.Member.getId(),
+                MyWorkbook.Member.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.Cashbook.getId(),
+                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.Settlement.getId(),
+                MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.FeePaymentCheck.getId(),
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.PleasePayFeeLetter.getId(),
+                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
+                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.WebCredentials.getId(),
+                MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
+                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir)));
+
         Path report = too.getProjectDirectory().resolve("../../docs/MyVBASourceDirs.md");
         assert Files.exists(report.getParent());
         Writer writer = Files.newBufferedWriter(report);

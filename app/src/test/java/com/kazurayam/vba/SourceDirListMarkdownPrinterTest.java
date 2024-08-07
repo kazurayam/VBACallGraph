@@ -1,6 +1,7 @@
 package com.kazurayam.vba;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
+import com.kazurayam.vbaexample.MyWorkbook;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -26,13 +27,34 @@ public class SourceDirListMarkdownPrinterTest {
     @Test
     public void test_printAllSourceDirs() throws IOException {
         SourceDirListMarkdownPrinter printer = new SourceDirListMarkdownPrinter();
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Backbone));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Member));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Cashbook));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.Settlement));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.FeePaymentCheck));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.PleasePayFeeLetter));
-        printer.add(new WorkbookInstance(baseDir, WorkbookInstanceLocation.WebCredentials));
+        printer.add(new Workbook(
+                MyWorkbook.Backbone.getId(),
+                MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.Member.getId(),
+                MyWorkbook.Member.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.Cashbook.getId(),
+                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.Settlement.getId(),
+                MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.FeePaymentCheck.getId(),
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.PleasePayFeeLetter.getId(),
+                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
+                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir)));
+        printer.add(new Workbook(
+                MyWorkbook.WebCredentials.getId(),
+                MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
+                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir)));
         //
         Path report = classOutputDir.resolve("MyVBASourceDirs.md");
         Writer writer = Files.newBufferedWriter(report);

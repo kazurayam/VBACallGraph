@@ -1,4 +1,4 @@
-package com.kazurayam.vba;
+package com.kazurayam.vbaexample;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public enum WorkbookInstanceLocation {
+public enum MyWorkbook {
     Backbone("Backboneライブラリ",
             "kazurayam-vba-lib",
             "office/kazurayam-vba-lib.xlsm",
@@ -50,13 +50,13 @@ public enum WorkbookInstanceLocation {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(WorkbookInstanceLocation.class, new WorkbookInstanceLocationSerializer());
+        module.addSerializer(MyWorkbook.class, new WorkbookInstanceLocationSerializer());
         mapper.registerModule(module);
     }
 
-    WorkbookInstanceLocation(String id, String repositoryName,
-                             String workbookSubPath,
-                             String vbaSourceDirSubPath) {
+    MyWorkbook(String id, String repositoryName,
+               String workbookSubPath,
+               String vbaSourceDirSubPath) {
         this.id = id;
         this.repositoryName = repositoryName;
         this.workbookSubPath = workbookSubPath;
@@ -79,11 +79,11 @@ public enum WorkbookInstanceLocation {
         return sourceDirSubPath;
     }
 
-    public Path resolveWorkbookBasedOn(Path baseDir) {
+    public Path resolveWorkbookUnder(Path baseDir) {
         return baseDir.resolve(getRepositoryName()).resolve(getWorkbookSubPath());
     }
 
-    public Path resolveSourceDirBasedOn(Path baseDir) {
+    public Path resolveSourceDirUnder(Path baseDir) {
         return baseDir.resolve(getRepositoryName()).resolve(getSourceDirSubPath());
     }
 
@@ -106,18 +106,18 @@ public enum WorkbookInstanceLocation {
      * Serializer of WorkbookInstanceLocation into Json based on the Jackson Databind
      */
     private static class WorkbookInstanceLocationSerializer
-            extends StdSerializer<WorkbookInstanceLocation> {
+            extends StdSerializer<MyWorkbook> {
         public WorkbookInstanceLocationSerializer() {
             this(null);
         }
 
-        public WorkbookInstanceLocationSerializer(Class<WorkbookInstanceLocation> t) {
+        public WorkbookInstanceLocationSerializer(Class<MyWorkbook> t) {
             super(t);
         }
 
         @Override
         public void serialize(
-                WorkbookInstanceLocation wil, JsonGenerator jgen, SerializerProvider provider)
+                MyWorkbook wil, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
             jgen.writeStringField("id", wil.getId());

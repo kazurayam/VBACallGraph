@@ -23,7 +23,7 @@ public class Procedure {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(Procedure.class, new VBAProcedureSerializer());
+        module.addSerializer(Procedure.class, new ProcedureSerializer());
         mapper.registerModule(module);
     }
 
@@ -113,11 +113,11 @@ public class Procedure {
     /**
      *
      */
-    private static class VBAProcedureSerializer extends StdSerializer<Procedure> {
-        public VBAProcedureSerializer() {
+    private static class ProcedureSerializer extends StdSerializer<Procedure> {
+        public ProcedureSerializer() {
             this(null);
         }
-        public VBAProcedureSerializer(Class<Procedure> t) {
+        public ProcedureSerializer(Class<Procedure> t) {
             super(t);
         }
         @Override

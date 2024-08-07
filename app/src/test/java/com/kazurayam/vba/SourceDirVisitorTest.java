@@ -1,6 +1,7 @@
 package com.kazurayam.vba;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
+import com.kazurayam.vbaexample.MyWorkbook;
 import org.testng.annotations.Test;
 import org.testng.log4testng.Logger;
 
@@ -21,7 +22,7 @@ public class SourceDirVisitorTest {
     private final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     @Test
     public void test_visit_Backbone() throws IOException {
-        Path vbaSourceDir = WorkbookInstanceLocation.Backbone.resolveSourceDirBasedOn(baseDir);
+        Path vbaSourceDir = MyWorkbook.Backbone.resolveSourceDirUnder(baseDir);
         SourceDirVisitor visitor = new SourceDirVisitor();
         Files.walkFileTree(vbaSourceDir, visitor);
         List<Path> list = visitor.getList();

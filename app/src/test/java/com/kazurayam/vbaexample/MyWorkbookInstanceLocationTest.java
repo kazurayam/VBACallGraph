@@ -1,7 +1,8 @@
-package com.kazurayam.vba;
+package com.kazurayam.vbaexample;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kazurayam.unittest.TestOutputOrganizer;
+import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.Test;
@@ -10,29 +11,29 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class WorkbookInstanceLocationTest {
+public class MyWorkbookInstanceLocationTest {
 
-    Logger logger = LoggerFactory.getLogger(WorkbookInstanceLocationTest.class);
+    Logger logger = LoggerFactory.getLogger(MyWorkbookInstanceLocationTest.class);
 
     private TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(WorkbookInstanceLocationTest.class)
-                    .subOutputDirectory(WorkbookInstanceLocationTest.class).build();
+            new TestOutputOrganizer.Builder(MyWorkbookInstanceLocationTest.class)
+                    .subOutputDirectory(MyWorkbookInstanceLocationTest.class).build();
 
     private Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
 
     @Test
     public void test_all_resolveBasedOn() {
-        WorkbookInstanceLocation[] values = WorkbookInstanceLocation.values();
+        MyWorkbook[] values = MyWorkbook.values();
         for (int i = 0; i < values.length; i++) {
-            WorkbookInstanceLocation ex = values[i];
-            assertThat(ex.resolveWorkbookBasedOn(baseDir)).exists();
-            assertThat(ex.resolveSourceDirBasedOn(baseDir)).exists();
+            MyWorkbook ex = values[i];
+            Assertions.assertThat(ex.resolveWorkbookUnder(baseDir)).exists();
+            Assertions.assertThat(ex.resolveSourceDirUnder(baseDir)).exists();
         }
     }
 
     @Test
     public void test_toJson() throws JsonProcessingException {
-        String json = WorkbookInstanceLocation.Cashbook.toJson();
+        String json = MyWorkbook.Cashbook.toJson();
         assertThat(json).isNotNull();
         logger.info("[test_toJson] " + json);
         assertThat(json).contains("id");
@@ -44,7 +45,7 @@ public class WorkbookInstanceLocationTest {
 
     @Test
     public void test_toString() {
-        String json = WorkbookInstanceLocation.Cashbook.toString();
+        String json = MyWorkbook.Cashbook.toString();
         assertThat(json).isNotNull();
         logger.info("[test_toString] " + json);
     }
