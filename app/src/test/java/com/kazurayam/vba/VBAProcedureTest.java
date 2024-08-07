@@ -8,19 +8,19 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProcedureTest {
+public class VBAProcedureTest {
 
-    Logger logger = LoggerFactory.getLogger(ProcedureTest.class);
+    Logger logger = LoggerFactory.getLogger(VBAProcedureTest.class);
 
-    private Procedure proc;
+    private VBAProcedure proc;
 
     @BeforeTest
     public void beforeTest() {
-        proc = new Procedure.Builder()
+        proc = new VBAProcedure.Builder()
                 .name("AccountName")
                 .module("Account")
-                .scope(Procedure.Scope.Public)
-                .subOrFunc(Procedure.SubOrFunc.Sub)
+                .scope(VBAProcedure.Scope.Public)
+                .subOrFunc(VBAProcedure.SubOrFunc.Sub)
                 .lineNo(68)
                 .source("Public Property Get AccountName() as String")
                 .comment("Sun also rises")
@@ -37,11 +37,11 @@ public class ProcedureTest {
     }
     @Test
     public void test_scope() {
-        assertThat(proc.getScope()).isEqualTo(Procedure.Scope.Public);
+        assertThat(proc.getScope()).isEqualTo(VBAProcedure.Scope.Public);
     }
     @Test
     public void test_subOrFunc() {
-        assertThat(proc.getSubOrFunc()).isEqualTo(Procedure.SubOrFunc.Sub);
+        assertThat(proc.getSubOrFunc()).isEqualTo(VBAProcedure.SubOrFunc.Sub);
     }
     @Test
     public void test_lineNo() {

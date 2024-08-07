@@ -12,21 +12,21 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SourceDirListMarkdownPrinter {
+public class SourceDirPrinter {
 
-    private final List<Workbook> workbookList;
+    private final List<SensibleWorkbook> workbookList;
 
-    public SourceDirListMarkdownPrinter() {
+    public SourceDirPrinter() {
          workbookList = new ArrayList<>();
     }
 
-    public void add(Workbook workbook) {
+    public void add(SensibleWorkbook workbook) {
         workbookList.add(workbook);
     }
 
     public void printAllSourceDirs(Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
-        for (Workbook wb : workbookList) {
+        for (SensibleWorkbook wb : workbookList) {
             SourceDirVisitor visitor =
                     new SourceDirVisitor();
             Files.walkFileTree(wb.getSourceDirPath(), visitor);
@@ -38,7 +38,7 @@ public class SourceDirListMarkdownPrinter {
         bw.close();
     }
 
-    public void printSourceDir(Workbook wb,
+    public void printSourceDir(SensibleWorkbook wb,
                                List<Path> sources,
                                Writer writer) {
         PrintWriter pw = new PrintWriter(new BufferedWriter(writer));
@@ -58,36 +58,36 @@ public class SourceDirListMarkdownPrinter {
 
     public static void main(String[] args) throws IOException {
         TestOutputOrganizer too =
-                new TestOutputOrganizer.Builder(SourceDirListMarkdownPrinter.class)
-                        .subOutputDirectory(SourceDirListMarkdownPrinter.class)
+                new TestOutputOrganizer.Builder(SourceDirPrinter.class)
+                        .subOutputDirectory(SourceDirPrinter.class)
                         .build();
         Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
-        SourceDirListMarkdownPrinter printer = new SourceDirListMarkdownPrinter();
-        printer.add(new Workbook(
+        SourceDirPrinter printer = new SourceDirPrinter();
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Backbone.getId(),
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Settlement.getId(),
                 MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Settlement.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.PleasePayFeeLetter.getId(),
                 MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
                 MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.WebCredentials.getId(),
                 MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
                 MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir)));

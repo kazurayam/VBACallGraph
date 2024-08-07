@@ -14,30 +14,28 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-public class Workbook {
+public class SensibleWorkbook {
 
     private final String id;
     private final Path workbookPath;
     private final Path sourceDirPath;
-    private final SortedMap<VBAModule, List<Procedure>> moduleProcedures;
+    private final SortedMap<VBAModule, List<VBAProcedure>> moduleProcedures;
     private static final String SHEET_NAME = "プロシージャ一覧";
     private final static ObjectMapper mapper;
 
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(Workbook.class, new WorkbookSerializer());
+        module.addSerializer(SensibleWorkbook.class, new SensibleWorkbookSerializer());
         mapper.registerModule(module);
     }
 
-    public Workbook(String id, Path workbookPath, Path sourceDirPath) throws IOException {
+    public SensibleWorkbook(String id, Path workbookPath, Path sourceDirPath) throws IOException {
         this.id = id;
         this.workbookPath = workbookPath;
         this.sourceDirPath = sourceDirPath;
@@ -57,12 +55,12 @@ public class Workbook {
         return sourceDirPath;
     }
 
-    public SortedMap<VBAModule, List<Procedure>> getModuleProcedures() {
+    public SortedMap<VBAModule, List<VBAProcedure>> getModuleProcedures() {
         return this.moduleProcedures;
     }
 
-    SortedMap<VBAModule, List<Procedure>> load(InputStream inputStream) throws IOException {
-        SortedMap<VBAModule, List<Procedure>> moduleProcedures = new TreeMap<>();
+    SortedMap<VBAModule, List<VBAProcedure>> load(InputStream inputStream) throws IOException {
+        SortedMap<VBAModule, List<VBAProcedure>> moduleProcedures = new TreeMap<>();
         org.apache.poi.ss.usermodel.Workbook wb = new XSSFWorkbook(inputStream);
         Sheet sheet = wb.getSheet(SHEET_NAME);
         for (Row row : sheet) {
@@ -75,18 +73,18 @@ public class Workbook {
                 Integer lineNo = ((Double)dvalue).intValue();
                 String source = row.getCell(5, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
                 String comment = row.getCell(6, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                Procedure proc =
-                        new Procedure.Builder()
+                VBAProcedure proc =
+                        new VBAProcedure.Builder()
                                 .name(name)
                                 .module(module)
-                                .scope(Procedure.Scope.valueOf(scope))
-                                .subOrFunc(Procedure.SubOrFunc.valueOf(subOrFunc))
+                                .scope(VBAProcedure.Scope.valueOf(scope))
+                                .subOrFunc(VBAProcedure.SubOrFunc.valueOf(subOrFunc))
                                 .source(source)
                                 .comment(comment)
                                 .build();
                 VBAModule key = new VBAModule(module);
                 //
-                List<Procedure> list;
+                List<VBAProcedure> list;
                 if (moduleProcedures.containsKey(key)) {
                     list = moduleProcedures.get(key);
                 } else {
@@ -119,12 +117,12 @@ public class Workbook {
     /**
      *
      */
-    private static class WorkbookSerializer extends StdSerializer<Workbook> {
-        public WorkbookSerializer() { this(null); }
-        public WorkbookSerializer(Class<Workbook> t) { super(t); }
+    private static class SensibleWorkbookSerializer extends StdSerializer<SensibleWorkbook> {
+        public SensibleWorkbookSerializer() { this(null); }
+        public SensibleWorkbookSerializer(Class<SensibleWorkbook> t) { super(t); }
         @Override
         public void serialize(
-                Workbook wb, JsonGenerator jgen, SerializerProvider provider)
+                SensibleWorkbook wb, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
             jgen.writeStringField("id", wb.getId());

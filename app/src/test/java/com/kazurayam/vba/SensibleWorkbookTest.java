@@ -15,18 +15,18 @@ import java.util.SortedMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class WorkbookTest {
+public class SensibleWorkbookTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(WorkbookTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(SensibleWorkbookTest.class);
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(WorkbookTest.class)
-                    .subOutputDirectory(WorkbookTest.class)
+            new TestOutputOrganizer.Builder(SensibleWorkbookTest.class)
+                    .subOutputDirectory(SensibleWorkbookTest.class)
                     .build();
     private static final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
-    private Workbook wb;
+    private SensibleWorkbook wb;
     @BeforeTest
     public void beforeTest() throws IOException {
-        wb = new Workbook(
+        wb = new SensibleWorkbook(
                 MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir));
@@ -49,11 +49,11 @@ public class WorkbookTest {
 
     @Test
     public void test_getModuleProcedures() throws IOException {
-        Workbook wb = new Workbook(
+        SensibleWorkbook wb = new SensibleWorkbook(
                 MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir));
-        SortedMap<VBAModule, List<Procedure>> moduleProcedures =
+        SortedMap<VBAModule, List<VBAProcedure>> moduleProcedures =
                 wb.getModuleProcedures();
         assertThat(moduleProcedures.keySet().size()).isEqualTo(3);
     }

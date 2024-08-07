@@ -7,12 +7,16 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 
 public class VBAModule implements Comparable<VBAModule> {
 
-    private final static ObjectMapper mapper;
     private final String name;
+    private final List<VBAProcedure> procedureList;
+
+    private final static ObjectMapper mapper;
 
     static {
         mapper = new ObjectMapper();
@@ -23,26 +27,42 @@ public class VBAModule implements Comparable<VBAModule> {
 
     public VBAModule(String name) {
         this.name = name;
+        this.procedureList = new ArrayList<>();
     }
 
     public String getName() {
         return name;
     }
+
+    public void add(VBAProcedure procedure) {
+        procedureList.add(procedure);
+    }
+
+    public List<VBAProcedure> getProcedureList() {
+        return procedureList;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof VBAModule)) {
+        if (!(obj instanceof VBAModule other)) {
             return false;
         }
-        VBAModule other = (VBAModule) obj;
         return this.getName() == other.getName();
     }
 
     @Override
     public String toString() {
-        return this.getName();
+        // pretty printed
+        try {
+            Object json = mapper.readValue(this.toJson(), Object.class);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public String toJson() throws JsonProcessingException {
+        // no indentations
         return mapper.writeValueAsString(this);
     }
     @Override
@@ -64,7 +84,19 @@ public class VBAModule implements Comparable<VBAModule> {
         public void serialize(
                 VBAModule module, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
-            jgen.writeString(module.getName());
+            jgen.writeStartObject(); // {
+            jgen.writeStringField("module", module.getName()); // "module": "NAME",
+            // creating JSON Array with key
+            jgen.writeFieldName("procedures");  // "procedures":
+            // creating Array of Procedure objects
+            jgen.writeStartArray();  // [
+            //
+            List<VBAProcedure> list = module.getProcedureList();
+            for (VBAProcedure procedure : list) {
+                jgen.writeObject(procedure);
+            }
+            jgen.writeEndArray();    // ]
+            jgen.writeEndObject();   // }
         }
     }
 }

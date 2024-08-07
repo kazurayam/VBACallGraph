@@ -12,11 +12,11 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SourceDirListMarkdownPrinterTest {
+public class SourceDirPrinterTest {
 
     private TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(SourceDirListMarkdownPrinterTest.class)
-                    .subOutputDirectory(SourceDirListMarkdownPrinterTest.class)
+            new TestOutputOrganizer.Builder(SourceDirPrinterTest.class)
+                    .subOutputDirectory(SourceDirPrinterTest.class)
                     .build();
     private Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     private Path classOutputDir;
@@ -26,32 +26,32 @@ public class SourceDirListMarkdownPrinterTest {
     }
     @Test
     public void test_printAllSourceDirs() throws IOException {
-        SourceDirListMarkdownPrinter printer = new SourceDirListMarkdownPrinter();
-        printer.add(new Workbook(
+        SourceDirPrinter printer = new SourceDirPrinter();
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Backbone.getId(),
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.Settlement.getId(),
                 MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Settlement.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.PleasePayFeeLetter.getId(),
                 MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
                 MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir)));
-        printer.add(new Workbook(
+        printer.add(new SensibleWorkbook(
                 MyWorkbook.WebCredentials.getId(),
                 MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
                 MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir)));

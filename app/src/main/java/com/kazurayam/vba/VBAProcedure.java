@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-public class Procedure {
+public class VBAProcedure {
     private final String name;
     private final String module;
     private final Scope scope;
@@ -23,11 +23,11 @@ public class Procedure {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(Procedure.class, new ProcedureSerializer());
+        module.addSerializer(VBAProcedure.class, new VBAProcedureSerializer());
         mapper.registerModule(module);
     }
 
-    private Procedure(Builder builder) {
+    private VBAProcedure(Builder builder) {
         name = builder.name;
         module = builder.module;
         scope = builder.scope;
@@ -104,8 +104,8 @@ public class Procedure {
             this.comment = comment;
             return this;
         }
-        public Procedure build() {
-            return new Procedure(this);
+        public VBAProcedure build() {
+            return new VBAProcedure(this);
         }
     }
 
@@ -113,16 +113,16 @@ public class Procedure {
     /**
      *
      */
-    private static class ProcedureSerializer extends StdSerializer<Procedure> {
-        public ProcedureSerializer() {
+    private static class VBAProcedureSerializer extends StdSerializer<VBAProcedure> {
+        public VBAProcedureSerializer() {
             this(null);
         }
-        public ProcedureSerializer(Class<Procedure> t) {
+        public VBAProcedureSerializer(Class<VBAProcedure> t) {
             super(t);
         }
         @Override
         public void serialize(
-                Procedure proc, JsonGenerator jgen, SerializerProvider provider)
+                VBAProcedure proc, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
             jgen.writeStringField("name", proc.getName());

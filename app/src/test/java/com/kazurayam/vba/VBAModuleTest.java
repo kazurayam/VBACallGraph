@@ -1,20 +1,43 @@
 package com.kazurayam.vba;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VBAModuleTest {
 
-    @Test
-    public void test_getName() {
-        VBAModule module = new VBAModule("module1");
-        assertThat(module.getName()).isEqualTo("module1");
+    private Logger logger = LoggerFactory.getLogger(VBAModuleTest.class);
+
+    private VBAModule module;
+
+    @BeforeTest
+    public void beforeTest() {
+        module = new VBAModule("Account");
+        VBAProcedure proc = new VBAProcedure.Builder()
+                .name("AccountName")
+                .module("Account")
+                .scope(VBAProcedure.Scope.Public)
+                .subOrFunc(VBAProcedure.SubOrFunc.Sub)
+                .lineNo(68)
+                .source("Public Property Get AccountName() as String")
+                .comment("Sun also rises")
+                .build();
+        module.add(proc);
     }
 
     @Test
-    public void tst_toJson() throws JsonProcessingException {
-        VBAModule module = new VBAModule("module1");
-        assertThat(module.toJson()).isEqualTo("\"module1\"");
+    public void test_getName() {
+        assertThat(module.getName()).isEqualTo("Account");
+    }
+
+    @Test
+    public void test_toString() {
+        String prettyJson = module.toString();
+        logger.info("[test_toString] " + prettyJson);
+        assertThat(prettyJson).contains("module");
+        assertThat(prettyJson).contains("Account");
+        assertThat(prettyJson).contains("procedures");
     }
 }
