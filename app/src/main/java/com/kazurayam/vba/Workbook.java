@@ -23,7 +23,6 @@ public class Workbook {
     private final WorkbookInstanceLocation workbook;
     private final List<Procedure> procedureList;
     private static final String SHEET_NAME = "プロシージャ一覧";
-
     private final static ObjectMapper mapper;
 
     static {
@@ -72,8 +71,8 @@ public class Workbook {
                         new Procedure.Builder()
                                 .name(name)
                                 .module(module)
-                                .scope(Scope.valueOf(scope))
-                                .subOrFunc(SubOrFunc.valueOf(subOrFunc))
+                                .scope(Procedure.Scope.valueOf(scope))
+                                .subOrFunc(Procedure.SubOrFunc.valueOf(subOrFunc))
                                 .source(source)
                                 .comment(comment)
                                 .build();

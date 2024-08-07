@@ -136,4 +136,16 @@ public class Procedure {
         }
     }
 
+    public static enum Scope {
+        Public,
+        Private,
+        Unspecified;
+    }
+
+    public static enum SubOrFunc {
+        Sub,
+        Function,
+        Unspecified;
+    }
+
 }

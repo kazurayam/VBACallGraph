@@ -2,7 +2,6 @@ package com.kazurayam.vba;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -14,7 +13,6 @@ import java.nio.file.Path;
 public class WorkbookInstance implements Comparable<WorkbookInstance> {
     private final Path baseDir;
     private final WorkbookInstanceLocation wbInstanceLocation;
-
     private static final ObjectMapper mapper;
 
     static {
@@ -94,4 +92,5 @@ public class WorkbookInstance implements Comparable<WorkbookInstance> {
             jgen.writeEndObject();
         }
     }
+
 }

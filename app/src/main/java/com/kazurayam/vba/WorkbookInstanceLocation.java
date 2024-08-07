@@ -55,26 +55,34 @@ public enum WorkbookInstanceLocation {
     }
 
     WorkbookInstanceLocation(String id, String repositoryName,
-                                     String workbookSubPath,
-                                     String vbaSourceDirSubPath) {
+                             String workbookSubPath,
+                             String vbaSourceDirSubPath) {
         this.id = id;
         this.repositoryName = repositoryName;
         this.workbookSubPath = workbookSubPath;
         this.sourceDirSubPath = vbaSourceDirSubPath;
     }
+
     public String getId() {
         return id;
     }
+
     public String getRepositoryName() {
         return repositoryName;
     }
-    public String getWorkbookSubPath() { return workbookSubPath; }
+
+    public String getWorkbookSubPath() {
+        return workbookSubPath;
+    }
+
     public String getSourceDirSubPath() {
         return sourceDirSubPath;
     }
+
     public Path resolveWorkbookBasedOn(Path baseDir) {
         return baseDir.resolve(getRepositoryName()).resolve(getWorkbookSubPath());
     }
+
     public Path resolveSourceDirBasedOn(Path baseDir) {
         return baseDir.resolve(getRepositoryName()).resolve(getSourceDirSubPath());
     }
@@ -99,17 +107,23 @@ public enum WorkbookInstanceLocation {
      */
     private static class WorkbookInstanceLocationSerializer
             extends StdSerializer<WorkbookInstanceLocation> {
-        public WorkbookInstanceLocationSerializer() { this(null); }
-        public WorkbookInstanceLocationSerializer(Class<WorkbookInstanceLocation> t) { super(t); }
+        public WorkbookInstanceLocationSerializer() {
+            this(null);
+        }
+
+        public WorkbookInstanceLocationSerializer(Class<WorkbookInstanceLocation> t) {
+            super(t);
+        }
+
         @Override
         public void serialize(
                 WorkbookInstanceLocation wil, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+                throws IOException {
             jgen.writeStartObject();
             jgen.writeStringField("id", wil.getId());
             jgen.writeStringField("repositoryName", wil.getRepositoryName());
-            jgen.writeStringField("workbookSubpath", wil.getWorkbookSubPath());
-            jgen.writeStringField("vbaSourceDirSubPath", wil.getSourceDirSubPath());
+            jgen.writeStringField("workbookSubPath", wil.getWorkbookSubPath());
+            jgen.writeStringField("sourceDirSubPath", wil.getSourceDirSubPath());
             jgen.writeEndObject();
         }
     }

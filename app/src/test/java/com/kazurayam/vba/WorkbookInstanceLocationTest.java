@@ -35,6 +35,11 @@ public class WorkbookInstanceLocationTest {
         String json = WorkbookInstanceLocation.Cashbook.toJson();
         assertThat(json).isNotNull();
         logger.info("[test_toJson] " + json);
+        assertThat(json).contains("id");
+        assertThat(json).contains("Cashbook");
+        assertThat(json).contains("repositoryName");
+        assertThat(json).contains("workbookSubPath");
+        assertThat(json).contains("sourceDirSubPath");
     }
 
     @Test

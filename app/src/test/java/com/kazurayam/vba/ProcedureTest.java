@@ -19,8 +19,8 @@ public class ProcedureTest {
         proc = new Procedure.Builder()
                 .name("AccountName")
                 .module("Account")
-                .scope(Scope.Public)
-                .subOrFunc(SubOrFunc.Sub)
+                .scope(Procedure.Scope.Public)
+                .subOrFunc(Procedure.SubOrFunc.Sub)
                 .lineNo(68)
                 .source("Public Property Get AccountName() as String")
                 .comment("Sun also rises")
@@ -37,11 +37,11 @@ public class ProcedureTest {
     }
     @Test
     public void test_scope() {
-        assertThat(proc.getScope()).isEqualTo(Scope.Public);
+        assertThat(proc.getScope()).isEqualTo(Procedure.Scope.Public);
     }
     @Test
     public void test_subOrFunc() {
-        assertThat(proc.getSubOrFunc()).isEqualTo(SubOrFunc.Sub);
+        assertThat(proc.getSubOrFunc()).isEqualTo(Procedure.SubOrFunc.Sub);
     }
     @Test
     public void test_lineNo() {
