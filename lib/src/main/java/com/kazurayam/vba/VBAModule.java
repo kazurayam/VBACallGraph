@@ -9,12 +9,15 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 import java.io.IOException;
+import java.util.TreeMap;
 
 public class VBAModule implements Comparable<VBAModule> {
 
     private final String name;
     private final List<VBAProcedure> procedureList;
+    private final SortedMap<String, VBASource> vbaSources;
 
     private final static ObjectMapper mapper;
 
@@ -29,6 +32,7 @@ public class VBAModule implements Comparable<VBAModule> {
     public VBAModule(String name) {
         this.name = name;
         this.procedureList = new ArrayList<>();
+        this.vbaSources = new TreeMap<>();
     }
 
     public String getName() {

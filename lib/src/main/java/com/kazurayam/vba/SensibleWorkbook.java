@@ -41,7 +41,7 @@ public class SensibleWorkbook {
         this.workbookPath = workbookPath;
         this.sourceDirPath = sourceDirPath;
         InputStream is = Files.newInputStream(workbookPath);
-        modules = this.load(is);
+        modules = this.loadModules(is);
     }
 
     public String getId() {
@@ -76,7 +76,7 @@ public class SensibleWorkbook {
         }
     }
 
-    SortedMap<String, VBAModule> load(InputStream inputStream) throws IOException {
+    SortedMap<String, VBAModule> loadModules(InputStream inputStream) throws IOException {
         SortedMap<String, VBAModule> modules = new TreeMap<>();
         org.apache.poi.ss.usermodel.Workbook wb = new XSSFWorkbook(inputStream);
         Sheet sheet = wb.getSheet(SHEET_NAME);

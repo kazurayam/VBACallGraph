@@ -24,7 +24,7 @@ public class VBAProcedureUsageAnalyzerTest {
                     .subOutputDirectory(VBAProcedureUsageAnalyzerTest.class)
                     .build();
 
-    private static final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
+    private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
     private VBAProcedureUsageAnalyzer analyzer;
     private Path classOutputDir;
 

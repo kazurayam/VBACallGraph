@@ -19,7 +19,7 @@ public class SourceDirPrinterTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(SourceDirPrinterTest.class)
                     .build();
-    private Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
+    private Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
     private Path classOutputDir;
     @BeforeTest
     public void beforeTest() throws IOException {

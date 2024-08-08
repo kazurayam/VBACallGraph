@@ -5,33 +5,43 @@ import com.kazurayam.unittest.TestOutputOrganizer;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MyWorkbookInstanceLocationTest {
+public class MyWorkbookTest {
 
-    Logger logger = LoggerFactory.getLogger(MyWorkbookInstanceLocationTest.class);
+    Logger logger = LoggerFactory.getLogger(MyWorkbookTest.class);
 
     private TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(MyWorkbookInstanceLocationTest.class)
+            new TestOutputOrganizer.Builder(MyWorkbookTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(MyWorkbookInstanceLocationTest.class)
+                    .subOutputDirectory(MyWorkbookTest.class)
                     .build();
 
-    private Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
+    private Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     @Test
-    public void test_all_resolveBasedOn() {
+    public void test_all_resolveWorkbookUnder() {
         MyWorkbook[] values = MyWorkbook.values();
-        for (int i = 0; i < values.length; i++) {
-            MyWorkbook ex = values[i];
+        for (MyWorkbook ex : values) {
+            Assertions.assertThat(ex.resolveWorkbookUnder(baseDir)).exists();
+        }
+    }
+    @Test
+    public void test_all_resolveSourceDirUnder() {
+        MyWorkbook[] values = MyWorkbook.values();
+        for (MyWorkbook ex : values) {
             Assertions.assertThat(ex.resolveWorkbookUnder(baseDir)).exists();
             Assertions.assertThat(ex.resolveSourceDirUnder(baseDir)).exists();
         }
     }
+
 
     @Test
     public void test_toJson() throws JsonProcessingException {
@@ -46,9 +56,14 @@ public class MyWorkbookInstanceLocationTest {
     }
 
     @Test
-    public void test_toString() {
-        String json = MyWorkbook.Cashbook.toString();
-        assertThat(json).isNotNull();
-        logger.info("[test_toString] " + json);
+    public void test_toString() throws IOException {
+        Path methodOutputDir = too.cleanMethodOutputDirectory("test_toString");
+        MyWorkbook[] values = MyWorkbook.values();
+        for (MyWorkbook ex : values) {
+            String json = ex.toString();
+            assertThat(json).isNotNull();
+            Path p = methodOutputDir.resolve(ex.getId() + ".json");
+            Files.writeString(p, json);
+        }
     }
 }
