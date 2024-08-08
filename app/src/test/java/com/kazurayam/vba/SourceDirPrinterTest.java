@@ -16,6 +16,7 @@ public class SourceDirPrinterTest {
 
     private TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(SourceDirPrinterTest.class)
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(SourceDirPrinterTest.class)
                     .build();
     private Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");

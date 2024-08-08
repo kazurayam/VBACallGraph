@@ -22,6 +22,7 @@ public class VBAModule implements Comparable<VBAModule> {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addSerializer(VBAModule.class, new VBAModuleSerializer());
+        module.addSerializer(VBAProcedure.class, new VBAProcedure.VBAProcedureSerializer());
         mapper.registerModule(module);
     }
 
@@ -71,7 +72,7 @@ public class VBAModule implements Comparable<VBAModule> {
     }
 
 
-    private static class VBAModuleSerializer extends StdSerializer<VBAModule> {
+    public static class VBAModuleSerializer extends StdSerializer<VBAModule> {
         public VBAModuleSerializer() {
             this(null);
         }

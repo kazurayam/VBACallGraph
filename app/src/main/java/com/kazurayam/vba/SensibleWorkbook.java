@@ -13,9 +13,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import java.nio.file.Path;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -24,7 +23,8 @@ public class SensibleWorkbook {
     private final String id;
     private final Path workbookPath;
     private final Path sourceDirPath;
-    private final SortedMap<VBAModule, List<VBAProcedure>> moduleProcedures;
+    private final SortedMap<String, VBAModule> modules;
+
     private static final String SHEET_NAME = "プロシージャ一覧";
     private final static ObjectMapper mapper;
 
@@ -32,6 +32,7 @@ public class SensibleWorkbook {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
         module.addSerializer(SensibleWorkbook.class, new SensibleWorkbookSerializer());
+        module.addSerializer(VBAModule.class, new VBAModule.VBAModuleSerializer());
         mapper.registerModule(module);
     }
 
@@ -40,7 +41,7 @@ public class SensibleWorkbook {
         this.workbookPath = workbookPath;
         this.sourceDirPath = sourceDirPath;
         InputStream is = Files.newInputStream(workbookPath);
-        moduleProcedures = this.load(is);
+        modules = this.load(is);
     }
 
     public String getId() {
@@ -55,12 +56,28 @@ public class SensibleWorkbook {
         return sourceDirPath;
     }
 
-    public SortedMap<VBAModule, List<VBAProcedure>> getModuleProcedures() {
-        return this.moduleProcedures;
+    public boolean containsKey(String name) {
+        return modules.containsKey(name);
     }
 
-    SortedMap<VBAModule, List<VBAProcedure>> load(InputStream inputStream) throws IOException {
-        SortedMap<VBAModule, List<VBAProcedure>> moduleProcedures = new TreeMap<>();
+    public SortedMap<String, VBAModule> getModules() {
+        return this.modules;
+    }
+
+    public Set<String> keySet() {
+        return modules.keySet();
+    }
+
+    public VBAModule getModule(String name) {
+        if (modules.containsKey(name)) {
+            return modules.get(name);
+        } else {
+            throw new IllegalArgumentException("VBAModule named " + name + " is not found");
+        }
+    }
+
+    SortedMap<String, VBAModule> load(InputStream inputStream) throws IOException {
+        SortedMap<String, VBAModule> modules = new TreeMap<>();
         org.apache.poi.ss.usermodel.Workbook wb = new XSSFWorkbook(inputStream);
         Sheet sheet = wb.getSheet(SHEET_NAME);
         for (Row row : sheet) {
@@ -82,19 +99,18 @@ public class SensibleWorkbook {
                                 .source(source)
                                 .comment(comment)
                                 .build();
-                VBAModule key = new VBAModule(module);
                 //
-                List<VBAProcedure> list;
-                if (moduleProcedures.containsKey(key)) {
-                    list = moduleProcedures.get(key);
+                VBAModule vbaModule;
+                if (!modules.containsKey(module)) {
+                    vbaModule = new VBAModule(module);
                 } else {
-                    list = new ArrayList<>();
+                    vbaModule = modules.get(module);
                 }
-                list.add(proc);
-                moduleProcedures.put(key, list);
+                vbaModule.add(proc);
+                modules.put(module, vbaModule);
             }
         }
-        return moduleProcedures;
+        return modules;
     }
 
     @Override
@@ -117,7 +133,7 @@ public class SensibleWorkbook {
     /**
      *
      */
-    private static class SensibleWorkbookSerializer extends StdSerializer<SensibleWorkbook> {
+    public static class SensibleWorkbookSerializer extends StdSerializer<SensibleWorkbook> {
         public SensibleWorkbookSerializer() { this(null); }
         public SensibleWorkbookSerializer(Class<SensibleWorkbook> t) { super(t); }
         @Override
@@ -128,6 +144,11 @@ public class SensibleWorkbook {
             jgen.writeStringField("id", wb.getId());
             jgen.writeStringField("workbookPath", wb.getWorkbookPath().toString());
             jgen.writeStringField("sourceDirPath", wb.getSourceDirPath().toString());
+            jgen.writeArrayFieldStart("modules");
+            for (String name : wb.getModules().keySet()) {
+                jgen.writeObject(wb.getModule(name));
+            }
+            jgen.writeEndArray();
             jgen.writeEndObject();
         }
     }

@@ -17,7 +17,9 @@ public class MyWorkbookInstanceLocationTest {
 
     private TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(MyWorkbookInstanceLocationTest.class)
-                    .subOutputDirectory(MyWorkbookInstanceLocationTest.class).build();
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
+                    .subOutputDirectory(MyWorkbookInstanceLocationTest.class)
+                    .build();
 
     private Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
 

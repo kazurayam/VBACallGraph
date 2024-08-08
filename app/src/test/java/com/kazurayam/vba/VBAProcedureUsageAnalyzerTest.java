@@ -12,20 +12,23 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProcedureUsageAnalyzerTest {
+public class VBAProcedureUsageAnalyzerTest {
 
     private static Logger logger =
-            LoggerFactory.getLogger(ProcedureUsageAnalyzerTest.class);
+            LoggerFactory.getLogger(VBAProcedureUsageAnalyzerTest.class);
+
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(ProcedureUsageAnalyzerTest.class)
-                    .subOutputDirectory(ProcedureUsageAnalyzerTest.class)
+            new TestOutputOrganizer.Builder(VBAProcedureUsageAnalyzerTest.class)
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
+                    .subOutputDirectory(VBAProcedureUsageAnalyzerTest.class)
                     .build();
+
     private static final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
-    private ProcedureUsageAnalyzer analyzer;
+    private VBAProcedureUsageAnalyzer analyzer;
 
     @BeforeTest
     public void beforeTest() throws IOException {
-        analyzer = new ProcedureUsageAnalyzer();
+        analyzer = new VBAProcedureUsageAnalyzer();
 
         analyzer.add(new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.getId(),

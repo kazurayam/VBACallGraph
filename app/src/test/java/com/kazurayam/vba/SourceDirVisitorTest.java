@@ -18,7 +18,9 @@ public class SourceDirVisitorTest {
 
     private final TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(SourceDirVisitorTest.class)
-                    .subOutputDirectory(SourceDirVisitorTest.class).build();
+                    .outputDirectoryRelativeToProject("build/tmp/testOutput")
+                    .subOutputDirectory(SourceDirVisitorTest.class)
+                    .build();
     private final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     @Test
     public void test_visit_Backbone() throws IOException {

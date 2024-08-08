@@ -113,7 +113,7 @@ public class VBAProcedure {
     /**
      *
      */
-    private static class VBAProcedureSerializer extends StdSerializer<VBAProcedure> {
+    public static class VBAProcedureSerializer extends StdSerializer<VBAProcedure> {
         public VBAProcedureSerializer() {
             this(null);
         }

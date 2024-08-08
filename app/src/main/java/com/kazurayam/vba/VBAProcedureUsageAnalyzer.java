@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ProcedureUsageAnalyzer {
+public class VBAProcedureUsageAnalyzer {
 
     private List<SensibleWorkbook> workbooks;
 
@@ -21,12 +21,14 @@ public class ProcedureUsageAnalyzer {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(ProcedureUsageAnalyzer.class,
-                new ProcedureUsageAnalyzerSerializer());
+        module.addSerializer(VBAProcedureUsageAnalyzer.class,
+                new VBAProcedureUsageAnalyzerSerializer());
+        module.addSerializer(SensibleWorkbook.class,
+                new SensibleWorkbook.SensibleWorkbookSerializer());
         mapper.registerModule(module);
     }
 
-    public ProcedureUsageAnalyzer() {
+    public VBAProcedureUsageAnalyzer() {
         workbooks = new ArrayList<>();
     }
 
@@ -62,24 +64,27 @@ public class ProcedureUsageAnalyzer {
         return mapper.writeValueAsString(this);
     }
 
-    private static class ProcedureUsageAnalyzerSerializer extends StdSerializer<ProcedureUsageAnalyzer> {
-        public ProcedureUsageAnalyzerSerializer() { this(null); }
-        public ProcedureUsageAnalyzerSerializer(Class<ProcedureUsageAnalyzer> t) {
+    private static class VBAProcedureUsageAnalyzerSerializer extends StdSerializer<VBAProcedureUsageAnalyzer> {
+        public VBAProcedureUsageAnalyzerSerializer() { this(null); }
+        public VBAProcedureUsageAnalyzerSerializer(Class<VBAProcedureUsageAnalyzer> t) {
             super(t);
         }
         @Override
         public void serialize(
-                ProcedureUsageAnalyzer domain, JsonGenerator jgen, SerializerProvider provider)
+                VBAProcedureUsageAnalyzer domain, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
-            jgen.writeStartObject();
-            jgen.writeArrayFieldStart("workbooks");
+            jgen.writeStartObject();                             //{
+            jgen.writeFieldName("VBAProcedureUsageAnalyzer"); //"VBAProcedureUsageAnalyzer":
+            jgen.writeStartObject();                             //  {
+            jgen.writeArrayFieldStart("workbooks");     //    "workbooks": [
             Iterator<SensibleWorkbook> iter = domain.iterator();
             while(iter.hasNext()) {
                 SensibleWorkbook wb = iter.next();
-                jgen.writeObject(wb);
+                jgen.writeObject(wb);                            //      { ... },
             }
-            jgen.writeEndArray();
-            jgen.writeEndObject();
+            jgen.writeEndArray();                                //    ]
+            jgen.writeEndObject();                               //  }
+            jgen.writeEndObject();                               //}
         }
     }
 }
