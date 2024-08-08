@@ -2,6 +2,7 @@ plugins {
     id 'java'
 }
 
+
 repositories {
     mavenCentral()
 }
@@ -20,4 +21,8 @@ dependencies {
 
 test {
     useTestNG()
+}
+
+jar {
+    archiveBaseName = 'vba-procedure-usage-analyzer'
 }
