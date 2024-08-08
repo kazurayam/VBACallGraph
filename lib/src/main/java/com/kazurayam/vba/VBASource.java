@@ -1,6 +1,14 @@
 package com.kazurayam.vba;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -21,6 +29,15 @@ public class VBASource {
     private List<String> code;
     private boolean codeLoaded;
 
+    private final static ObjectMapper mapper;
+    static {
+        mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(VBASource.class, new VBASourceSerializer());
+        module.addSerializer(VBASourceLine.class, new VBASourceLine.VBASourceLineSerializer());
+        mapper.registerModule(module);
+    }
+
     public VBASource(String moduleName, Path sourcePath) {
         this.moduleName = moduleName;
         this.sourcePath = sourcePath;
@@ -36,6 +53,13 @@ public class VBASource {
         return sourcePath;
     }
 
+    public List<String> getCode() {
+        return code;
+    }
+
+    /**
+     *
+     */
     public List<VBASourceLine> find(String pattern) {
         Pattern ptn = Pattern.compile(escapeAsRegex(pattern));
         List<VBASourceLine> linesFound = new ArrayList<>();
@@ -46,6 +70,7 @@ public class VBASource {
             if (m.find()) {
                 VBASourceLine vbaSourceLine = new VBASourceLine(i, line);
                 vbaSourceLine.setMatcher(m);
+                vbaSourceLine.setFound(true);
                 linesFound.add(vbaSourceLine);
             }
         }
@@ -54,18 +79,21 @@ public class VBASource {
 
     private static final Set<Character> CHARS_TOBE_ESCAPED;
     static {
-        char[] specialChars = "\\.[]{}()<>*+-=!?^$|".toCharArray();
+        char[] specialChars = ".[]{}()<>*+-=!?^$|".toCharArray();
         CHARS_TOBE_ESCAPED = new HashSet<>();
         for (char c : specialChars) {
             CHARS_TOBE_ESCAPED.add(c);
         }
     }
 
-    private String escapeAsRegex(String pattern) {
+    static String escapeAsRegex(String pattern) {
         char[] chars = pattern.toCharArray();
         StringBuilder sb = new StringBuilder();
         for (char c : chars) {
             if (CHARS_TOBE_ESCAPED.contains(c)) {
+                sb.append("\\");
+                sb.append(c);
+            } else {
                 sb.append(c);
             }
         }
@@ -76,42 +104,69 @@ public class VBASource {
         if (!codeLoaded) {
             try {
                 code = loadCode();
+                codeLoaded = true;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
-    private List<String> loadCode() throws IOException {
-        return Files.readAllLines(sourcePath);
+    /**
+     * Read all lines in a .bas file (or a .cls file), which is encoded in Shift_JIS
+     * on kazurayam's machine
+     * @return List of all lines in a .bas file
+     */
+    List<String> loadCode() throws IOException {
+        return Files.readAllLines(sourcePath, Charset.forName("MS932"));
     }
 
-    /**
-     *
-     */
-    public static class VBASourceLine {
-        private final int lineNo;
-        private final String line;
-        private Matcher matcher;
-        public VBASourceLine(int lineNo, String line) {
-            this.lineNo = lineNo;
-            this.line = line;
-            this.matcher = null;
+    @Override
+    public String toString() {
+        // pretty printed
+        try {
+            Object json = mapper.readValue(this.toJson(), Object.class);
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
-        public int getLineNo() {
-            return lineNo;
+    }
+
+    public String toJson() throws JsonProcessingException {
+        // no indent
+        return mapper.writeValueAsString(this);
+    }
+
+
+    public static class VBASourceSerializer extends StdSerializer<VBASource> {
+        public VBASourceSerializer() {
+            this(null);
         }
-        public String getLine() {
-            return line;
+
+        public VBASourceSerializer(Class<VBASource> t) {
+            super(t);
         }
-        public void setMatcher(Matcher matcher) {
-            this.matcher = matcher;
-        }
-        /**
-         * @return may be null
-         */
-        public Matcher getMatcher() {
-            return this.matcher;
+
+        @Override
+        public void serialize(
+                VBASource vbaSource, JsonGenerator jgen, SerializerProvider provider)
+                throws IOException {
+            jgen.writeStartObject();     // {
+            jgen.writeStringField("moduleName",
+                    vbaSource.getModuleName());
+            jgen.writeStringField("sourcePath",
+                    vbaSource.getSourcePath().toString());
+            // toString()の結果のJSONにcodeを含めるとJSONが大きくなるが、役に立たない。
+            // だからcodeを含めない。
+            /*
+            if (vbaSource.codeLoaded) {
+                jgen.writeArrayFieldStart("code");
+                for (String line : vbaSource.getCode()) {
+                    jgen.writeString(line);
+                }
+                jgen.writeEndArray();
+            }
+             */
+            jgen.writeEndObject();       // }
         }
     }
 }

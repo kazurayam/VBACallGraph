@@ -1,16 +1,16 @@
 package com.kazurayam.vba;
-import com.fasterxml.jackson.core.JsonGenerator;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
-import java.io.IOException;
 import java.util.TreeMap;
 
 public class VBAModule implements Comparable<VBAModule> {
@@ -20,7 +20,6 @@ public class VBAModule implements Comparable<VBAModule> {
     private final SortedMap<String, VBASource> vbaSources;
 
     private final static ObjectMapper mapper;
-
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
@@ -70,6 +69,7 @@ public class VBAModule implements Comparable<VBAModule> {
         // no indentations
         return mapper.writeValueAsString(this);
     }
+
     @Override
     public int compareTo(VBAModule other) {
         return this.getName().compareTo(other.getName());
@@ -80,7 +80,6 @@ public class VBAModule implements Comparable<VBAModule> {
         public VBAModuleSerializer() {
             this(null);
         }
-
         public VBAModuleSerializer(Class<VBAModule> t) {
             super(t);
         }

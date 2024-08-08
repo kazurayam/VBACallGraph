@@ -30,7 +30,7 @@ public enum MyWorkbook {
     FeePaymentCheck("会費納入状況チェック",
             "aogan-jimukyoku",
             "office/会費納入状況チェック_R6年度.xlsm",
-            "office/exported-vba-source/会費納入状況チェック_青森県眼科医会_R6年度"),
+            "office/exported-vba-source/会費納入状況チェック_R6年度"),
     PleasePayFeeLetter("会費納入をお願いするletterを作成する",
             "aogan-jimukyoku",
             "office/会費納入のお願いletterを作成する.xlsm",

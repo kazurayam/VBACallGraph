@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SourceDirVisitorTest {
 
-    private Logger logger = Logger.getLogger(SourceDirVisitorTest.class);
+    private final Logger logger = Logger.getLogger(SourceDirVisitorTest.class);
 
     private final TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(SourceDirVisitorTest.class)
@@ -22,11 +22,12 @@ public class SourceDirVisitorTest {
                     .subOutputDirectory(SourceDirVisitorTest.class)
                     .build();
 
-    private final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/github-aogan");
+    private final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     @Test
     public void test_visit_Backbone() throws IOException {
         Path vbaSourceDir = MyWorkbook.Backbone.resolveSourceDirUnder(baseDir);
+        assertThat(vbaSourceDir).exists();
         SourceDirVisitor visitor = new SourceDirVisitor();
         Files.walkFileTree(vbaSourceDir, visitor);
         List<Path> list = visitor.getList();
