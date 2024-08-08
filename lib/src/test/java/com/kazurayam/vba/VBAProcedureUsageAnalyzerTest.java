@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class VBAProcedureUsageAnalyzerTest {
 
-    private static Logger logger =
+    private static final Logger logger =
             LoggerFactory.getLogger(VBAProcedureUsageAnalyzerTest.class);
 
     private static final TestOutputOrganizer too =

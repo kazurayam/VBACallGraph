@@ -21,7 +21,8 @@ public class SourceDirVisitorTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(SourceDirVisitorTest.class)
                     .build();
-    private final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
+
+    private final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/github-aogan");
 
     @Test
     public void test_visit_Backbone() throws IOException {

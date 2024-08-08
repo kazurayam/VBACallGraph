@@ -19,8 +19,11 @@ public class SourceDirPrinterTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(SourceDirPrinterTest.class)
                     .build();
-    private Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
+
+    private final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
+
     private Path classOutputDir;
+
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
