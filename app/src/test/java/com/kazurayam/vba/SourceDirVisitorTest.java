@@ -22,6 +22,7 @@ public class SourceDirVisitorTest {
                     .subOutputDirectory(SourceDirVisitorTest.class)
                     .build();
     private final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
+
     @Test
     public void test_visit_Backbone() throws IOException {
         Path vbaSourceDir = MyWorkbook.Backbone.resolveSourceDirUnder(baseDir);
@@ -31,5 +32,4 @@ public class SourceDirVisitorTest {
         logger.info("[test_visit_Backbone] : " + list.toString());
         assertThat(list.size()).isGreaterThan(0);
     }
-
 }

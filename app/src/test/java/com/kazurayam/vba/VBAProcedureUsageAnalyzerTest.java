@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,11 +26,12 @@ public class VBAProcedureUsageAnalyzerTest {
 
     private static final Path baseDir = too.getProjectDirectory().resolve("../../../github-aogan");
     private VBAProcedureUsageAnalyzer analyzer;
+    private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
+        classOutputDir = too.cleanClassOutputDirectory();
         analyzer = new VBAProcedureUsageAnalyzer();
-
         analyzer.add(new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
@@ -56,9 +58,11 @@ public class VBAProcedureUsageAnalyzerTest {
     }
 
     @Test
-    public void test_toString() {
+    public void test_toString() throws IOException {
         String str = analyzer.toString();
         assertThat(str).isNotNull();
         logger.info("[test_toString] " + str);
+        Path file = classOutputDir.resolve("test_toString.json");
+        Files.writeString(file, str);
     }
 }
