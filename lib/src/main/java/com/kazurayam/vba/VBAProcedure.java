@@ -12,6 +12,7 @@ import java.io.IOException;
 public class VBAProcedure {
     private final String name;
     private final String module;
+    private final VBAModule.ModuleType type;
     private final Scope scope;
     private final SubOrFunc subOrFunc;
     private final int lineNo;
@@ -30,15 +31,25 @@ public class VBAProcedure {
     private VBAProcedure(Builder builder) {
         name = builder.name;
         module = builder.module;
+        type = builder.type;
         scope = builder.scope;
         subOrFunc = builder.subOrFunc;
         lineNo = builder.lineNo;
         source = builder.source;
         comment = builder.comment;
-
     }
     public String getName() { return name; }
     public String getModule() { return module; }
+    public VBAModule.ModuleType getType() { return type; }
+    public String getSourceFileName() {
+        if (this.getType().equals(VBAModule.ModuleType.Class)) {
+            return getModule() + ".cls";
+        } else if (this.getType().equals(VBAModule.ModuleType.Standard)) {
+            return getModule() + ".bas";
+        } else {
+            return getModule() + ".unknown";
+        }
+    }
     public Scope getScope() { return scope; }
     public SubOrFunc getSubOrFunc() { return subOrFunc; }
     public int getLineNo() { return lineNo; }
@@ -59,9 +70,13 @@ public class VBAProcedure {
         return mapper.writeValueAsString(this);
     }
 
+    /**
+     *
+     */
     public static class Builder {
         private String name;
         private String module;
+        private VBAModule.ModuleType type;
         private Scope scope;
         private SubOrFunc subOrFunc;
         private int lineNo;
@@ -70,6 +85,7 @@ public class VBAProcedure {
         public Builder() {
             name = "";
             module = "";
+            type = VBAModule.ModuleType.Unspecified;
             scope = Scope.Unspecified;
             subOrFunc = SubOrFunc.Unspecified;
             lineNo = 0;
@@ -84,12 +100,28 @@ public class VBAProcedure {
             this.module = module;
             return this;
         }
-        public Builder scope(Scope scope) {
-            this.scope = scope;
+        public Builder type(String type) {
+            try {
+                this.type = VBAModule.ModuleType.valueOf(type);
+            } catch (IllegalArgumentException e) {
+                this.type = VBAModule.ModuleType.Unspecified;
+            }
             return this;
         }
-        public Builder subOrFunc(SubOrFunc subOrFunc) {
-            this.subOrFunc = subOrFunc;
+        public Builder scope(String scope) {
+            try {
+                this.scope = VBAProcedure.Scope.valueOf(scope);
+            } catch (IllegalArgumentException e) {
+                this.scope = VBAProcedure.Scope.Unspecified;;
+            }
+            return this;
+        }
+        public Builder subOrFunc(String subOrFunc) {
+            try {
+                this.subOrFunc = VBAProcedure.SubOrFunc.valueOf(subOrFunc);
+            } catch (IllegalArgumentException e) {
+                this.subOrFunc = VBAProcedure.SubOrFunc.Unspecified;
+            }
             return this;
         }
         public Builder lineNo(int lineNo) {

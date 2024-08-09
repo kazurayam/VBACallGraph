@@ -26,6 +26,7 @@ public class SensibleWorkbookTest {
     private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
     private SensibleWorkbook wb;
     private Path classOutputDir;
+
     @BeforeTest
     public void beforeTest() throws IOException {
         wb = new SensibleWorkbook(
@@ -72,5 +73,18 @@ public class SensibleWorkbookTest {
         SortedMap<String, VBAModule> modules =
                 wb.getModules();
         assertThat(modules.keySet().size()).isEqualTo(3);
+    }
+
+    @Test
+    public void test_injectSourceIntoModules() throws IOException {
+        SortedMap<String, VBAModule> modules = wb.getModules();
+        Path sourceDirPath = wb.getSourceDirPath();
+        SensibleWorkbook.injectSourceIntoModules(modules, sourceDirPath);
+        for (VBAModule module : modules.values()) {
+            assertThat(module.getVBASource())
+                    .as("asserting VBAModule \"%s\".getVBASource()", module.getName())
+                    .isNotNull();
+            assertThat(module.getVBASource().getSourcePath()).exists();
+        }
     }
 }

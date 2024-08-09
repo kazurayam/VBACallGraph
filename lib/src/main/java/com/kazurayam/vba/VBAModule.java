@@ -10,14 +10,15 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.Objects;
 
 public class VBAModule implements Comparable<VBAModule> {
 
     private final String name;
-    private final List<VBAProcedure> procedureList;
-    private final SortedMap<String, VBASource> vbaSources;
+    private final ModuleType type;
+    private final List<VBAProcedure> procedures;
+
+    private VBASource vbaSource;
 
     private final static ObjectMapper mapper;
     static {
@@ -25,25 +26,38 @@ public class VBAModule implements Comparable<VBAModule> {
         SimpleModule module = new SimpleModule();
         module.addSerializer(VBAModule.class, new VBAModuleSerializer());
         module.addSerializer(VBAProcedure.class, new VBAProcedure.VBAProcedureSerializer());
+        module.addSerializer(VBASource.class, new VBASource.VBASourceSerializer());
         mapper.registerModule(module);
     }
 
-    public VBAModule(String name) {
+    public VBAModule(String name, ModuleType type) {
         this.name = name;
-        this.procedureList = new ArrayList<>();
-        this.vbaSources = new TreeMap<>();
+        this.type = type;
+        this.procedures = new ArrayList<>();
+        this.vbaSource = null;
     }
 
     public String getName() {
         return name;
     }
 
-    public void add(VBAProcedure procedure) {
-        procedureList.add(procedure);
+    public ModuleType getType() {
+        return type;
     }
 
-    public List<VBAProcedure> getProcedureList() {
-        return procedureList;
+    public void add(VBAProcedure procedure) {
+        procedures.add(procedure);
+    }
+
+    public List<VBAProcedure> getProcedures() {
+        return procedures;
+    }
+
+    public void setVBASource(VBASource vbaSource) {
+        this.vbaSource = vbaSource;
+    }
+    public VBASource getVBASource() {
+      return vbaSource;
     }
 
     @Override
@@ -51,7 +65,7 @@ public class VBAModule implements Comparable<VBAModule> {
         if (!(obj instanceof VBAModule other)) {
             return false;
         }
-        return this.getName() == other.getName();
+        return Objects.equals(this.getName(), other.getName());
     }
 
     @Override
@@ -75,6 +89,19 @@ public class VBAModule implements Comparable<VBAModule> {
         return this.getName().compareTo(other.getName());
     }
 
+    public static enum ModuleType {
+        Standard(".bas"),
+        Class(".cls"),
+        Unspecified(".unspecified");
+        private String extension;
+        private ModuleType(String extension) {
+            this.extension = extension;
+        }
+        public String getFileExtension() {
+            return extension;
+        }
+    }
+
 
     public static class VBAModuleSerializer extends StdSerializer<VBAModule> {
         public VBAModuleSerializer() {
@@ -90,16 +117,18 @@ public class VBAModule implements Comparable<VBAModule> {
                 throws IOException {
             jgen.writeStartObject(); // {
             jgen.writeStringField("module", module.getName()); // "module": "NAME",
+            jgen.writeStringField("type", module.getType().toString());
             // creating JSON Array with key
             jgen.writeFieldName("procedures");  // "procedures":
             // creating Array of Procedure objects
             jgen.writeStartArray();  // [
             //
-            List<VBAProcedure> list = module.getProcedureList();
+            List<VBAProcedure> list = module.getProcedures();
             for (VBAProcedure procedure : list) {
                 jgen.writeObject(procedure);
             }
             jgen.writeEndArray();    // ]
+            jgen.writeObjectField("source", module.getVBASource());
             jgen.writeEndObject();   // }
         }
     }

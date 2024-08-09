@@ -12,17 +12,17 @@ import static java.nio.file.FileVisitResult.CONTINUE;
 
 public class SourceDirVisitor extends SimpleFileVisitor<Path> {
 
-    private final List<Path> sourceDirList;
+    private final List<Path> sourceFiles;
 
     public SourceDirVisitor() {
-        sourceDirList = new ArrayList<Path>();
+        sourceFiles = new ArrayList<Path>();
     }
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
         if (file.getFileName().toString().endsWith(".bas") ||
                 file.getFileName().toString().endsWith(".cls"))
-        sourceDirList.add(file);
+        sourceFiles.add(file);
         return CONTINUE;
     }
 
@@ -41,6 +41,6 @@ public class SourceDirVisitor extends SimpleFileVisitor<Path> {
     }
 
     public List<Path> getList() {
-        return sourceDirList;
+        return sourceFiles;
     }
 }

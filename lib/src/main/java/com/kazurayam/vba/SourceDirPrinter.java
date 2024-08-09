@@ -37,9 +37,9 @@ public class SourceDirPrinter {
         bw.close();
     }
 
-    public void printSourceDir(SensibleWorkbook wb,
-                               List<Path> sources,
-                               Writer writer) {
+    void printSourceDir(SensibleWorkbook wb,
+                        List<Path> sources,
+                        Writer writer) {
         PrintWriter pw = new PrintWriter(new BufferedWriter(writer));
         pw.println("### " + wb.getId());
         pw.println("|No.|file name|");

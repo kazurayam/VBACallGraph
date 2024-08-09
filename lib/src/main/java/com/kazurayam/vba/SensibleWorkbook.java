@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -39,9 +40,38 @@ public class SensibleWorkbook {
     public SensibleWorkbook(String id, Path workbookPath, Path sourceDirPath) throws IOException {
         this.id = id;
         this.workbookPath = workbookPath;
-        this.sourceDirPath = sourceDirPath;
         InputStream is = Files.newInputStream(workbookPath);
         modules = this.loadModules(is);
+        this.sourceDirPath = sourceDirPath;
+        injectSourceIntoModules(modules, sourceDirPath);
+    }
+
+
+
+    /**
+     * inject VBASource objects into the VBAModule objects in the module variable
+     */
+    static void injectSourceIntoModules(
+            SortedMap<String, VBAModule> modules,
+            Path sourceDirPath) throws IOException {
+        // get the list of VBA source files in the given sourceDir
+        SourceDirVisitor visitor = new SourceDirVisitor();
+        Files.walkFileTree(sourceDirPath, visitor);
+        List<Path> sourceFiles = visitor.getList();
+        // iterate over all VBAModules
+        for (String moduleName : modules.keySet()) {
+            VBAModule module = modules.get(moduleName);
+            String expectedSourceFileName =
+                    module.getName() + module.getType().getFileExtension();
+            for (Path sourceFile : sourceFiles) {
+                if (sourceFile.getFileName().toString()
+                        .equals(expectedSourceFileName)) {
+                    VBASource vbaSource = new VBASource(module.getName(), sourceFile);
+                    module.setVBASource(vbaSource);
+                    break;
+                }
+            }
+        }
     }
 
     public String getId() {
@@ -84,25 +114,27 @@ public class SensibleWorkbook {
             if (row.getRowNum() > 0) { // we will skip the first row = header
                 String name = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
                 String module = row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                String scope = row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                String subOrFunc = row.getCell(3, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                double dvalue = row.getCell(4, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getNumericCellValue();
+                String type = row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String scope = row.getCell(3, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String subOrFunc = row.getCell(4, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                double dvalue = row.getCell(5, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getNumericCellValue();
                 Integer lineNo = ((Double)dvalue).intValue();
-                String source = row.getCell(5, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                String comment = row.getCell(6, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String source = row.getCell(6, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String comment = row.getCell(7, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
                 VBAProcedure proc =
                         new VBAProcedure.Builder()
                                 .name(name)
                                 .module(module)
-                                .scope(VBAProcedure.Scope.valueOf(scope))
-                                .subOrFunc(VBAProcedure.SubOrFunc.valueOf(subOrFunc))
+                                .type(type)
+                                .scope(scope)
+                                .subOrFunc(subOrFunc)
                                 .source(source)
                                 .comment(comment)
                                 .build();
                 //
                 VBAModule vbaModule;
                 if (!modules.containsKey(module)) {
-                    vbaModule = new VBAModule(module);
+                    vbaModule = new VBAModule(module, proc.getType());
                 } else {
                     vbaModule = modules.get(module);
                 }

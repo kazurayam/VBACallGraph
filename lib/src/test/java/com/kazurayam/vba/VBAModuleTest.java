@@ -26,12 +26,13 @@ public class VBAModuleTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        module = new VBAModule("Account");
+        module = new VBAModule("Account", VBAModule.ModuleType.Class);
         VBAProcedure proc = new VBAProcedure.Builder()
                 .name("AccountName")
                 .module("Account")
-                .scope(VBAProcedure.Scope.Public)
-                .subOrFunc(VBAProcedure.SubOrFunc.Sub)
+                .type("Class")
+                .scope("Public")
+                .subOrFunc("Sub")
                 .lineNo(68)
                 .source("Public Property Get AccountName() as String")
                 .comment("Sun also rises")

@@ -13,8 +13,8 @@ import java.nio.file.Path;
 public enum MyWorkbook {
     Backbone("Backboneライブラリ",
             "kazurayam-vba-lib",
-            "office/kazurayam-vba-lib.xlsm",
-            "office/exported-vba-source/kazurayam-vba-lib"),
+            "office/Backbone.xlsm",
+            "office/exported-vba-source/Backbone"),
     Member("Member会員名簿のためのVBAライブラリ",
             "aogan-vba-lib",
             "office/Member会員名簿のためのVBAライブラリ.xlsm",

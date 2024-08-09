@@ -30,8 +30,9 @@ public class VBAProcedureTest {
         proc = new VBAProcedure.Builder()
                 .name("AccountName")
                 .module("Account")
-                .scope(VBAProcedure.Scope.Public)
-                .subOrFunc(VBAProcedure.SubOrFunc.Sub)
+                .type("Class")
+                .scope("Public")
+                .subOrFunc("Sub")
                 .lineNo(68)
                 .source("Public Property Get AccountName() as String")
                 .comment("Sun also rises")
@@ -39,33 +40,48 @@ public class VBAProcedureTest {
     }
 
     @Test
-    public void test_name() {
+    public void test_getName() {
         assertThat(proc.getName()).isEqualTo("AccountName");
     }
+
     @Test
-    public void test_module() {
+    public void test_getType() {
+        assertThat(proc.getType()).isEqualTo(VBAModule.ModuleType.Class);
+    }
+
+    @Test
+    public void test_getModule() {
         assertThat(proc.getModule()).isEqualTo("Account");
     }
+
     @Test
-    public void test_scope() {
+    public void test_getSourceFileName() {
+        assertThat(proc.getSourceFileName()).isEqualTo("Account.cls");
+    }
+
+    @Test
+    public void test_getScope() {
         assertThat(proc.getScope()).isEqualTo(VBAProcedure.Scope.Public);
     }
+
     @Test
-    public void test_subOrFunc() {
+    public void test_getSubOrFunc() {
         assertThat(proc.getSubOrFunc()).isEqualTo(VBAProcedure.SubOrFunc.Sub);
     }
     @Test
-    public void test_lineNo() {
+    public void test_getLineNo() {
         assertThat(proc.getLineNo()).isEqualTo(68);
     }
+
     @Test
-    public void test_source() {
+    public void test_getSource() {
         assertThat(proc.getSource()).contains("Public Property Get AccountName() as String");
     }
     @Test
-    public void test_comment() {
+    public void test_getComment() {
         assertThat(proc.getComment()).contains("Sun also rises");
     }
+
     @Test
     public void test_toJson() throws JsonProcessingException {
         logger.info("[test_toJson] " + proc.toJson());
