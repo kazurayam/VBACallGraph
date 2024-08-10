@@ -25,44 +25,53 @@ public class FindUsagesAppTest {
                     .build();
 
     private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private FindUsagesApp analyzer;
+    private FindUsagesApp app;
     private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        analyzer = new FindUsagesApp();
-        analyzer.add(new SensibleWorkbook(
+        app = new FindUsagesApp();
+        app.add(new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)
         ));
 
-        analyzer.add(new SensibleWorkbook(
+        app.add(new SensibleWorkbook(
                 MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)
         ));
 
-        analyzer.add(new SensibleWorkbook(
+        app.add(new SensibleWorkbook(
                 MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir)
         ));
 
-        analyzer.add(new SensibleWorkbook(
+        app.add(new SensibleWorkbook(
                 MyWorkbook.Backbone.getId(),
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)
         ));
+        app.setExcludeUnittestModules(true);
     }
 
     @Test
     public void test_toString() throws IOException {
-        String str = analyzer.toString();
+        String str = app.toString();
         assertThat(str).isNotNull();
         logger.info("[test_toString] " + str);
         Path file = classOutputDir.resolve("test_toString.json");
         Files.writeString(file, str);
+    }
+
+    @Test
+    public void test_writeDiagram() throws IOException {
+        Path file = classOutputDir.resolve("test_writeDiagram.pu");
+        app.writeDiagram(file);
+        assertThat(file).exists();
+        assertThat(file.toFile().length()).isGreaterThan(0);
     }
 }

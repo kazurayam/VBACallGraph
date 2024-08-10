@@ -1,6 +1,7 @@
 package com.kazurayam.vba;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
+import com.kazurayam.vbaexample.MyWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeMethod;
@@ -16,16 +17,23 @@ public class ProcedureUsageDiagramGeneratorTest {
 
     private Logger logger = LoggerFactory.getLogger(ProcedureUsageDiagramGeneratorTest.class);
 
-    private TestOutputOrganizer too =
+    private static TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(ProcedureUsageDiagramGeneratorTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(ProcedureUsageDiagramGeneratorTest.class)
                     .build();
+    private static final Path baseDir =
+            too.getProjectDirectory().resolve("src/test/fixture/hub");
+    private SensibleWorkbook wb;
     private Path classOutputDir;
     private ProcedureUsageDiagramGenerator pudgen;
 
     @BeforeTest
     public void beforeTest() throws IOException {
+        wb = new SensibleWorkbook(
+                MyWorkbook.FeePaymentCheck.getId(),
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir));
         classOutputDir = too.cleanClassOutputDirectory();
     }
 
@@ -44,53 +52,57 @@ public class ProcedureUsageDiagramGeneratorTest {
 
     @Test
     public void test_writeStartWorkbook_writeEndWorkbook() {
-        pudgen.writeStartWorkbook("会費納入状況チェック");
+        pudgen.writeStartWorkbook(wb);
         pudgen.writeEndWorkbook();
         logger.debug("[test_writeStartWorkbook_writeEndWorkbook] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "package 会費納入状況チェック {\n");
+                "package \"workbook 会費納入状況チェック\" {\n");
         assertThat(pudgen.toString()).contains(
                 "}\n");
     }
 
     @Test
     public void test_writeStartModule_writeEndModule() {
-        pudgen.writeStartModule("会費納入状況チェック");
+        pudgen.writeStartModule(wb.getModule("年会費納入状況チェック"));
         pudgen.writeEndModule();
         logger.debug("[test_writeStartModule_writeEndModule] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "map 会費納入状況チェック {\n");
+                "package \"module 年会費納入状況チェック\" {\n");
         assertThat(pudgen.toString()).contains(
                 "}\n");
     }
 
     @Test
     public void test_writeProcedure() {
-        pudgen.writeProcedure("FindPaymentBy");
+        VBAModule module = wb.getModule("年会費納入状況チェック");
+        VBAProcedure procedure = module.getProcedure("FindPaymentBy");
+        pudgen.writeProcedure(module, procedure);
         logger.debug("[test_writeProcedure] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "FindPaymentBy =>\n");
+                "object 年会費納入状況チェック.FindPaymentBy\n");
     }
 
     @Test
     public void test_toString() throws IOException {
         Path output = classOutputDir.resolve("test_toString.pu");
+        VBAModule module = wb.getModule("年会費納入状況チェック");
+        VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeStartUml();
-        pudgen.writeStartWorkbook("会費納入状況チェック");
-        pudgen.writeStartModule("会費納入状況チェック");
-        pudgen.writeProcedure("FindPaymentBy");
-        pudgen.writeProcedure("Main");
-        pudgen.writeProcedure("OpenCashbook");
-        pudgen.writeProcedure("OpenMemberTable");
-        pudgen.writeProcedure("PrintFinding");
-        pudgen.writeProcedure("RecordFindingIntoMemberTable");
+        pudgen.writeStartWorkbook(wb);
+        pudgen.writeStartModule(module);
+        pudgen.writeProcedure(module, module.getProcedure("FindPaymentBy"));
+        pudgen.writeProcedure(module, module.getProcedure("Main"));
+        pudgen.writeProcedure(module, module.getProcedure("OpenCashbook"));
+        pudgen.writeProcedure(module, module.getProcedure("OpenMemberTable"));
+        pudgen.writeProcedure(module, module.getProcedure("PrintFinding"));
+        pudgen.writeProcedure(module, module.getProcedure("RecordFindingIntoMemberTable"));
         pudgen.writeEndModule();
         pudgen.writeEndWorkbook();
         pudgen.writeEndUml();
-        pudgen.save(output);
+        pudgen.generateTextDiagram(output);
         assertThat(output).exists();
         assertThat(output.toFile().length()).isGreaterThan(0);
     }

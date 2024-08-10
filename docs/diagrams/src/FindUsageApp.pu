@@ -1,155 +1,149 @@
 @startuml
 package 会費納入状況チェック {
-  map Environment {
-    mbGetPathOfAoganCashbook =>
-    mbGetPathOfAoganMembers =>
-    Test_mbGetPathOfAoganCashbook =>
-    Test_mbGetPathOfAoganMembers =>
+  package Environment {
+    object mbGetPathOfAoganCashbook
+    object mbGetPathOfAoganMembers
+    object Test_mbGetPathOfAoganCashbook
+    object Test_mbGetPathOfAoganMembers
   }
-  map プロシージャー一覧を作る {
-    プロシージャー一覧を作る =>
+  package プロシージャー一覧を作る {
+    object プロシージャー一覧を作る
   }
-  map 会費納入状況チェック {
-    FindPaymentBy =>
-    Main =>
-    OpenCashbook =>
-    OpenMemberTable =>
-    PrintFinding =>
-    RecordFindingIntoMemberTable =>
+  package 会費納入状況チェック {
+    object FindPaymentBy
+    object Main
+    object OpenCashbook
+    object OpenMemberTable
+    object PrintFinding
+    object RecordFindingIntoMemberTable
   }
 }
 package Cashbook現金出納帳のためのVBAライブラリ {
-  map Account {
-    AccountName =>
-    AccountTypeAsString =>
-    accType =>
-    Initialize =>
-    of =>
-    SubAccountName =>
-    ToString =>
+  package Account {
+    object AccountName
+    object AccountTypeAsString
+    object accType
+    object Initialize
+    object  of
+    object SubAccountName
+    object ToString
   }
-  map AccountSum {
-    Get小計 =>
-    is金額が非ゼロだ =>
-    is取り込むべき =>
-    is収支報告単位が該当する =>
-    is年度内だ =>
-    Test_Get小計 =>
-    Test勘定科目の小計を算出する =>
-    Test小計の表を作る =>
-    ToDate =>
-    To勘定科目 =>
-    TransferRow =>
-    勘定科目の小計を算出する =>
-    現金出納記録ワークシートが無ければ作る =>
-    小計の表を作る =>
-    入出金記録をソートする =>
-    入出金記録を取り込む =>
+  package AccountSum {
+    object Get小計
+    object is金額が非ゼロだ
+    object is取り込むべき
+    object is収支報告単位が該当する
+    object is年度内だ
+    object Test_Get小計
+    object Test勘定科目の小計を算出する
+    object Test小計の表を作る
+    object ToDate
+    object To勘定科目
+    object TransferRow
+    object 勘定科目の小計を算出する
+    object 現金出納記録ワークシートが無ければ作る
+    object 小計の表を作る
+    object 入出金記録をソートする
+    object 入出金記録を取り込む
   }
-  map AccountsFinder {
-    FindAccounts =>
-    FindKeysAsString =>
-    Initialize =>
+  package AccountsFinder {
+    object FindAccounts
+    object FindKeysAsString
+    object Initialize
   }
-  map Cash {
-    Class_Initialize =>
-    ColumnHeader =>
-    Initialize =>
-    itsAccount =>
-    ToDate =>
-    ToString =>
+  package Cash {
+    object Class_Initialize
+    object ColumnHeader
+    object Initialize
+    object itsAccount
+    object ToDate
+    object ToString
   }
-  map CashList {
-    Add =>
-    Class_Initialize =>
-    Count =>
-    Items =>
-    SumOfExpenseAmount =>
-    SumOfIncomeAmount =>
-    ToString =>
+  package CashList {
+    object Add
+    object Class_Initialize
+    object Count
+    object Items
+    object SumOfExpenseAmount
+    object SumOfIncomeAmount
+    object ToString
   }
-  map CashSelector {
-    Initialize =>
-    SelectCashList =>
-    SelectCashListByAccount =>
-    SelectCashListByMatchingDescription =>
-    TrimAllSpaces =>
+  package CashSelector {
+    object Initialize
+    object SelectCashList
+    object SelectCashListByAccount
+    object SelectCashListByMatchingDescription
+    object TrimAllSpaces
   }
-  map Cashbook {
-    Class_Initialize =>
-    Count =>
-    GetCashByKey =>
-    Initialize =>
-    Items =>
+  package Cashbook {
+    object Class_Initialize
+    object Count
+    object GetCashByKey
+    object Initialize
+    object Items
   }
-  map Factories {
-    CreateAccountsFinder =>
-    CreateCashbook =>
-    CreateCashSelector =>
-    CreateEmptyCashList =>
+  package Factories {
+    object CreateAccountsFinder
+    object CreateCashbook
+    object CreateCashSelector
+    object CreateEmptyCashList
   }
-  map Helpers {
-    PrintAccounts =>
+  package Helpers {
+    object PrintAccounts
   }
-  map LearningModule {
-    ListWorksheetsInAoganCashbook =>
+  package LearningModule {
+    object ListWorksheetsInAoganCashbook
   }
-  map Tasting {
-    testAccount =>
-    testAccountsFinder_allUnit =>
-    tasteAccountsFinder_specifyReportingUnit =>
-    tasteCash_ColumnHeader =>
-    tasteCash_ToDate =>
-    tasteCash_ToString =>
-    tasteCashbook =>
-    tasteCashSelector_SelectCashList_ofExpense =>
-    tasteCashSelector_SelectCashList_ofIncome =>
+  package Tasting {
+    object testAccount
+    object testAccountsFinder_allUnit
+    object tasteAccountsFinder_specifyReportingUnit
+    object tasteCash_ColumnHeader
+    object tasteCash_ToDate
+    object tasteCash_ToString
+    object tasteCashbook
+    object tasteCashSelector_SelectCashList_ofExpense
+    object tasteCashSelector_SelectCashList_ofIncome
   }
-  map TestAccount {
-    TestAccoutTypeAsString =>
-    TestExpenseAccount =>
-    TestIncomeAccount =>
-    TestOfString =>
+  package TestAccount {
+    object TestAccoutTypeAsString
+    object TestExpenseAccount
+    object TestIncomeAccount
+    object TestOfString
   }
-  map TestAccountSum {
-    Test現金出納帳を作る =>
+  package TestAccountSum {
+    object Test現金出納帳を作る
   }
-  map TestAccountsFinder {
-    Test_FindAccounts =>
-    Test_FindAccounts_NotLike =>
+  package TestAccountsFinder {
+    object Test_FindAccounts
+    object Test_FindAccounts_NotLike
   }
-  map TestCash {
-    TestAccessTable1 =>
-    TestExpense =>
-    TestIncome =>
-    TestToDate =>
-    TestToString =>
+  pacakge TestCash {
+    object TestAccessTable1
+    object TestExpense
+    object TestIncome
+    object TestToDate
+    object TestToString
   }
-  map TestCashList {
-    TestCount =>
-    TestItems =>
-    TestSumOfExpenseAmount =>
-    TestSumOfIncomeAmount =>
+  package TestCashList {
+    object TestCount
+    object TestItems
+    object TestSumOfExpenseAmount
+    object TestSumOfIncomeAmount
   }
-  map TestCashSelector {
-    Test_SelectCachList_NotLike =>
-    Test_SelectCashList_ofIncome =>
-    Test_SelectCashListByMatchingDescription =>
+  package TestCashSelector {
+    object Test_SelectCachList_NotLike
+    object Test_SelectCashList_ofIncome
+    object Test_SelectCashListByMatchingDescription
   }
-  map TestCashbook {
-    Test_AccessingTable1 =>
-    Test_Initialize_Cout_GetCash =>
-  }
-  map TestFactories {
-  ...
-
-
+  package TestCashbook {
+    object Test_AccessingTable1
+    object Test_Initialize_Cout_GetCash
   }
 }
 package Backbone{
-  map moduleB {
-    procedureX =>
+  package moduleB {
+    procedureX 
   }
 }
-Cashbook.moduleC::procedureA *-> Backbone.moduleB::procedureX
 @enduml

@@ -23,7 +23,8 @@ public class SensibleWorkbookTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(SensibleWorkbookTest.class)
                     .build();
-    private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
+    private static final Path baseDir =
+            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private SensibleWorkbook wb;
     private Path classOutputDir;
 

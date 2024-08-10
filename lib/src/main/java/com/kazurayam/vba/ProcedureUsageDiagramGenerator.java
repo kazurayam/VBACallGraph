@@ -7,7 +7,7 @@ import java.nio.file.Path;
 
 public class ProcedureUsageDiagramGenerator {
 
-    private StringBuilder sb;
+    private final StringBuilder sb;
 
     public ProcedureUsageDiagramGenerator() {
         sb = new StringBuilder();
@@ -15,18 +15,19 @@ public class ProcedureUsageDiagramGenerator {
 
     public void writeStartUml() {
         sb.append("@startuml\n");
+        sb.append("left to right direction\n");
     }
 
-    public void writeStartWorkbook(String id) {
-        sb.append(String.format("package %s {\n", id));
+    public void writeStartWorkbook(SensibleWorkbook wb) {
+        sb.append(String.format("package \"workbook %s\" {\n", wb.getId()));
     }
 
-    public void writeStartModule(String name) {
-        sb.append(String.format("  map %s {\n", name));
+    public void writeStartModule(VBAModule module) {
+        sb.append(String.format("  package \"module %s\" {\n", module.getName()));
     }
 
-    public void writeProcedure(String name) {
-        sb.append(String.format("    %s =>\n", name));
+    public void writeProcedure(VBAModule module, VBAProcedure procedure) {
+        sb.append(String.format("    object %s.%s\n", module.getName(), procedure.getName()));
     }
 
     public void writeEndModule() {
@@ -46,10 +47,10 @@ public class ProcedureUsageDiagramGenerator {
         return sb.toString();
     }
 
-    public void save(File file) throws IOException {
-        this.save(file.toPath());
+    public void generateTextDiagram(File file) throws IOException {
+        this.generateTextDiagram(file.toPath());
     }
-    public void save(Path file) throws IOException {
+    public void generateTextDiagram(Path file) throws IOException {
         Files.writeString(file, sb.toString());
     }
 

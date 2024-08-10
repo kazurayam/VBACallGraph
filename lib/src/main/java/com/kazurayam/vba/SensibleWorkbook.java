@@ -102,7 +102,8 @@ public class SensibleWorkbook {
         if (modules.containsKey(name)) {
             return modules.get(name);
         } else {
-            throw new IllegalArgumentException("VBAModule named " + name + " is not found");
+            throw new IllegalArgumentException(
+                    String.format("VBAModule named %s is not found in %s", name, modules.keySet()));
         }
     }
 

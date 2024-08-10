@@ -53,6 +53,20 @@ public class VBAModule implements Comparable<VBAModule> {
         return procedures;
     }
 
+    public boolean hasProcedure(String procedureName) {
+        VBAProcedure procedure = this.getProcedure(procedureName);
+        return procedure != null;
+    }
+
+    public VBAProcedure getProcedure(String procedureName) {
+        for (VBAProcedure procedure : procedures) {
+            if (procedure.getName().equals(procedureName)) {
+                return procedure;
+            }
+        }
+        return null;
+    }
+
     public void setVBASource(VBASource vbaSource) {
         this.vbaSource = vbaSource;
     }
