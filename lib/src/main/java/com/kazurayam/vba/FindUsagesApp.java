@@ -73,11 +73,11 @@ public class FindUsagesApp {
             for (String key : wb.getModules().keySet()) {
                 VBAModule module = wb.getModule(key);
                 if (!shouldIgnore(module)) {
-                    //pudgen.writeStartModule(module);
+                    pudgen.writeStartModule(module);
                     for (VBAProcedure procedure : module.getProcedures()) {
                         pudgen.writeProcedure(module, procedure);
                     }
-                    //pudgen.writeEndModule();
+                    pudgen.writeEndModule();
                 }
             }
             pudgen.writeEndWorkbook();

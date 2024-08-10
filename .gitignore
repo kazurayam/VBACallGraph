@@ -27,3 +27,5 @@ build
 .vscode
 
 test-output/
+
+.DS_Store

@@ -45,6 +45,14 @@ public class VBAModule implements Comparable<VBAModule> {
         return type;
     }
 
+    public boolean isClass() {
+        return type.equals(ModuleType.Class);
+    }
+
+    public boolean isStandard() {
+        return type.equals(ModuleType.Standard);
+    }
+
     public void add(VBAProcedure procedure) {
         procedures.add(procedure);
     }

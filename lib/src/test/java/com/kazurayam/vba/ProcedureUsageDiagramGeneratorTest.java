@@ -57,7 +57,7 @@ public class ProcedureUsageDiagramGeneratorTest {
         logger.debug("[test_writeStartWorkbook_writeEndWorkbook] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "package \"workbook 会費納入状況チェック\" {\n");
+                "package 会費納入状況チェック {\n");
         assertThat(pudgen.toString()).contains(
                 "}\n");
     }
@@ -69,7 +69,7 @@ public class ProcedureUsageDiagramGeneratorTest {
         logger.debug("[test_writeStartModule_writeEndModule] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "package \"module 年会費納入状況チェック\" {\n");
+                "stereotype 年会費納入状況チェック {\n");
         assertThat(pudgen.toString()).contains(
                 "}\n");
     }
@@ -82,7 +82,7 @@ public class ProcedureUsageDiagramGeneratorTest {
         logger.debug("[test_writeProcedure] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "object 年会費納入状況チェック.FindPaymentBy\n");
+                "{method} FindPaymentBy\n");
     }
 
     @Test
@@ -102,7 +102,7 @@ public class ProcedureUsageDiagramGeneratorTest {
         pudgen.writeEndModule();
         pudgen.writeEndWorkbook();
         pudgen.writeEndUml();
-        pudgen.generateTextDiagram(output);
+        pudgen.generate(output);
         assertThat(output).exists();
         assertThat(output.toFile().length()).isGreaterThan(0);
     }
