@@ -1,0 +1,155 @@
+@startuml
+package 会費納入状況チェック {
+  map Environment {
+    mbGetPathOfAoganCashbook =>
+    mbGetPathOfAoganMembers =>
+    Test_mbGetPathOfAoganCashbook =>
+    Test_mbGetPathOfAoganMembers =>
+  }
+  map プロシージャー一覧を作る {
+    プロシージャー一覧を作る =>
+  }
+  map 会費納入状況チェック {
+    FindPaymentBy =>
+    Main =>
+    OpenCashbook =>
+    OpenMemberTable =>
+    PrintFinding =>
+    RecordFindingIntoMemberTable =>
+  }
+}
+package Cashbook現金出納帳のためのVBAライブラリ {
+  map Account {
+    AccountName =>
+    AccountTypeAsString =>
+    accType =>
+    Initialize =>
+    of =>
+    SubAccountName =>
+    ToString =>
+  }
+  map AccountSum {
+    Get小計 =>
+    is金額が非ゼロだ =>
+    is取り込むべき =>
+    is収支報告単位が該当する =>
+    is年度内だ =>
+    Test_Get小計 =>
+    Test勘定科目の小計を算出する =>
+    Test小計の表を作る =>
+    ToDate =>
+    To勘定科目 =>
+    TransferRow =>
+    勘定科目の小計を算出する =>
+    現金出納記録ワークシートが無ければ作る =>
+    小計の表を作る =>
+    入出金記録をソートする =>
+    入出金記録を取り込む =>
+  }
+  map AccountsFinder {
+    FindAccounts =>
+    FindKeysAsString =>
+    Initialize =>
+  }
+  map Cash {
+    Class_Initialize =>
+    ColumnHeader =>
+    Initialize =>
+    itsAccount =>
+    ToDate =>
+    ToString =>
+  }
+  map CashList {
+    Add =>
+    Class_Initialize =>
+    Count =>
+    Items =>
+    SumOfExpenseAmount =>
+    SumOfIncomeAmount =>
+    ToString =>
+  }
+  map CashSelector {
+    Initialize =>
+    SelectCashList =>
+    SelectCashListByAccount =>
+    SelectCashListByMatchingDescription =>
+    TrimAllSpaces =>
+  }
+  map Cashbook {
+    Class_Initialize =>
+    Count =>
+    GetCashByKey =>
+    Initialize =>
+    Items =>
+  }
+  map Factories {
+    CreateAccountsFinder =>
+    CreateCashbook =>
+    CreateCashSelector =>
+    CreateEmptyCashList =>
+  }
+  map Helpers {
+    PrintAccounts =>
+  }
+  map LearningModule {
+    ListWorksheetsInAoganCashbook =>
+  }
+  map Tasting {
+    testAccount =>
+    testAccountsFinder_allUnit =>
+    tasteAccountsFinder_specifyReportingUnit =>
+    tasteCash_ColumnHeader =>
+    tasteCash_ToDate =>
+    tasteCash_ToString =>
+    tasteCashbook =>
+    tasteCashSelector_SelectCashList_ofExpense =>
+    tasteCashSelector_SelectCashList_ofIncome =>
+  }
+  map TestAccount {
+    TestAccoutTypeAsString =>
+    TestExpenseAccount =>
+    TestIncomeAccount =>
+    TestOfString =>
+  }
+  map TestAccountSum {
+    Test現金出納帳を作る =>
+  }
+  map TestAccountsFinder {
+    Test_FindAccounts =>
+    Test_FindAccounts_NotLike =>
+  }
+  map TestCash {
+    TestAccessTable1 =>
+    TestExpense =>
+    TestIncome =>
+    TestToDate =>
+    TestToString =>
+  }
+  map TestCashList {
+    TestCount =>
+    TestItems =>
+    TestSumOfExpenseAmount =>
+    TestSumOfIncomeAmount =>
+  }
+  map TestCashSelector {
+    Test_SelectCachList_NotLike =>
+    Test_SelectCashList_ofIncome =>
+    Test_SelectCashListByMatchingDescription =>
+  }
+  map TestCashbook {
+    Test_AccessingTable1 =>
+    Test_Initialize_Cout_GetCash =>
+  }
+  map TestFactories {
+  ...
+
+
+  }
+}
+package Backbone{
+  map moduleB {
+    procedureX =>
+  }
+}
+Cashbook.moduleC::procedureA *-> Backbone.moduleB::procedureX
+@enduml

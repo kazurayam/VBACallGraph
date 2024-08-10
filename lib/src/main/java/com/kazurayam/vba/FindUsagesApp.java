@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class VBAProcedureUsageAnalyzer {
+public class FindUsagesApp {
 
     private List<SensibleWorkbook> workbooks;
 
@@ -21,14 +21,14 @@ public class VBAProcedureUsageAnalyzer {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(VBAProcedureUsageAnalyzer.class,
+        module.addSerializer(FindUsagesApp.class,
                 new VBAProcedureUsageAnalyzerSerializer());
         module.addSerializer(SensibleWorkbook.class,
                 new SensibleWorkbook.SensibleWorkbookSerializer());
         mapper.registerModule(module);
     }
 
-    public VBAProcedureUsageAnalyzer() {
+    public FindUsagesApp() {
         workbooks = new ArrayList<>();
     }
 
@@ -64,14 +64,14 @@ public class VBAProcedureUsageAnalyzer {
         return mapper.writeValueAsString(this);
     }
 
-    private static class VBAProcedureUsageAnalyzerSerializer extends StdSerializer<VBAProcedureUsageAnalyzer> {
+    private static class VBAProcedureUsageAnalyzerSerializer extends StdSerializer<FindUsagesApp> {
         public VBAProcedureUsageAnalyzerSerializer() { this(null); }
-        public VBAProcedureUsageAnalyzerSerializer(Class<VBAProcedureUsageAnalyzer> t) {
+        public VBAProcedureUsageAnalyzerSerializer(Class<FindUsagesApp> t) {
             super(t);
         }
         @Override
         public void serialize(
-                VBAProcedureUsageAnalyzer domain, JsonGenerator jgen, SerializerProvider provider)
+                FindUsagesApp domain, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();                             //{
             jgen.writeFieldName("VBAProcedureUsageAnalyzer"); //"VBAProcedureUsageAnalyzer":

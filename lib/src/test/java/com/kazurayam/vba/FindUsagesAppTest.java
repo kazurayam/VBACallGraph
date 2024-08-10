@@ -13,25 +13,25 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class VBAProcedureUsageAnalyzerTest {
+public class FindUsagesAppTest {
 
     private static final Logger logger =
-            LoggerFactory.getLogger(VBAProcedureUsageAnalyzerTest.class);
+            LoggerFactory.getLogger(FindUsagesAppTest.class);
 
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(VBAProcedureUsageAnalyzerTest.class)
+            new TestOutputOrganizer.Builder(FindUsagesAppTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(VBAProcedureUsageAnalyzerTest.class)
+                    .subOutputDirectory(FindUsagesAppTest.class)
                     .build();
 
     private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private VBAProcedureUsageAnalyzer analyzer;
+    private FindUsagesApp analyzer;
     private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        analyzer = new VBAProcedureUsageAnalyzer();
+        analyzer = new FindUsagesApp();
         analyzer.add(new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
