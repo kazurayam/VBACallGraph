@@ -51,7 +51,7 @@ public class FindUsagesApp {
         return workbooks.get(index);
     }
 
-    public Iterator iterator() {
+    public Iterator<SensibleWorkbook> iterator() {
         return workbooks.iterator();
     }
 
