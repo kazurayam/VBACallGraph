@@ -86,6 +86,7 @@ public class ProcedureReferenceTest {
     public void test_toString() throws IOException {
         String json = procedureReference.toString();
         assertThat(json).isNotNull();
+        logger.debug("[test_toString] " + json);
         Path out = classOutputDir.resolve("test_toString.json");
         Files.writeString(out, json);
         assertThat(out).exists();

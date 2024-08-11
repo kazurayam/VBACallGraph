@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,13 +20,10 @@ import java.util.TreeSet;
  * The Indexer class analyses a set of SensibleWorkbook objects
  * to find out a set of ProcedureReferences found amongst the
  * workbooks. The Indexer supports 2 ways of indexing.
- *
  * - Partial indexing; accept a single FullyQualifiedProcedureId as a referee,
  * scan all the rest if the other procedure refers to the referee. Will cache
  * the scanning result, and return a set of ProcedureReferences found.
- *
  * - Whole indexing; do the partial index for all of candidate referees as one batch.
- *
  */
 public class Indexer {
 
@@ -42,6 +38,8 @@ public class Indexer {
                 new IndexerSerializer());
         module.addSerializer(ProcedureReference.class,
                 new ProcedureReference.ProcedureReferenceSerializer());
+        module.addSerializer(FullyQualifiedProcedureId.class,
+                new FullyQualifiedProcedureId.FullyQualifiedProcedureIdSerializer());
         mapper.registerModule(module);
     }
 
