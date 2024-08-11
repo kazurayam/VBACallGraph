@@ -24,7 +24,8 @@ public class FindUsagesAppTest {
                     .subOutputDirectory(FindUsagesAppTest.class)
                     .build();
 
-    private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
+    private static final Path baseDir =
+            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private FindUsagesApp app;
     private Path classOutputDir;
 

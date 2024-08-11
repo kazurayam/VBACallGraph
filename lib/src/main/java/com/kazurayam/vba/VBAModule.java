@@ -78,6 +78,7 @@ public class VBAModule implements Comparable<VBAModule> {
     public void setVBASource(VBASource vbaSource) {
         this.vbaSource = vbaSource;
     }
+
     public VBASource getVBASource() {
       return vbaSource;
     }
