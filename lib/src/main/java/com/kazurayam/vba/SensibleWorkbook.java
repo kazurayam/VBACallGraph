@@ -17,7 +17,9 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class SensibleWorkbook {
 
@@ -45,8 +47,6 @@ public class SensibleWorkbook {
         this.sourceDirPath = sourceDirPath;
         injectSourceIntoModules(modules, sourceDirPath);
     }
-
-
 
     /**
      * inject VBASource objects into the VBAModule objects in the module variable
@@ -144,6 +144,18 @@ public class SensibleWorkbook {
             }
         }
         return modules;
+    }
+
+    public SortedSet<FullyQualifiedProcedureId> getAllFullyQualifiedProcedureId() {
+        SortedSet<FullyQualifiedProcedureId> allFQPI = new TreeSet<>();
+        for (VBAModule module : modules.values()) {
+            for (VBAProcedure procedure : module.getProcedures()) {
+                FullyQualifiedProcedureId fqpi =
+                        new FullyQualifiedProcedureId(this, module, procedure);
+                allFQPI.add(fqpi);
+            }
+        }
+        return allFQPI;
     }
 
     @Override

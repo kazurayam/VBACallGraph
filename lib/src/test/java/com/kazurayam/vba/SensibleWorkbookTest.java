@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.SortedMap;
+import java.util.SortedSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -87,5 +88,13 @@ public class SensibleWorkbookTest {
                     .isNotNull();
             assertThat(module.getVBASource().getSourcePath()).exists();
         }
+    }
+
+    @Test
+    public void test_getAllFullyQualifiedProcedureId() {
+        SortedSet<FullyQualifiedProcedureId> memo =
+                wb.getAllFullyQualifiedProcedureId();
+        assertThat(memo).isNotNull();
+        assertThat(memo.size()).isEqualTo(131);
     }
 }

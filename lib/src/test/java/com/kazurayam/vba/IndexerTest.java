@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,6 +73,14 @@ public class IndexerTest {
     public void test_getWorkbooks() {
         List<SensibleWorkbook> workbookList = indexer.getWorkbooks();
         assertThat(workbookList).hasSize(2);
+    }
+
+    @Test
+    public void test_findAllReferences() {
+        SortedSet<ProcedureReference> memo =
+                indexer.findAllReferences();
+        assertThat(memo).isNotNull();
+        assertThat(memo.size()).isEqualTo(275);
     }
 
     /**

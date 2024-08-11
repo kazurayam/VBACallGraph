@@ -28,7 +28,7 @@ import java.util.TreeSet;
 public class Indexer {
 
     private final List<SensibleWorkbook> workbooks;
-    private final Set<ProcedureReference> memo;
+    private final SortedSet<ProcedureReference> memo;
 
     private static final ObjectMapper mapper;
     static {
@@ -45,7 +45,7 @@ public class Indexer {
 
     public Indexer() {
         workbooks = new ArrayList<>();
-        memo = new HashSet<>();
+        memo = new TreeSet<>();
     }
 
     public void add(SensibleWorkbook workbook) {
@@ -54,6 +54,19 @@ public class Indexer {
 
     public List<SensibleWorkbook> getWorkbooks() {
         return workbooks;
+    }
+
+    public SortedSet<ProcedureReference> findAllReferences() {
+        for (SensibleWorkbook workbook : workbooks) {
+            SortedSet<FullyQualifiedProcedureId> fqpiSet =
+                    workbook.getAllFullyQualifiedProcedureId();
+            for (FullyQualifiedProcedureId fqpi : fqpiSet) {
+                SortedSet<ProcedureReference> found =
+                        findReferenceTo(fqpi);
+                // all that's found is already put into the memo by the findReferenceTo() method
+            }
+        }
+        return memo;
     }
 
     /**

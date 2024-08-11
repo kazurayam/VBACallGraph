@@ -15,10 +15,12 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedSet;
 
 public class FindUsagesApp {
 
     private final List<SensibleWorkbook> workbooks;
+    private final Indexer indexer;
 
     private static final ObjectMapper mapper;
 
@@ -36,6 +38,7 @@ public class FindUsagesApp {
 
     public FindUsagesApp() {
         workbooks = new ArrayList<>();
+        indexer = new Indexer();
         EXCLUDE_UNITTEST_MODULES = true;
     }
 
@@ -44,7 +47,8 @@ public class FindUsagesApp {
     }
 
     public void add(SensibleWorkbook workbook) {
-        this.workbooks.add(workbook);
+        workbooks.add(workbook);
+        indexer.add(workbook);
     }
 
     public SensibleWorkbook get(int index) {
@@ -65,6 +69,9 @@ public class FindUsagesApp {
     }
 
     public void writeDiagram(Writer writer) throws IOException {
+        // build the index
+        SortedSet<ProcedureReference> memo = indexer.findAllReferences();
+        //
         ProcedureUsageDiagramGenerator pudgen =
                 new ProcedureUsageDiagramGenerator();
         pudgen.writeStartUml();
