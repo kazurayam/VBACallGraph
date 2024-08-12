@@ -5,13 +5,13 @@ import com.kazurayam.vbaexample.MyWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,8 +66,9 @@ public class VBASourceTest {
 
     @Test
     public void test_find() throws IOException {
-        List<VBASourceLine> linesFound =
-                vbaSource.find(".FetchMemberTable(");
+        List<Pattern> patterns = PatternManager.createPatterns(".FetchMemberTable(");
+        assertThat(patterns).isNotNull();
+        List<VBASourceLine> linesFound = vbaSource.find(patterns);
         assertThat(linesFound).hasSize(1);
         VBASourceLine sourceLine = linesFound.get(0);
         assertThat(sourceLine.getFound()).isTrue();
@@ -79,8 +80,9 @@ public class VBASourceTest {
 
     @Test
     public void test_toString() throws IOException {
-        List<VBASourceLine> linesFound =
-            vbaSource.find("OpenMemberTable");
+        List<Pattern> patterns = PatternManager.createPatterns("OpenMemberTable");
+        assertThat(patterns).isNotNull();
+        List<VBASourceLine> linesFound = vbaSource.find(patterns);
         String json = vbaSource.toString();
         Path out = classOutputDir.resolve("test_toString.json");
         Files.writeString(out, json);
@@ -88,9 +90,5 @@ public class VBASourceTest {
         assertThat(json).contains("sourcePath");
     }
 
-    @Test
-    public void test_escapeAsRegex() {
-        String escaped = VBASource.escapeAsRegex(".FetchMemberTable(");
-        assertThat(escaped).isEqualTo("\\.FetchMemberTable\\(");
-    }
+
 }

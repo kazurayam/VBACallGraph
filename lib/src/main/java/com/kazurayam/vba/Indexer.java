@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 /**
  * The Indexer class analyses a set of SensibleWorkbook objects
@@ -124,15 +125,18 @@ public class Indexer {
                 }
                 VBASource moduleSource = module.getVBASource();
                 // let's scan the VBASource to see if it mentions the referee
-                List<VBASourceLine> linesFound = moduleSource.find(referee.getProcedureName());
-                if (!linesFound.isEmpty()) {
-                    // the referrer module refers to the referee!
-                    for (VBASourceLine line : linesFound) {
-                        FullyQualifiedVBAModuleId referrer =
-                                new FullyQualifiedVBAModuleId(workbook, module);
-                        VBAProcedureReference reference =
-                                new VBAProcedureReference(referrer, moduleSource, line, referee);
-                        result.add(reference);
+                List<Pattern> patterns = PatternManager.createPatterns(referee.getProcedureName());
+                if (patterns != null) {
+                    List<VBASourceLine> linesFound = moduleSource.find(patterns);
+                    if (!linesFound.isEmpty()) {
+                        // the referrer module refers to the referee!
+                        for (VBASourceLine line : linesFound) {
+                            FullyQualifiedVBAModuleId referrer =
+                                    new FullyQualifiedVBAModuleId(workbook, module);
+                            VBAProcedureReference reference =
+                                    new VBAProcedureReference(referrer, moduleSource, line, referee);
+                            result.add(reference);
+                        }
                     }
                 }
             }

@@ -60,45 +60,24 @@ public class VBASource implements Comparable<VBASource> {
     /**
      *
      */
-    public List<VBASourceLine> find(String pattern) {
-        Pattern ptn = Pattern.compile(escapeAsRegex(pattern));
+    public List<VBASourceLine> find(List<Pattern> patterns) {
         List<VBASourceLine> linesFound = new ArrayList<>();
         cache();
-        for (int i = 0; i < code.size(); i++) {
-            String line = code.get(i);
-            Matcher m = ptn.matcher(line);
-            if (m.find()) {
-                VBASourceLine vbaSourceLine = new VBASourceLine(i, line);
-                vbaSourceLine.setMatcher(m);
-                vbaSourceLine.setFound(true);
-                linesFound.add(vbaSourceLine);
+        for (Pattern ptn : patterns) {
+            for (int i = 0; i < code.size(); i++) {
+                String line = code.get(i);
+                Matcher m = ptn.matcher(line);
+                if (m.find()) {
+                    VBASourceLine vbaSourceLine = new VBASourceLine(i, line);
+                    vbaSourceLine.setMatcher(m);
+                    vbaSourceLine.setFound(true);
+                    linesFound.add(vbaSourceLine);
+                }
             }
         }
         return linesFound;
     }
 
-    private static final Set<Character> CHARS_TOBE_ESCAPED;
-    static {
-        char[] specialChars = ".[]{}()<>*+-=!?^$|".toCharArray();
-        CHARS_TOBE_ESCAPED = new HashSet<>();
-        for (char c : specialChars) {
-            CHARS_TOBE_ESCAPED.add(c);
-        }
-    }
-
-    static String escapeAsRegex(String pattern) {
-        char[] chars = pattern.toCharArray();
-        StringBuilder sb = new StringBuilder();
-        for (char c : chars) {
-            if (CHARS_TOBE_ESCAPED.contains(c)) {
-                sb.append("\\");
-                sb.append(c);
-            } else {
-                sb.append(c);
-            }
-        }
-        return sb.toString();
-    }
 
     private void cache() {
         if (!codeLoaded) {

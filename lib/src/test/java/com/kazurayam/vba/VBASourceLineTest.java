@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.nio.file.Files;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.io.IOException;
@@ -77,8 +78,7 @@ public class VBASourceLineTest {
 
     private VBASourceLine augment(VBASourceLine vbaSourceLine) {
         String patternString = ".FetchMemberTable(";
-        Pattern ptn =
-                Pattern.compile(VBASource.escapeAsRegex(patternString));
+        Pattern ptn = Pattern.compile(PatternManager.escapeAsRegex(patternString));
         Matcher m = ptn.matcher(vbaSourceLine.getLine());
         Boolean found = m.find();
         vbaSourceLine.setFound(found);
