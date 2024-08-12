@@ -121,16 +121,35 @@ public class IndexerTest {
     }
 
     @Test
-    public void test_shouldIgnore() throws IOException {
+    public void test_shouldIgnore_Initialize() throws IOException {
         SensibleWorkbook wbBackbone =
                 new SensibleWorkbook(
                         MyWorkbook.Backbone.getId(),
                         MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                         MyWorkbook.Backbone.resolveSourceDirUnder(baseDir));
         VBAModule mdDocTransformer = wbBackbone.getModule("DocTransformer");
-        VBAProcedure prInitialize = mdDocTransformer.getProcedure("Initialize");
+        VBAProcedure prInitialize =
+                mdDocTransformer.getProcedure("Initialize");
         FullyQualifiedVBAProcedureId referee =
-                new FullyQualifiedVBAProcedureId(wbBackbone, mdDocTransformer, prInitialize);
+                new FullyQualifiedVBAProcedureId(wbBackbone, mdDocTransformer,
+                        prInitialize);
+        //
+        assertThat(Indexer.shouldIgnore(referee)).isTrue();
+    }
+
+    @Test
+    public void test_shouldIgnore_Class_Initialize() throws IOException {
+        SensibleWorkbook wbCashbook =
+                new SensibleWorkbook(
+                        MyWorkbook.Cashbook.getId(),
+                        MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
+                        MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir));
+        VBAModule mdCash = wbCashbook.getModule("Cash");
+        VBAProcedure prClassInitialize =
+                mdCash.getProcedure("Class_Initialize");
+        FullyQualifiedVBAProcedureId referee =
+                new FullyQualifiedVBAProcedureId(wbCashbook, mdCash,
+                        prClassInitialize);
         //
         assertThat(Indexer.shouldIgnore(referee)).isTrue();
     }

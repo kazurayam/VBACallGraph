@@ -104,8 +104,13 @@ public class Indexer {
     }
 
     static Boolean shouldIgnore(FullyQualifiedVBAProcedureId referee) {
-        return referee.getModule().isClass() &&
-                referee.getProcedureName().equals("Initialize");
+        if (referee.getModule().isClass()) {
+            if (referee.getProcedureName().equals("Initialize")) {
+                return true;
+            } else return referee.getProcedureName().equals("Class_Initialize");
+        } else {
+            return false;
+        }
     }
 
     SortedSet<VBAProcedureReference> scanMemoByVBAProcedureReferee(FullyQualifiedVBAProcedureId referee) {
