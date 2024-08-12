@@ -68,9 +68,10 @@ public class Indexer {
     public SortedSet<VBAModuleReference> findAllModuleReferences() {
         SortedSet<VBAModuleReference> moduleReferences = new TreeSet<>();
         for (VBAProcedureReference procRef : findAllProcedureReferences()) {
-            FullyQualifiedVBAModuleId referrerModuleId = procRef.getReferrer();
-            FullyQualifiedVBAProcedureId refereeProcedureId = procRef.getReferee();
-            FullyQualifiedVBAModuleId refereeModuleId = refereeProcedureId.getModuleId();
+            FullyQualifiedVBAModuleId referrerModuleId =
+                    procRef.getReferrer();
+            FullyQualifiedVBAModuleId refereeModuleId =
+                    procRef.getReferee().getModuleId();
             if (!referrerModuleId.equals(refereeModuleId)) {
                 VBAModuleReference moduleReference =
                         new VBAModuleReference(referrerModuleId, refereeModuleId);

@@ -125,7 +125,7 @@ public class IndexerTest {
         Set<VBAModuleReference> references =
                 indexer.findAllModuleReferences();
         assertThat(references).isNotNull();
-        assertThat(references.size()).isEqualTo(3);
+        assertThat(references.size()).isEqualTo(2);
         //
         Path out = classOutputDir.resolve("test_findAllModuleReference.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));

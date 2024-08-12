@@ -16,8 +16,9 @@ public class Options {
 
     public Boolean shouldExclude(VBAModule module) {
         String moduleNameLowerCase = module.getName().toLowerCase();
-        Boolean isUnitTestModule= (moduleNameLowerCase.startsWith("test") ||
-                moduleNameLowerCase.endsWith("test"));
+        Boolean isUnitTestModule=
+                (moduleNameLowerCase.startsWith("test") ||
+                        moduleNameLowerCase.endsWith("test"));
         return excludeUnittestModules && isUnitTestModule;
     }
 

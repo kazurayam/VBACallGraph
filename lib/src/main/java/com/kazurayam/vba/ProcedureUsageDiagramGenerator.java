@@ -39,8 +39,10 @@ public class ProcedureUsageDiagramGenerator {
     }
 
     public void writeModuleReference(VBAModuleReference moduleReference) {
-        sb.append(String.format("%s o-- %s\n",
+        sb.append(String.format("%s.%s o-- %s.%s\n",
+                moduleReference.getReferrer().getWorkbookId(),
                 moduleReference.getReferrer().getModule().getName(),
+                moduleReference.getReferee().getWorkbookId(),
                 moduleReference.getReferee().getModule().getName()
                 )
         );
