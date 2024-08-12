@@ -65,25 +65,6 @@ public class Indexer {
         return workbooks;
     }
 
-    public SortedSet<VBAModuleReference> findAllModuleReferences() {
-        SortedSet<VBAModuleReference> moduleReferences = new TreeSet<>();
-        for (VBAProcedureReference procRef : findAllProcedureReferences()) {
-            FullyQualifiedVBAModuleId referrerModuleId =
-                    procRef.getReferrer();
-            FullyQualifiedVBAModuleId refereeModuleId =
-                    procRef.getReferee().getModuleId();
-            if (!referrerModuleId.equals(refereeModuleId)) {
-                VBAModuleReference moduleReference =
-                        new VBAModuleReference(referrerModuleId, refereeModuleId);
-                if (!options.shouldExclude(moduleReference)) {
-                    moduleReferences.add(moduleReference);
-                }
-            }
-            // else --- a VBAModule refers to itself; not worth visualizing
-        }
-        return moduleReferences;
-    }
-
     public SortedSet<VBAProcedureReference> findAllProcedureReferences() {
         for (SensibleWorkbook workbook : workbooks) {
             for (FullyQualifiedVBAProcedureId fqpi :

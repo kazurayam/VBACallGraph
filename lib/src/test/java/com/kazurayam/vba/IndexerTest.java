@@ -121,22 +121,6 @@ public class IndexerTest {
     }
 
     @Test
-    public void test_findAllModuleReferences() throws IOException {
-        Set<VBAModuleReference> references =
-                indexer.findAllModuleReferences();
-        assertThat(references).isNotNull();
-        assertThat(references.size()).isEqualTo(2);
-        //
-        Path out = classOutputDir.resolve("test_findAllModuleReference.txt");
-        PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
-        for (VBAModuleReference reference : references) {
-            pw.println(reference);
-        }
-        pw.flush();
-        pw.close();
-    }
-
-    @Test
     public void test_xref() {
         List<SensibleWorkbook> workbookList = indexer.getWorkbooks();
         Set<VBAProcedureReference> foundReferences =

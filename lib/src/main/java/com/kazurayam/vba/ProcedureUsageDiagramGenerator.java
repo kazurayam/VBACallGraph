@@ -38,12 +38,13 @@ public class ProcedureUsageDiagramGenerator {
         sb.append(String.format("    {method} %s\n", procedure.getName()));
     }
 
-    public void writeModuleReference(VBAModuleReference moduleReference) {
-        sb.append(String.format("%s.%s o-- %s.%s\n",
-                moduleReference.getReferrer().getWorkbookId(),
-                moduleReference.getReferrer().getModule().getName(),
-                moduleReference.getReferee().getWorkbookId(),
-                moduleReference.getReferee().getModule().getName()
+    public void writeProcedureReference(VBAProcedureReference procedureReference) {
+        sb.append(String.format("%s.%s o-- %s.%s : %s\n",
+                procedureReference.getReferrer().getWorkbookId(),
+                procedureReference.getReferrer().getModule().getName(),
+                procedureReference.getReferee().getWorkbookId(),
+                procedureReference.getReferee().getModule().getName(),
+                procedureReference.getReferee().getProcedureName()
                 )
         );
     }

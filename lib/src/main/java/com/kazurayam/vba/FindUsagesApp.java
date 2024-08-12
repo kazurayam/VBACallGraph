@@ -90,10 +90,10 @@ public class FindUsagesApp {
         }
 
         // write the directed arrows between Modules
-        SortedSet<VBAModuleReference> moduleReferences = indexer.findAllModuleReferences();
-        for (VBAModuleReference reference : moduleReferences) {
+        SortedSet<VBAProcedureReference> moduleReferences = indexer.findAllProcedureReferences();
+        for (VBAProcedureReference reference : moduleReferences) {
             if (!options.shouldExclude(reference)) {
-                pudgen.writeModuleReference(reference);
+                pudgen.writeProcedureReference(reference);
             }
         }
 

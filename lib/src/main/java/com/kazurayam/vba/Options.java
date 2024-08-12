@@ -29,9 +29,6 @@ public class Options {
     public Boolean shouldExclude(VBAProcedureReference procedureReference) {
         return shouldExclude(procedureReference.getReferrer().getModule());
     }
-    public Boolean shouldExclude(VBAModuleReference moduleReference) {
-        return shouldExclude(moduleReference.getReferrer());
-    }
 
     /**
      *
