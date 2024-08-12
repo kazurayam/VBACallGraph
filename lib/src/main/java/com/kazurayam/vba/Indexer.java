@@ -125,8 +125,10 @@ public class Indexer {
                 }
                 VBASource moduleSource = module.getVBASource();
                 // let's scan the VBASource to see if it mentions the referee
-                List<Pattern> patterns = PatternManager.createPatterns(referee.getProcedureName());
-                if (patterns != null) {
+                List<Pattern> patterns =
+                        ProcedureNamePatternManager.createPatterns(
+                                referee.getProcedureName());
+                if (!patterns.isEmpty()) {
                     List<VBASourceLine> linesFound = moduleSource.find(patterns);
                     if (!linesFound.isEmpty()) {
                         // the referrer module refers to the referee!

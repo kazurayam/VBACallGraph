@@ -66,7 +66,7 @@ public class VBASourceTest {
 
     @Test
     public void test_find() throws IOException {
-        List<Pattern> patterns = PatternManager.createPatterns(".FetchMemberTable(");
+        List<Pattern> patterns = ProcedureNamePatternManager.createPatterns("FetchMemberTable");
         assertThat(patterns).isNotNull();
         List<VBASourceLine> linesFound = vbaSource.find(patterns);
         assertThat(linesFound).hasSize(1);
@@ -80,7 +80,7 @@ public class VBASourceTest {
 
     @Test
     public void test_toString() throws IOException {
-        List<Pattern> patterns = PatternManager.createPatterns("OpenMemberTable");
+        List<Pattern> patterns = ProcedureNamePatternManager.createPatterns("OpenMemberTable");
         assertThat(patterns).isNotNull();
         List<VBASourceLine> linesFound = vbaSource.find(patterns);
         String json = vbaSource.toString();

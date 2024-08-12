@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 
-public class PatternManager {
+public class ProcedureNamePatternManager {
 
     private static final Set<Character> CHARS_TOBE_ESCAPED;
 
@@ -35,13 +35,21 @@ public class PatternManager {
     }
 
     public static List<Pattern> createPatterns(String patternString) {
-        String ptn = escapeAsRegex(patternString);
+        String escapedPart = escapeAsRegex(patternString);
         List<Pattern> patterns = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        sb.append(escapedPart).append("\\(");
+        sb.append("|");  // | --- logical OR
+        sb.append(escapedPart).append("\\s*'");   // \s --- white space, * --- zero or more, ' --- VB commen
+        sb.append("|");
+        sb.append(escapedPart).append("\\s*$");
         try {
-            patterns.add(Pattern.compile(ptn));
+            patterns.add(Pattern.compile(sb.toString()));
             return patterns;
         } catch (PatternSyntaxException e) {
-            System.err.println("Pattern " + ptn + " could not be parsed");
+            System.err.printf(
+                    "\"%s\" could not be parsed as a Pattern%n",
+                    sb.toString());
         }
         return patterns;
     }
