@@ -121,6 +121,21 @@ public class IndexerTest {
     }
 
     @Test
+    public void test_shouldIgnore() throws IOException {
+        SensibleWorkbook wbBackbone =
+                new SensibleWorkbook(
+                        MyWorkbook.Backbone.getId(),
+                        MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
+                        MyWorkbook.Backbone.resolveSourceDirUnder(baseDir));
+        VBAModule mdDocTransformer = wbBackbone.getModule("DocTransformer");
+        VBAProcedure prInitialize = mdDocTransformer.getProcedure("Initialize");
+        FullyQualifiedVBAProcedureId referee =
+                new FullyQualifiedVBAProcedureId(wbBackbone, mdDocTransformer, prInitialize);
+        //
+        assertThat(Indexer.shouldIgnore(referee)).isTrue();
+    }
+
+    @Test
     public void test_xref() {
         List<SensibleWorkbook> workbookList = indexer.getWorkbooks();
         Set<VBAProcedureReference> foundReferences =

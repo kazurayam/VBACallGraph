@@ -87,16 +87,25 @@ public class Indexer {
      */
     public SortedSet<VBAProcedureReference> findProcedureReferenceTo(
             FullyQualifiedVBAProcedureId referee) {
-        SortedSet<VBAProcedureReference> scanResultByReferee =
-                this.scanMemoByVBAProcedureReferee(referee);
-        if (scanResultByReferee.isEmpty()) {
-            SortedSet<VBAProcedureReference> crossReferences =
-                    xref(workbooks, referee);
-            memo.addAll(crossReferences);
-            return crossReferences;
+        if (!shouldIgnore(referee)) {
+            SortedSet<VBAProcedureReference> scanResultByReferee =
+                    this.scanMemoByVBAProcedureReferee(referee);
+            if (scanResultByReferee.isEmpty()) {
+                SortedSet<VBAProcedureReference> crossReferences =
+                        xref(workbooks, referee);
+                memo.addAll(crossReferences);
+                return crossReferences;
+            } else {
+                return scanResultByReferee;
+            }
         } else {
-            return scanResultByReferee;
+            return new TreeSet<>();
         }
+    }
+
+    static Boolean shouldIgnore(FullyQualifiedVBAProcedureId referee) {
+        return referee.getModule().isClass() &&
+                referee.getProcedureName().equals("Initialize");
     }
 
     SortedSet<VBAProcedureReference> scanMemoByVBAProcedureReferee(FullyQualifiedVBAProcedureId referee) {
