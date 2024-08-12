@@ -86,6 +86,11 @@ public class ProcedureUsageDiagramGeneratorTest {
     }
 
     @Test
+    public void test_writeProcedureReference() {
+
+    }
+
+    @Test
     public void test_toString() throws IOException {
         Path output = classOutputDir.resolve("test_toString.pu");
         VBAModule module = wb.getModule("年会費納入状況チェック");

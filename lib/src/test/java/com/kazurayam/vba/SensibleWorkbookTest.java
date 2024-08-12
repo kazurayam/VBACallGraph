@@ -92,7 +92,7 @@ public class SensibleWorkbookTest {
 
     @Test
     public void test_getAllFullyQualifiedProcedureId() {
-        SortedSet<FullyQualifiedProcedureId> memo =
+        SortedSet<FullyQualifiedVBAProcedureId> memo =
                 wb.getAllFullyQualifiedProcedureId();
         assertThat(memo).isNotNull();
         assertThat(memo.size()).isEqualTo(131);

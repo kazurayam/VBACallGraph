@@ -14,18 +14,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 
-public class FullyQualifiedProcedureIdTest {
-    private static final Logger logger = LoggerFactory.getLogger(FullyQualifiedProcedureIdTest.class);
+public class FullyQualifiedVBAProcedureIdTest {
+    private static final Logger logger = LoggerFactory.getLogger(FullyQualifiedVBAProcedureIdTest.class);
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(FullyQualifiedProcedureIdTest.class)
+            new TestOutputOrganizer.Builder(FullyQualifiedVBAProcedureIdTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(FullyQualifiedProcedureIdTest.class)
+                    .subOutputDirectory(FullyQualifiedVBAProcedureIdTest.class)
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     private Path classOutputDir;
-    private FullyQualifiedProcedureId fqpi;
+    private FullyQualifiedVBAProcedureId fqpi;
 
     @BeforeTest
     public void beforeTest() throws IOException {
@@ -36,7 +36,7 @@ public class FullyQualifiedProcedureIdTest {
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir));
         VBAModule module = wb.getModule("AoMemberUtils");
         VBAProcedure procedure = module.getProcedure("FetchMemberTable");
-        fqpi = new FullyQualifiedProcedureId(wb, module, procedure);
+        fqpi = new FullyQualifiedVBAProcedureId(wb, module, procedure);
     }
 
     @Test

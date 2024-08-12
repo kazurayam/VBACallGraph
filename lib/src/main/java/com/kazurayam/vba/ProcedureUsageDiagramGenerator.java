@@ -38,6 +38,14 @@ public class ProcedureUsageDiagramGenerator {
         sb.append(String.format("    {method} %s\n", procedure.getName()));
     }
 
+    public void writeModuleReference(VBAModuleReference moduleReference) {
+        sb.append(String.format("%s o-- %s\n",
+                moduleReference.getReferrer().getModule().getName(),
+                moduleReference.getReferee().getModule().getName()
+                )
+        );
+    }
+
     public void writeEndModule() {
         sb.append("  }\n");
     }

@@ -21,10 +21,9 @@ public class FindUsagesApp {
 
     private final List<SensibleWorkbook> workbooks;
     private final Indexer indexer;
+    private Options options = Options.DEFAULT;
 
     private static final ObjectMapper mapper;
-
-    private boolean EXCLUDE_UNITTEST_MODULES;
 
     static {
         mapper = new ObjectMapper();
@@ -39,11 +38,11 @@ public class FindUsagesApp {
     public FindUsagesApp() {
         workbooks = new ArrayList<>();
         indexer = new Indexer();
-        EXCLUDE_UNITTEST_MODULES = true;
+        options = Options.DEFAULT;
     }
 
-    public void setExcludeUnittestModules(boolean excludeUnittestModules) {
-        this.EXCLUDE_UNITTEST_MODULES = excludeUnittestModules;
+    public void setOptions(Options options) {
+        this.options = options;
     }
 
     public void add(SensibleWorkbook workbook) {
@@ -70,7 +69,7 @@ public class FindUsagesApp {
 
     public void writeDiagram(Writer writer) throws IOException {
         // build the index
-        SortedSet<ProcedureReference> memo = indexer.findAllReferences();
+        SortedSet<VBAProcedureReference> memo = indexer.findAllProcedureReferences();
         //
         ProcedureUsageDiagramGenerator pudgen =
                 new ProcedureUsageDiagramGenerator();
@@ -79,7 +78,7 @@ public class FindUsagesApp {
             pudgen.writeStartWorkbook(wb);
             for (String key : wb.getModules().keySet()) {
                 VBAModule module = wb.getModule(key);
-                if (!shouldIgnore(module)) {
+                if (!options.shouldExclude(module)) {
                     pudgen.writeStartModule(module);
                     for (VBAProcedure procedure : module.getProcedures()) {
                         pudgen.writeProcedure(module, procedure);
@@ -89,18 +88,20 @@ public class FindUsagesApp {
             }
             pudgen.writeEndWorkbook();
         }
+
+        // write the directed arrows between Modules
+        SortedSet<VBAModuleReference> moduleReferences = indexer.findAllModuleReferences();
+        for (VBAModuleReference reference : moduleReferences) {
+            if (!options.shouldExclude(reference)) {
+                pudgen.writeModuleReference(reference);
+            }
+        }
+
+        //
         pudgen.writeEndUml();
+        //
         writer.write(pudgen.toString());
         writer.flush();
-        writer.close();
-    }
-
-    private boolean shouldIgnore(VBAModule module) {
-        if (EXCLUDE_UNITTEST_MODULES) {
-            String moduleNameLC = module.getName().toLowerCase();
-            return (moduleNameLC.startsWith("test") || moduleNameLC.endsWith("test"));
-        }
-        return false;
     }
 
     @Override

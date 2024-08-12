@@ -13,18 +13,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ProcedureReferenceTest {
-    private static final Logger logger = LoggerFactory.getLogger(ProcedureReferenceTest.class);
+public class VBAProcedureReferenceTest {
+    private static final Logger logger = LoggerFactory.getLogger(VBAProcedureReferenceTest.class);
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(ProcedureReferenceTest.class)
+            new TestOutputOrganizer.Builder(VBAProcedureReferenceTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(ProcedureReferenceTest.class)
+                    .subOutputDirectory(VBAProcedureReferenceTest.class)
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     private Path classOutputDir;
-    private ProcedureReference procedureReference;
+    private VBAProcedureReference procedureReference;
 
     @BeforeTest
     public void beforeTest() throws IOException {
@@ -36,9 +36,12 @@ public class ProcedureReferenceTest {
                         MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                         MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir));
         VBAModule md年会費納入状況チェック = wbFeePaymentCheck.getModule("年会費納入状況チェック");
-        VBAProcedure procMain = md年会費納入状況チェック.getProcedure("Main");
-        FullyQualifiedProcedureId referrer =
-                new FullyQualifiedProcedureId(wbFeePaymentCheck, md年会費納入状況チェック, procMain);
+        FullyQualifiedVBAModuleId referrer =
+                new FullyQualifiedVBAModuleId(wbFeePaymentCheck, md年会費納入状況チェック);
+        VBASource referrerModuleSource = md年会費納入状況チェック.getVBASource();
+        VBASourceLine referrerSourceLine =
+                new VBASourceLine(52,
+                        "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)\n");
         //
         SensibleWorkbook wbMember =
                 new SensibleWorkbook(
@@ -46,26 +49,29 @@ public class ProcedureReferenceTest {
                         MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                         MyWorkbook.Member.resolveSourceDirUnder(baseDir));
         VBAModule mdAoMemberUtils = wbMember.getModule("AoMemberUtils");
-        VBAProcedure procFetchMemberTable = mdAoMemberUtils.getProcedure("FetchMemberTable");
-        FullyQualifiedProcedureId referee =
-                new FullyQualifiedProcedureId(wbMember, mdAoMemberUtils, procFetchMemberTable);
+        VBAProcedure procFetchMemberTable =
+                mdAoMemberUtils.getProcedure("FetchMemberTable");
+        FullyQualifiedVBAProcedureId referee =
+                new FullyQualifiedVBAProcedureId(wbMember, mdAoMemberUtils,
+                        procFetchMemberTable);
         //
-        procedureReference = new ProcedureReference(referrer, referee);
+        procedureReference =
+                new VBAProcedureReference(referrer,
+                        referrerModuleSource, referrerSourceLine, referee);
     }
 
     @Test
     public void test_getReferrer() {
-        FullyQualifiedProcedureId referrer = procedureReference.getReferrer();
+        FullyQualifiedVBAModuleId referrer = procedureReference.getReferrer();
         assertThat(referrer).isNotNull();
         VBAModule module = referrer.getModule();
         assertThat(module.getName()).isEqualTo("年会費納入状況チェック");
-        VBAProcedure procedure = referrer.getProcedure();
-        assertThat(procedure.getName()).isEqualTo("Main");
     }
 
     @Test
-    public void test_getReferee() {
-        FullyQualifiedProcedureId referee = procedureReference.getReferee();
+    public void test_getReferee
+            () {
+        FullyQualifiedVBAProcedureId referee = procedureReference.getReferee();
         assertThat(referee).isNotNull();
         VBAModule module = referee.getModule();
         assertThat(module.getName()).isEqualTo("AoMemberUtils");

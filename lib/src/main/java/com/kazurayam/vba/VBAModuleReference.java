@@ -9,40 +9,34 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-public class ProcedureReference implements Comparable<ProcedureReference> {
+public class VBAModuleReference implements Comparable<VBAModuleReference> {
 
-    /**
-     * The id of Procedure that refers the referee
-     */
-    private final FullyQualifiedProcedureId referrer;
+    private final FullyQualifiedVBAModuleId referrer;
 
-    /**
-     * The id of Procedure that is referred by the referrer
-     */
-    private final FullyQualifiedProcedureId referee;
+    private final FullyQualifiedVBAModuleId referee;
 
     private final static ObjectMapper mapper;
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(ProcedureReference.class,
-                new ProcedureReferenceSerializer());
-        module.addSerializer(FullyQualifiedProcedureId.class,
-                new FullyQualifiedProcedureId.FullyQualifiedProcedureIdSerializer());
+        module.addSerializer(VBAModuleReference.class,
+                new VBAModuleReferenceSerializer());
+        module.addSerializer(FullyQualifiedVBAModuleId.class,
+                new FullyQualifiedVBAModuleId.FullyQualifiedVBAModuleIdSerializer());
         mapper.registerModule(module);
     }
 
-    public ProcedureReference(FullyQualifiedProcedureId referrer,
-                              FullyQualifiedProcedureId referee) {
+    public VBAModuleReference(FullyQualifiedVBAModuleId referrer,
+                              FullyQualifiedVBAModuleId referee) {
         this.referrer = referrer;
         this.referee = referee;
     }
 
-    public FullyQualifiedProcedureId getReferrer() {
+    public FullyQualifiedVBAModuleId getReferrer() {
         return referrer;
     }
 
-    public FullyQualifiedProcedureId getReferee() {
+    public FullyQualifiedVBAModuleId getReferee() {
         return referee;
     }
 
@@ -50,7 +44,7 @@ public class ProcedureReference implements Comparable<ProcedureReference> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProcedureReference other = (ProcedureReference) o;
+        VBAModuleReference other = (VBAModuleReference) o;
         if (referrer.equals(other.referrer)) {
             return referee.equals(other.referee);
         } else {
@@ -82,25 +76,25 @@ public class ProcedureReference implements Comparable<ProcedureReference> {
     }
 
     @Override
-    public int compareTo(ProcedureReference other) {
-        int referrerComparison = referrer.compareTo(other.referrer);
+    public int compareTo(VBAModuleReference o) {
+        int referrerComparison = referrer.compareTo(o.referrer);
         if (referrerComparison == 0) {
-            return referee.compareTo(other.referee);
+            return referee.compareTo(o.referee);
         } else {
             return referrerComparison;
         }
     }
 
-    public static class ProcedureReferenceSerializer extends StdSerializer<ProcedureReference> {
-        public ProcedureReferenceSerializer() { this(null); }
-        public ProcedureReferenceSerializer(Class<ProcedureReference> t) { super(t); }
+    public static class VBAModuleReferenceSerializer extends StdSerializer<VBAModuleReference> {
+        public VBAModuleReferenceSerializer() { this(null); }
+        public VBAModuleReferenceSerializer(Class<VBAModuleReference> t) { super(t); }
         @Override
         public void serialize(
-                ProcedureReference pr, JsonGenerator jgen, SerializerProvider provider)
-            throws IOException {
+                VBAModuleReference mr, JsonGenerator jgen, SerializerProvider provider)
+                throws IOException {
             jgen.writeStartObject();
-            jgen.writeObjectField("referrer", pr.getReferrer());
-            jgen.writeObjectField("referee", pr.getReferee());
+            jgen.writeObjectField("referrer", mr.getReferrer());
+            jgen.writeObjectField("referee", mr.getReferee());
             jgen.writeEndObject();
         }
     }

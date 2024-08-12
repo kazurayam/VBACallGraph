@@ -9,9 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -28,7 +26,8 @@ import java.util.TreeSet;
 public class Indexer {
 
     private final List<SensibleWorkbook> workbooks;
-    private final SortedSet<ProcedureReference> memo;
+    private final SortedSet<VBAProcedureReference> memo;
+    private Options options;
 
     private static final ObjectMapper mapper;
     static {
@@ -36,34 +35,65 @@ public class Indexer {
         SimpleModule module = new SimpleModule();
         module.addSerializer(Indexer.class,
                 new IndexerSerializer());
-        module.addSerializer(ProcedureReference.class,
-                new ProcedureReference.ProcedureReferenceSerializer());
-        module.addSerializer(FullyQualifiedProcedureId.class,
-                new FullyQualifiedProcedureId.FullyQualifiedProcedureIdSerializer());
+        module.addSerializer(VBAProcedureReference.class,
+                new VBAProcedureReference.VBAProcedureReferenceSerializer());
+        module.addSerializer(VBASource.class,
+                new VBASource.VBASourceSerializer());
+        module.addSerializer(VBASourceLine.class,
+                new VBASourceLine.VBASourceLineSerializer());
+        module.addSerializer(FullyQualifiedVBAProcedureId.class,
+                new FullyQualifiedVBAProcedureId.FullyQualifiedVBAProcedureIdSerializer());
         mapper.registerModule(module);
     }
 
     public Indexer() {
         workbooks = new ArrayList<>();
         memo = new TreeSet<>();
+        options = Options.DEFAULT;
     }
 
     public void add(SensibleWorkbook workbook) {
         this.workbooks.add(workbook);
     }
 
+    public void setOptions(Options options) {
+        this.options = options;
+    }
+
+
     public List<SensibleWorkbook> getWorkbooks() {
         return workbooks;
     }
 
-    public SortedSet<ProcedureReference> findAllReferences() {
+    public SortedSet<VBAModuleReference> findAllModuleReferences() {
+        SortedSet<VBAModuleReference> moduleReferences = new TreeSet<>();
+        for (VBAProcedureReference procRef : findAllProcedureReferences()) {
+            FullyQualifiedVBAModuleId referrerModuleId = procRef.getReferrer();
+            FullyQualifiedVBAProcedureId refereeProcedureId = procRef.getReferee();
+            FullyQualifiedVBAModuleId refereeModuleId = refereeProcedureId.getModuleId();
+            if (!referrerModuleId.equals(refereeModuleId)) {
+                VBAModuleReference moduleReference =
+                        new VBAModuleReference(referrerModuleId, refereeModuleId);
+                if (!options.shouldExclude(moduleReference)) {
+                    moduleReferences.add(moduleReference);
+                }
+            }
+            // else --- a VBAModule refers to itself; not worth visualizing
+        }
+        return moduleReferences;
+    }
+
+    public SortedSet<VBAProcedureReference> findAllProcedureReferences() {
         for (SensibleWorkbook workbook : workbooks) {
-            SortedSet<FullyQualifiedProcedureId> fqpiSet =
-                    workbook.getAllFullyQualifiedProcedureId();
-            for (FullyQualifiedProcedureId fqpi : fqpiSet) {
-                SortedSet<ProcedureReference> found =
-                        findReferenceTo(fqpi);
-                // all that's found is already put into the memo by the findReferenceTo() method
+            for (FullyQualifiedVBAProcedureId fqpi :
+                    workbook.getAllFullyQualifiedProcedureId()) {
+                SortedSet<VBAProcedureReference> foundSet =
+                        findProcedureReferenceTo(fqpi);
+                for (VBAProcedureReference procRef : foundSet) {
+                    if (!options.shouldExclude(procRef.getReferee().getModule())) {
+                        memo.add(procRef);
+                    }
+                }
             }
         }
         return memo;
@@ -72,10 +102,13 @@ public class Indexer {
     /**
      * This method is the core of this project.
      */
-    public SortedSet<ProcedureReference> findReferenceTo(FullyQualifiedProcedureId referee) {
-        SortedSet<ProcedureReference> scanResultByReferee = this.scanMemoByReferee(referee);
+    public SortedSet<VBAProcedureReference> findProcedureReferenceTo(
+            FullyQualifiedVBAProcedureId referee) {
+        SortedSet<VBAProcedureReference> scanResultByReferee =
+                this.scanMemoByVBAProcedureReferee(referee);
         if (scanResultByReferee.isEmpty()) {
-            SortedSet<ProcedureReference> crossReferences = xref(workbooks, referee);
+            SortedSet<VBAProcedureReference> crossReferences =
+                    xref(workbooks, referee);
             memo.addAll(crossReferences);
             return crossReferences;
         } else {
@@ -83,40 +116,41 @@ public class Indexer {
         }
     }
 
-    SortedSet<ProcedureReference> scanMemoByReferee(FullyQualifiedProcedureId referee) {
-        SortedSet<ProcedureReference> found = new TreeSet<>();
-        for (ProcedureReference ref : memo) {
+    SortedSet<VBAProcedureReference> scanMemoByVBAProcedureReferee(FullyQualifiedVBAProcedureId referee) {
+        SortedSet<VBAProcedureReference> found = new TreeSet<>();
+        for (VBAProcedureReference ref : memo) {
             if (ref.getReferee().equals(referee)) { found.add(ref); }
         }
         return found;
     }
 
     /**
-     * The magic spell
+     * Given with the id of referee.
+     * Scan all VBA source code of all modules inside all workbooks given.
+     * If any match with id of the referee found, record it.
+     * Return a set of VBAProcedureReferences recorded.
      */
-    SortedSet<ProcedureReference> xref(List<SensibleWorkbook> workbooks, FullyQualifiedProcedureId referee) {
-        SortedSet<ProcedureReference> result = new TreeSet<>();
+    SortedSet<VBAProcedureReference> xref(List<SensibleWorkbook> workbooks,
+                                          FullyQualifiedVBAProcedureId referee) {
+        SortedSet<VBAProcedureReference> result = new TreeSet<>();
         for (SensibleWorkbook workbook : workbooks) {
             for (String moduleName : workbook.getModules().keySet()) {
                 VBAModule module = workbook.getModule(moduleName);
-                VBASource source = module.getVBASource();
-                for (VBAProcedure procedure : module.getProcedures()) {
-                    if (referee.getWorkbook().equals(workbook) &&
-                            referee.getModule().equals(module) &&
-                            referee.getProcedure().equals(procedure)) {
-                        break; // we won't scan the VBA source of the referee itself
-                    }
-                    // let's scan the VBA source if it mentions the referee
-                    List<VBASourceLine> linesFound = source.find(procedure.getName());
-                    if (!linesFound.isEmpty()) {
-                        // referrer(s) to this referee found!
-                        for (VBASourceLine line : linesFound) {
-                            FullyQualifiedProcedureId referrer =
-                                    new FullyQualifiedProcedureId(workbook, module, procedure);
-                            ProcedureReference reference =
-                                    new ProcedureReference(referrer, referee);
-                            result.add(reference);
-                        }
+                if (referee.getWorkbook().equals(workbook) &&
+                        referee.getModule().equals(module)) {
+                    break;   // we won't scan the VBASource of the referee itself
+                }
+                VBASource moduleSource = module.getVBASource();
+                // let's scan the VBASource to see if it mentions the referee
+                List<VBASourceLine> linesFound = moduleSource.find(referee.getProcedureName());
+                if (!linesFound.isEmpty()) {
+                    // the referrer module refers to the referee!
+                    for (VBASourceLine line : linesFound) {
+                        FullyQualifiedVBAModuleId referrer =
+                                new FullyQualifiedVBAModuleId(workbook, module);
+                        VBAProcedureReference reference =
+                                new VBAProcedureReference(referrer, moduleSource, line, referee);
+                        result.add(reference);
                     }
                 }
             }
@@ -124,7 +158,7 @@ public class Indexer {
         return result;
     }
 
-    public Iterator<ProcedureReference> iterator() {
+    public Iterator<VBAProcedureReference> iterator() {
         return memo.iterator();
     }
 
@@ -162,9 +196,9 @@ public class Indexer {
             }
             jgen.writeEndArray();                                //  ],
             jgen.writeArrayFieldStart("procedureReferences");     //    "workbooks": [
-            Iterator<ProcedureReference> iter = indexer.iterator();
+            Iterator<VBAProcedureReference> iter = indexer.iterator();
             while(iter.hasNext()) {
-                ProcedureReference reference = iter.next();
+                VBAProcedureReference reference = iter.next();
                 jgen.writeObject(reference);                            //      { ... },
             }
             jgen.writeEndArray();                                //    ]

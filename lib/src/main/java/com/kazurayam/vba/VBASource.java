@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 /**
  * VBA Source code file (*.bas, *.cls)
  */
-public class VBASource {
+public class VBASource implements Comparable<VBASource> {
 
     private final String moduleName;
     private final Path sourcePath;
@@ -121,6 +121,25 @@ public class VBASource {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VBASource other = (VBASource) o;
+        if (moduleName.equals(other.moduleName)) {
+            return sourcePath.equals(other.sourcePath);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = moduleName.hashCode();
+        result = 31 * result + sourcePath.hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         // pretty printed
         try {
@@ -128,6 +147,16 @@ public class VBASource {
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int compareTo(VBASource other) {
+        int moduleNameComparison = moduleName.compareTo(other.moduleName);
+        if (moduleNameComparison == 0) {
+            return sourcePath.compareTo(other.sourcePath);
+        } else {
+            return moduleNameComparison;
         }
     }
 

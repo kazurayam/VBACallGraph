@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-public class FullyQualifiedProcedureId implements Comparable<FullyQualifiedProcedureId> {
+public class FullyQualifiedVBAProcedureId implements Comparable<FullyQualifiedVBAProcedureId> {
 
     private final SensibleWorkbook workbook;
     private final VBAModule module;
@@ -19,12 +19,12 @@ public class FullyQualifiedProcedureId implements Comparable<FullyQualifiedProce
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(FullyQualifiedProcedureId.class,
-                new FullyQualifiedProcedureIdSerializer());
+        module.addSerializer(FullyQualifiedVBAProcedureId.class,
+                new FullyQualifiedVBAProcedureIdSerializer());
         mapper.registerModule(module);
     }
 
-    public FullyQualifiedProcedureId(SensibleWorkbook workbook, VBAModule module, VBAProcedure procedure) {
+    public FullyQualifiedVBAProcedureId(SensibleWorkbook workbook, VBAModule module, VBAProcedure procedure) {
         this.workbook = workbook;
         this.module = module;
         this.procedure = procedure;
@@ -40,6 +40,10 @@ public class FullyQualifiedProcedureId implements Comparable<FullyQualifiedProce
 
     public VBAModule getModule() {
         return module;
+    }
+
+    public FullyQualifiedVBAModuleId getModuleId() {
+        return new FullyQualifiedVBAModuleId(workbook, module);
     }
 
     public String getModuleName() {
@@ -58,7 +62,7 @@ public class FullyQualifiedProcedureId implements Comparable<FullyQualifiedProce
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FullyQualifiedProcedureId that = (FullyQualifiedProcedureId) o;
+        FullyQualifiedVBAProcedureId that = (FullyQualifiedVBAProcedureId) o;
         if (!getWorkbookId().equals(that.getWorkbookId())) return false;
         if (!getModuleName().equals(that.getModuleName())) return false;
         return getProcedureName().equals(that.getProcedureName());
@@ -72,6 +76,7 @@ public class FullyQualifiedProcedureId implements Comparable<FullyQualifiedProce
         return result;
     }
 
+    @Override
     public String toString() {
         // pretty printed
         try {
@@ -88,7 +93,7 @@ public class FullyQualifiedProcedureId implements Comparable<FullyQualifiedProce
     }
 
     @Override
-    public int compareTo(FullyQualifiedProcedureId that) {
+    public int compareTo(FullyQualifiedVBAProcedureId that) {
         int workbookIdComparison = getWorkbookId().compareTo(that.getWorkbookId());
         if (workbookIdComparison == 0) {
             int moduleNameComparison = getModuleName().compareTo(that.getModuleName());
@@ -105,12 +110,12 @@ public class FullyQualifiedProcedureId implements Comparable<FullyQualifiedProce
     /**
      *
      */
-    public static class FullyQualifiedProcedureIdSerializer extends StdSerializer<FullyQualifiedProcedureId> {
-        public FullyQualifiedProcedureIdSerializer() { this(null); }
-        public FullyQualifiedProcedureIdSerializer(Class<FullyQualifiedProcedureId> t) { super(t); }
+    public static class FullyQualifiedVBAProcedureIdSerializer extends StdSerializer<FullyQualifiedVBAProcedureId> {
+        public FullyQualifiedVBAProcedureIdSerializer() { this(null); }
+        public FullyQualifiedVBAProcedureIdSerializer(Class<FullyQualifiedVBAProcedureId> t) { super(t); }
         @Override
         public void serialize(
-                FullyQualifiedProcedureId fqpi, JsonGenerator jgen, SerializerProvider provider)
+                FullyQualifiedVBAProcedureId fqpi, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
             jgen.writeStringField("workbookId", fqpi.getWorkbookId());

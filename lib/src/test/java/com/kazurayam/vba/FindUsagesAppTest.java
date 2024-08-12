@@ -56,7 +56,7 @@ public class FindUsagesAppTest {
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)
         ));
-        app.setExcludeUnittestModules(true);
+        app.setOptions(Options.DEFAULT);
     }
 
     @Test

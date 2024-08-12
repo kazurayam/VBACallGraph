@@ -146,12 +146,12 @@ public class SensibleWorkbook {
         return modules;
     }
 
-    public SortedSet<FullyQualifiedProcedureId> getAllFullyQualifiedProcedureId() {
-        SortedSet<FullyQualifiedProcedureId> allFQPI = new TreeSet<>();
+    public SortedSet<FullyQualifiedVBAProcedureId> getAllFullyQualifiedProcedureId() {
+        SortedSet<FullyQualifiedVBAProcedureId> allFQPI = new TreeSet<>();
         for (VBAModule module : modules.values()) {
             for (VBAProcedure procedure : module.getProcedures()) {
-                FullyQualifiedProcedureId fqpi =
-                        new FullyQualifiedProcedureId(this, module, procedure);
+                FullyQualifiedVBAProcedureId fqpi =
+                        new FullyQualifiedVBAProcedureId(this, module, procedure);
                 allFQPI.add(fqpi);
             }
         }

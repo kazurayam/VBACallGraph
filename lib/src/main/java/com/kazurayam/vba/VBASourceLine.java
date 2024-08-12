@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  *
  */
-public class VBASourceLine {
+public class VBASourceLine implements Comparable<VBASourceLine> {
 
     private final int lineNo;
     private final String line;
@@ -50,11 +50,31 @@ public class VBASourceLine {
     }
 
     public Boolean getFound() { return found; }
+
     /**
      * @return may be null
      */
     public Matcher getMatcher() {
         return this.matcher;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        VBASourceLine other = (VBASourceLine) o;
+        if (lineNo == other.lineNo) {
+            return line.equals(other.line);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int result = lineNo;
+        result = 31 * result + line.hashCode();
+        return result;
     }
 
     @Override
@@ -65,6 +85,16 @@ public class VBASourceLine {
             return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int compareTo(VBASourceLine other) {
+        int lineNoComparison = this.lineNo - other.lineNo;
+        if (lineNoComparison == 0) {
+            return this.line.compareTo(other.line);
+        } else {
+            return lineNoComparison;
         }
     }
 
@@ -87,14 +117,6 @@ public class VBASourceLine {
             jgen.writeStartObject();                                 // {
             jgen.writeNumberField("lineNo", sl.getLineNo()); // "lineNo":58,
             jgen.writeStringField("line", sl.getLine());     // "line":".........",
-            Matcher m = sl.getMatcher();
-            if (m != null) {
-                jgen.writeFieldName("matcher");                        // "matcher":
-                jgen.writeStartObject(); // {
-                jgen.writeBooleanField("found", sl.getFound());
-                jgen.writeStringField("pattern", sl.getMatcher().pattern().pattern());
-                jgen.writeEndObject();   // }
-            }
             jgen.writeEndObject();   // }
         }
     }
