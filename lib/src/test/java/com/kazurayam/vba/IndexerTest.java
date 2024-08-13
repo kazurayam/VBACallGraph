@@ -1,9 +1,6 @@
 package com.kazurayam.vba;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.kazurayam.unittest.TestOutputOrganizer;
 import com.kazurayam.vbaexample.MyWorkbook;
 import org.slf4j.Logger;
@@ -11,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -91,7 +87,7 @@ public class IndexerTest {
         SortedSet<VBAProcedureReference> memo =
                 indexer.findAllProcedureReferences();
         assertThat(memo).isNotNull();
-        assertThat(memo.size()).isEqualTo(3);
+        assertThat(memo.size()).isEqualTo(1);
         Path out = classOutputDir.resolve("test_findAllProcedureReferences.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
         for (VBAProcedureReference ref : memo) {
@@ -134,7 +130,7 @@ public class IndexerTest {
                 new FullyQualifiedVBAProcedureId(wbBackbone, mdDocTransformer,
                         prInitialize);
         //
-        assertThat(Indexer.shouldIgnore(referee)).isTrue();
+        assertThat(indexer.shouldIgnore(referee)).isTrue();
     }
 
     @Test
@@ -151,7 +147,7 @@ public class IndexerTest {
                 new FullyQualifiedVBAProcedureId(wbCashbook, mdCash,
                         prClassInitialize);
         //
-        assertThat(Indexer.shouldIgnore(referee)).isTrue();
+        assertThat(indexer.shouldIgnore(referee)).isTrue();
     }
 
     @Test
