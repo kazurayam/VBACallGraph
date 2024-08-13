@@ -28,7 +28,6 @@ public class Indexer {
 
     private final List<SensibleWorkbook> workbooks;
     private final SortedSet<VBAProcedureReference> memo;
-    private final List<ProcedureNameToBeIgnored> procedureNamesToBeIgnored;
     private Options options;
 
     private static final ObjectMapper mapper;
@@ -52,11 +51,6 @@ public class Indexer {
         workbooks = new ArrayList<>();
         memo = new TreeSet<>();
         options = Options.DEFAULT;
-
-        procedureNamesToBeIgnored = new ArrayList<>();
-        procedureNamesToBeIgnored.add(ProcedureNameToBeIgnored.Class_Initialize);
-        procedureNamesToBeIgnored.add(ProcedureNameToBeIgnored.Class_Class_Initialize);
-        procedureNamesToBeIgnored.add(ProcedureNameToBeIgnored.Standard_プロシージャー一覧を作る);
     }
 
     public void add(SensibleWorkbook workbook) {
@@ -66,7 +60,6 @@ public class Indexer {
     public void setOptions(Options options) {
         this.options = options;
     }
-
 
     public List<SensibleWorkbook> getWorkbooks() {
         return workbooks;
@@ -110,12 +103,7 @@ public class Indexer {
     }
 
     Boolean shouldIgnore(FullyQualifiedVBAProcedureId referee) {
-        for (ProcedureNameToBeIgnored entity : procedureNamesToBeIgnored) {
-            if (entity.matches(referee)) {
-                return true;
-            }
-        }
-        return false;
+        return options.shouldIgnoreRefereeProcedure(referee);
     }
 
     SortedSet<VBAProcedureReference> scanMemoByVBAProcedureReferee(FullyQualifiedVBAProcedureId referee) {

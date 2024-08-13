@@ -39,6 +39,7 @@ public class IndexerTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         indexer = new Indexer();
+        indexer.setOptions(Options.KAZURAYAM);
 
         // FeePaymentCheck workbook
         SensibleWorkbook wbFeePaymentCheck =

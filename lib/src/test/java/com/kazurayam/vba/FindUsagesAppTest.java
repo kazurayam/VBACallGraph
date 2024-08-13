@@ -56,7 +56,7 @@ public class FindUsagesAppTest {
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)
         ));
-        app.setOptions(Options.DEFAULT);
+        app.setOptions(Options.KAZURAYAM);
     }
 
     @Test
