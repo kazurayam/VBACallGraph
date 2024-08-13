@@ -1,0 +1,149 @@
+@startuml
+package 会費納入状況チェック {
+  package Environment {
+    object mbGetPathOfAoganCashbook
+    object mbGetPathOfAoganMembers
+    object Test_mbGetPathOfAoganCashbook
+    object Test_mbGetPathOfAoganMembers
+  }
+  package プロシージャー一覧を作る {
+    object プロシージャー一覧を作る
+  }
+  package 会費納入状況チェック {
+    object FindPaymentBy
+    object Main
+    object OpenCashbook
+    object OpenMemberTable
+    object PrintFinding
+    object RecordFindingIntoMemberTable
+  }
+}
+package Cashbook現金出納帳のためのVBAライブラリ {
+  package Account {
+    object AccountName
+    object AccountTypeAsString
+    object accType
+    object Initialize
+    object  of
+    object SubAccountName
+    object ToString
+  }
+  package AccountSum {
+    object Get小計
+    object is金額が非ゼロだ
+    object is取り込むべき
+    object is収支報告単位が該当する
+    object is年度内だ
+    object Test_Get小計
+    object Test勘定科目の小計を算出する
+    object Test小計の表を作る
+    object ToDate
+    object To勘定科目
+    object TransferRow
+    object 勘定科目の小計を算出する
+    object 現金出納記録ワークシートが無ければ作る
+    object 小計の表を作る
+    object 入出金記録をソートする
+    object 入出金記録を取り込む
+  }
+  package AccountsFinder {
+    object FindAccounts
+    object FindKeysAsString
+    object Initialize
+  }
+  package Cash {
+    object Class_Initialize
+    object ColumnHeader
+    object Initialize
+    object itsAccount
+    object ToDate
+    object ToString
+  }
+  package CashList {
+    object Add
+    object Class_Initialize
+    object Count
+    object Items
+    object SumOfExpenseAmount
+    object SumOfIncomeAmount
+    object ToString
+  }
+  package CashSelector {
+    object Initialize
+    object SelectCashList
+    object SelectCashListByAccount
+    object SelectCashListByMatchingDescription
+    object TrimAllSpaces
+  }
+  package Cashbook {
+    object Class_Initialize
+    object Count
+    object GetCashByKey
+    object Initialize
+    object Items
+  }
+  package Factories {
+    object CreateAccountsFinder
+    object CreateCashbook
+    object CreateCashSelector
+    object CreateEmptyCashList
+  }
+  package Helpers {
+    object PrintAccounts
+  }
+  package LearningModule {
+    object ListWorksheetsInAoganCashbook
+  }
+  package Tasting {
+    object testAccount
+    object testAccountsFinder_allUnit
+    object tasteAccountsFinder_specifyReportingUnit
+    object tasteCash_ColumnHeader
+    object tasteCash_ToDate
+    object tasteCash_ToString
+    object tasteCashbook
+    object tasteCashSelector_SelectCashList_ofExpense
+    object tasteCashSelector_SelectCashList_ofIncome
+  }
+  package TestAccount {
+    object TestAccoutTypeAsString
+    object TestExpenseAccount
+    object TestIncomeAccount
+    object TestOfString
+  }
+  package TestAccountSum {
+    object Test現金出納帳を作る
+  }
+  package TestAccountsFinder {
+    object Test_FindAccounts
+    object Test_FindAccounts_NotLike
+  }
+  pacakge TestCash {
+    object TestAccessTable1
+    object TestExpense
+    object TestIncome
+    object TestToDate
+    object TestToString
+  }
+  package TestCashList {
+    object TestCount
+    object TestItems
+    object TestSumOfExpenseAmount
+    object TestSumOfIncomeAmount
+  }
+  package TestCashSelector {
+    object Test_SelectCachList_NotLike
+    object Test_SelectCashList_ofIncome
+    object Test_SelectCashListByMatchingDescription
+  }
+  package TestCashbook {
+    object Test_AccessingTable1
+    object Test_Initialize_Cout_GetCash
+  }
+}
+package Backbone{
+  package moduleB {
+    procedureX 
+  }
+}
+@enduml

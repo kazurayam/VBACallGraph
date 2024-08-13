@@ -1,8 +1,13 @@
 # VBAProceduresIndexer
 
+by kazurayam
+at 5 Aug 2024
+
 ## このプロジェクトの背景
 
-わたくし kazurayam は仕事としてMicrosoft Excelでアプリケーションをいくつか作った。ワークブック・ファイルに Visual Basic for Application 言語（以下、VBAと略記する）でコードを書いた。その仕事の中でkazurayamはいくつかVBAの難問にぶち当たった。この VBAProceduresIndexer プロジェクトはkazurayamが経験したVBAの難問のひとつを取り上げて解決することを目標としている。その難問とは何か？そこから説明を始めよう。
+わたくし kazurayam は仕事としてMicrosoft Excelでアプリケーションをいくつか作った。ワークブック・ファイルに Visual Basic for Application 言語（以下、VBAと略記する）でコードを書いた。その仕事をする過程でいくつかVBAの難問にぶち当たった。この VBAProceduresIndexer プロジェクトはkazurayamが経験したVBAの難問のひとつを取り上げて解決することを目標としている。
+
+その難問とは何か？そこから説明を始めよう。
 
 ## 解決すべき問題
 
@@ -41,6 +46,10 @@ VBAのSubやFunctionをノードとして、ノードとノードの参照関係
 
 これらを基盤として、kazurayamが自作した７つのxlsmファイルに含まれた約70個のSubとFunctionをノードとして相互の参照関係をグラフ化する、そういうツールをJavaで作ろう。そのプログラムを `VBAProceduresIndexer` と名付ける。
 
+<figure>
+<img src="https://kazurayam.github.io/VBAProceduresIndexer/diagrams/out/sequence/VBAProceduresIndexerシーケンス図.png" alt="シーケンス図" />
+</figure>
+
 そのグラフを見れば個々のProcedureと他のProcedureとの関係性を一目瞭然に見ることができるだろう。そのグラフがあれば個々のProcedureが重要なものかそうでないかを判断する手掛かりになるだろう。
 
 さて、VBAProceduresIndexerを実装する上で、下記のような段階を踏むことになる。
@@ -55,4 +64,4 @@ VBAのSubやFunctionをノードとして、ノードとノードの参照関係
 
 ## 参考情報
 
--   link:https://github.com/kazurayam/VBAProceduresIndexer
+-   <https://github.com/kazurayam/VBAProceduresIndexer>

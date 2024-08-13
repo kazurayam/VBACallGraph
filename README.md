@@ -1,3 +1,3 @@
-# VBAProceduresIndexer
+# VBA Procedure Usage Analyzer
 
-see http://kazurayam.github.io/VBAProceduresIndexer/
+see http://kazurayam.github.io/VBAProcedureUsageAnalyzer/

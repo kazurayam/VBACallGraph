@@ -23,4 +23,9 @@ gradle-app.setting
 # Ignore Gradle build output directory
 build
 
+.idea
+.vscode
+
 test-output/
+
+.DS_Store
