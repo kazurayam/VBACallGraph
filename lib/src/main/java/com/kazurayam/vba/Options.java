@@ -2,27 +2,40 @@ package com.kazurayam.vba;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class Options {
 
-    public static Options DEFAULT = new Options.Builder().build();
+    public static Options DEFAULT =
+            new Options.Builder().build();
 
-    public static Options KAZURAYAM =
-            new Options.Builder().ignoreRefereeProcedure(
-                    VBAModule.ModuleType.Standard, "プロシージャー一覧を作る")
+    public static Options RELAXED =
+            new Options.Builder()
+                    .noExcludeModule()
+                    .noIgnoreRefereeProcedure()
                     .build();
 
-    private final List<ProcedureNameToBeIgnored> procedureNamesToBeIgnored;
-    private final Boolean excludeUnittestModules;
+    public static Options KAZURAYAM =
+            new Options.Builder()
+                    .excludeModule(ModuleToBeExcluded.プロシージャー一覧を作る.getPattern())
+                    .excludeModule(ModuleToBeExcluded.プロシージャ一覧を作る.getPattern())
+                    .excludeModule(ModuleToBeExcluded.プロシジャ一覧を作る.getPattern())
+                    .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシージャー一覧を作る")
+                    .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシージャ一覧を作る")
+                    .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシジャ一覧を作る")
+                    .build();
+
+    private final List<ProcedureToBeIgnored> procedureNamesToBeIgnored;
+    private final List<ModuleToBeExcluded> moduleNamesToBeExcluded;
 
     private Options(Builder builder) {
-        this.procedureNamesToBeIgnored = builder.procedureNamesToBeIgnored;
-        this.excludeUnittestModules = builder.excludeUnitTestModules;
+        this.procedureNamesToBeIgnored = builder.procedureToBeIgnoredList;
+        this.moduleNamesToBeExcluded = builder.moduleToBeExcludedList;
     }
 
     public Boolean shouldIgnoreRefereeProcedure(
             FullyQualifiedVBAProcedureId procedureId) {
-        for (ProcedureNameToBeIgnored pnbi : procedureNamesToBeIgnored) {
+        for (ProcedureToBeIgnored pnbi : procedureNamesToBeIgnored) {
             if (pnbi.matches(procedureId)) {
                 return true;
             }
@@ -30,45 +43,60 @@ public class Options {
         return false;
     }
 
-    public Boolean shouldExclude(VBAModule module) {
+    public Boolean shouldExcludeModule(VBAModule module) {
         String moduleNameLowerCase = module.getName().toLowerCase();
-        Boolean isUnitTestModule=
-                (moduleNameLowerCase.startsWith("test") ||
-                        moduleNameLowerCase.endsWith("test"));
-        return excludeUnittestModules && isUnitTestModule;
+        for (ModuleToBeExcluded pattern : moduleNamesToBeExcluded) {
+            if (pattern.find(moduleNameLowerCase)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public Boolean shouldExclude(FullyQualifiedVBAModuleId moduleId) {
-        return shouldExclude(moduleId.getModule());
-    }
-
-    public Boolean shouldExclude(VBAProcedureReference procedureReference) {
-        return shouldExclude(procedureReference.getReferrer().getModule());
+    public Boolean shouldExcludeModule(VBAProcedureReference procedureReference) {
+        return shouldExcludeModule(procedureReference.getReferrer().getModule());
     }
 
     /**
      *
      */
     public static class Builder {
-        private final List<ProcedureNameToBeIgnored> procedureNamesToBeIgnored;
-        private Boolean excludeUnitTestModules;
+        private final List<ProcedureToBeIgnored> procedureToBeIgnoredList;
+        private final List<ModuleToBeExcluded> moduleToBeExcludedList;
 
         public Builder() {
-            this.procedureNamesToBeIgnored = new ArrayList<>();
-            this.procedureNamesToBeIgnored.add(ProcedureNameToBeIgnored.Class_Initialize);
-            this.procedureNamesToBeIgnored.add(ProcedureNameToBeIgnored.Class_Class_Initialize);
-            this.excludeUnitTestModules = true;
+            this.moduleToBeExcludedList = new ArrayList<>();
+            this.moduleToBeExcludedList.add(ModuleToBeExcluded.STARTS_WITH_TEST);
+            this.moduleToBeExcludedList.add(ModuleToBeExcluded.ENDS_WITH_TEST);
+            //
+            this.procedureToBeIgnoredList = new ArrayList<>();
+            this.procedureToBeIgnoredList.add(ProcedureToBeIgnored.Class_Initialize);
+            this.procedureToBeIgnoredList.add(ProcedureToBeIgnored.Class_Class_Initialize);
         }
+
+        public Builder excludeModule(Pattern pattern) {
+            moduleToBeExcludedList.add(
+                    new ModuleToBeExcluded(pattern));
+            return this;
+        }
+
+        public Builder noExcludeModule() {
+            moduleToBeExcludedList.clear();
+            return this;
+        }
+
         public Builder ignoreRefereeProcedure(VBAModule.ModuleType type,
                                               String procedureName) {
-            this.procedureNamesToBeIgnored.add(
-                    new ProcedureNameToBeIgnored(type, procedureName));
+            this.procedureToBeIgnoredList.add(
+                    new ProcedureToBeIgnored(type, procedureName));
             return this;
         }
-        public Builder excludeUnittestModules(Boolean excludeUnittestModules) {
-            this.excludeUnitTestModules = excludeUnittestModules;
+
+        public Builder noIgnoreRefereeProcedure() {
+            this.procedureToBeIgnoredList.clear();
             return this;
         }
+
         public Options build() {
             return new Options(this);
         }

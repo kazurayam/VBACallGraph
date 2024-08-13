@@ -72,7 +72,7 @@ public class Indexer {
                 SortedSet<VBAProcedureReference> foundSet =
                         findProcedureReferenceTo(fqpi);
                 for (VBAProcedureReference procRef : foundSet) {
-                    if (!options.shouldExclude(procRef.getReferee().getModule())) {
+                    if (!options.shouldExcludeModule(procRef.getReferee().getModule())) {
                         memo.add(procRef);
                     }
                 }
@@ -86,7 +86,7 @@ public class Indexer {
      */
     public SortedSet<VBAProcedureReference> findProcedureReferenceTo(
             FullyQualifiedVBAProcedureId referee) {
-        if (!shouldIgnore(referee)) {
+        if (!options.shouldIgnoreRefereeProcedure(referee)) {
             SortedSet<VBAProcedureReference> scanResultByReferee =
                     this.scanMemoByVBAProcedureReferee(referee);
             if (scanResultByReferee.isEmpty()) {

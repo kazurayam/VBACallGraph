@@ -3,25 +3,25 @@ package com.kazurayam.vba;
 /**
  *
  */
-public class ProcedureNameToBeIgnored {
+public class ProcedureToBeIgnored {
 
-    public static ProcedureNameToBeIgnored Class_Initialize =
-            new ProcedureNameToBeIgnored(VBAModule.ModuleType.Class,
+    public static ProcedureToBeIgnored Class_Initialize =
+            new ProcedureToBeIgnored(VBAModule.ModuleType.Class,
                     "Initialize");
 
-    public static ProcedureNameToBeIgnored Class_Class_Initialize
-            = new ProcedureNameToBeIgnored(VBAModule.ModuleType.Class,
+    public static ProcedureToBeIgnored Class_Class_Initialize
+            = new ProcedureToBeIgnored(VBAModule.ModuleType.Class,
             "Class_Initialize");
 
-    public static ProcedureNameToBeIgnored Standard_プロシージャー一覧を作る
-            = new ProcedureNameToBeIgnored(VBAModule.ModuleType.Standard,
+    public static ProcedureToBeIgnored Standard_プロシージャー一覧を作る
+            = new ProcedureToBeIgnored(VBAModule.ModuleType.Standard,
             "プロシージャー一覧を作る");
 
     private VBAModule.ModuleType moduleType;
     private String procedureName;
 
-    public ProcedureNameToBeIgnored(VBAModule.ModuleType moduleType,
-                                    String procedureName) {
+    public ProcedureToBeIgnored(VBAModule.ModuleType moduleType,
+                                String procedureName) {
         this.moduleType = moduleType;
         this.procedureName = procedureName;
     }

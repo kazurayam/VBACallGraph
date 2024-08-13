@@ -13,26 +13,26 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FindUsagesAppTest {
+public class FindUsageAppTest {
 
     private static final Logger logger =
-            LoggerFactory.getLogger(FindUsagesAppTest.class);
+            LoggerFactory.getLogger(FindUsageAppTest.class);
 
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(FindUsagesAppTest.class)
+            new TestOutputOrganizer.Builder(FindUsageAppTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(FindUsagesAppTest.class)
+                    .subOutputDirectory(FindUsageAppTest.class)
                     .build();
 
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private FindUsagesApp app;
+    private FindUsageApp app;
     private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        app = new FindUsagesApp();
+        app = new FindUsageApp();
         app.add(new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
@@ -69,8 +69,26 @@ public class FindUsagesAppTest {
     }
 
     @Test
-    public void test_writeDiagram() throws IOException {
-        Path file = classOutputDir.resolve("test_writeDiagram.pu");
+    public void test_writeDiagram_Options_KAZURAYAM() throws IOException {
+        Path file = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.pu");
+        app.writeDiagram(file);
+        assertThat(file).exists();
+        assertThat(file.toFile().length()).isGreaterThan(0);
+    }
+
+    @Test
+    public void test_writeDiagram_Options_RELAXED() throws IOException {
+        Path file = classOutputDir.resolve("test_writeDiagram_Options_RELAXED.pu");
+        app.setOptions(Options.RELAXED);
+        app.writeDiagram(file);
+        assertThat(file).exists();
+        assertThat(file.toFile().length()).isGreaterThan(0);
+    }
+
+    @Test
+    public void test_writeDiagram_Options_DEFAULT() throws IOException {
+        Path file = classOutputDir.resolve("test_writeDiagram_Options_DEFAULT.pu");
+        app.setOptions(Options.DEFAULT);
         app.writeDiagram(file);
         assertThat(file).exists();
         assertThat(file.toFile().length()).isGreaterThan(0);

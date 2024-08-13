@@ -7,11 +7,11 @@ import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ProcedureUsageDiagramGenerator {
+public class FindUsageDiagramGenerator {
 
     private final StringBuilder sb;
 
-    public ProcedureUsageDiagramGenerator() {
+    public FindUsageDiagramGenerator() {
         sb = new StringBuilder();
     }
 

@@ -13,20 +13,20 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProcedureUsageDiagramGeneratorTest {
+public class FindUsageDiagramGeneratorTest {
 
-    private Logger logger = LoggerFactory.getLogger(ProcedureUsageDiagramGeneratorTest.class);
+    private Logger logger = LoggerFactory.getLogger(FindUsageDiagramGeneratorTest.class);
 
     private static TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(ProcedureUsageDiagramGeneratorTest.class)
+            new TestOutputOrganizer.Builder(FindUsageDiagramGeneratorTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(ProcedureUsageDiagramGeneratorTest.class)
+                    .subOutputDirectory(FindUsageDiagramGeneratorTest.class)
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
     private SensibleWorkbook wb;
     private Path classOutputDir;
-    private ProcedureUsageDiagramGenerator pudgen;
+    private FindUsageDiagramGenerator pudgen;
 
     @BeforeTest
     public void beforeTest() throws IOException {
@@ -39,7 +39,7 @@ public class ProcedureUsageDiagramGeneratorTest {
 
     @BeforeMethod
     public void setup() {
-        pudgen = new ProcedureUsageDiagramGenerator();
+        pudgen = new FindUsageDiagramGenerator();
     }
 
     @Test

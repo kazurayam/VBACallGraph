@@ -12,22 +12,22 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ProcedureNameToBeIgnoredTest {
+public class ProcedureToBeIgnoredTest {
 
     private static final Logger logger =
             LoggerFactory.getLogger(IndexerTest.class);
 
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(ProcedureNameToBeIgnoredTest.class)
+            new TestOutputOrganizer.Builder(ProcedureToBeIgnoredTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(ProcedureNameToBeIgnoredTest.class)
+                    .subOutputDirectory(ProcedureToBeIgnoredTest.class)
                     .build();
 
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
     private Path classOutputDir;
 
-    private ProcedureNameToBeIgnored procedureNameToBeIgnored;
+    private ProcedureToBeIgnored procedureNameToBeIgnored;
     private FullyQualifiedVBAProcedureId referee;
 
     @BeforeTest
@@ -46,18 +46,18 @@ public class ProcedureNameToBeIgnoredTest {
 
     @Test
     public void test_Class_Initialize() {
-        ProcedureNameToBeIgnored entity = ProcedureNameToBeIgnored.Class_Initialize;
+        ProcedureToBeIgnored entity = ProcedureToBeIgnored.Class_Initialize;
         assertThat(entity.getModuleType()).isEqualTo(VBAModule.ModuleType.Class);
         assertThat(entity.getProcedureName()).isEqualTo("Initialize");
     }
 
     @Test
     public void test_matches() {
-        assertThat(ProcedureNameToBeIgnored.Class_Initialize
+        assertThat(ProcedureToBeIgnored.Class_Initialize
                 .matches(referee)).isFalse();
-        assertThat(ProcedureNameToBeIgnored.Class_Class_Initialize
+        assertThat(ProcedureToBeIgnored.Class_Class_Initialize
                 .matches(referee)).isFalse();
-        assertThat(ProcedureNameToBeIgnored.Standard_プロシージャー一覧を作る
+        assertThat(ProcedureToBeIgnored.Standard_プロシージャー一覧を作る
                 .matches(referee)).isTrue();
     }
 }

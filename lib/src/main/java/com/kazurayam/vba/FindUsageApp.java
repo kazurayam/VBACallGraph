@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 
-public class FindUsagesApp {
+public class FindUsageApp {
 
     private final List<SensibleWorkbook> workbooks;
     private final Indexer indexer;
@@ -28,14 +28,14 @@ public class FindUsagesApp {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(FindUsagesApp.class,
+        module.addSerializer(FindUsageApp.class,
                 new FindUsageAppSerializer());
         module.addSerializer(SensibleWorkbook.class,
                 new SensibleWorkbook.SensibleWorkbookSerializer());
         mapper.registerModule(module);
     }
 
-    public FindUsagesApp() {
+    public FindUsageApp() {
         workbooks = new ArrayList<>();
         indexer = new Indexer();
         options = Options.DEFAULT;
@@ -69,16 +69,17 @@ public class FindUsagesApp {
 
     public void writeDiagram(Writer writer) throws IOException {
         // build the index
+        indexer.setOptions(this.options);
         SortedSet<VBAProcedureReference> memo = indexer.findAllProcedureReferences();
         //
-        ProcedureUsageDiagramGenerator pudgen =
-                new ProcedureUsageDiagramGenerator();
+        FindUsageDiagramGenerator pudgen =
+                new FindUsageDiagramGenerator();
         pudgen.writeStartUml();
         for (SensibleWorkbook wb : workbooks) {
             pudgen.writeStartWorkbook(wb);
             for (String key : wb.getModules().keySet()) {
                 VBAModule module = wb.getModule(key);
-                if (!options.shouldExclude(module)) {
+                if (!options.shouldExcludeModule(module)) {
                     pudgen.writeStartModule(module);
                     for (VBAProcedure procedure : module.getProcedures()) {
                         pudgen.writeProcedure(module, procedure);
@@ -92,7 +93,7 @@ public class FindUsagesApp {
         // write the directed arrows between Modules
         SortedSet<VBAProcedureReference> moduleReferences = indexer.findAllProcedureReferences();
         for (VBAProcedureReference reference : moduleReferences) {
-            if (!options.shouldExclude(reference)) {
+            if (!options.shouldExcludeModule(reference)) {
                 pudgen.writeProcedureReference(reference);
             }
         }
@@ -120,14 +121,14 @@ public class FindUsagesApp {
         return mapper.writeValueAsString(this);
     }
 
-    private static class FindUsageAppSerializer extends StdSerializer<FindUsagesApp> {
+    private static class FindUsageAppSerializer extends StdSerializer<FindUsageApp> {
         public FindUsageAppSerializer() { this(null); }
-        public FindUsageAppSerializer(Class<FindUsagesApp> t) {
+        public FindUsageAppSerializer(Class<FindUsageApp> t) {
             super(t);
         }
         @Override
         public void serialize(
-                FindUsagesApp app, JsonGenerator jgen, SerializerProvider provider)
+                FindUsageApp app, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();                             //{
             jgen.writeFieldName("VBAProcedureUsageAnalyzer"); //"VBAProcedureUsageAnalyzer":
