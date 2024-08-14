@@ -23,6 +23,11 @@ public class Options {
                     .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシージャー一覧を作る")
                     .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシージャ一覧を作る")
                     .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシジャ一覧を作る")
+
+                    .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "KzCls")
+                    .ignoreRefereeProcedure(VBAModule.ModuleType.Class, "ToString")
+                    .ignoreRefereeProcedure(VBAModule.ModuleType.Class, "Count")
+                    .ignoreRefereeProcedure(VBAModule.ModuleType.Class, "Items")
                     .build();
 
     private final List<ProcedureToBeIgnored> procedureNamesToBeIgnored;
