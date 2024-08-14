@@ -1,34 +1,29 @@
 package com.kazurayam.vba.diagram;
 
 import com.kazurayam.subprocessj.Subprocess;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * https://gist.github.com/GAM3RG33K/cc59290e8fe68d61c7ab2540f8471fd3
  */
 public class PlantUMLRunner {
 
-    public static String EXE_PATH_MAC = "/usr/local/bin/plantuml";
+    private static final Logger logger =
+            LoggerFactory.getLogger(PlantUMLRunner.class);
 
-    private Path executable = Paths.get(EXE_PATH_MAC);
     private Path workingDirectory = null;
-    private Path pu = null;
-    private Path output = null;
+    private Path diagram = null;
+    private Path outdir = null;
 
     public PlantUMLRunner() {}
-
-    public void setExecutable(String pathExecutable) {
-        this.setExecutable(Paths.get(pathExecutable));
-    }
-
-    public void setExecutable(Path pathExecutable) {
-        this.executable = pathExecutable;
-    }
 
     public void workingDirectory(Path workingDirectory) {
         if (!Files.exists(workingDirectory)) {
@@ -37,25 +32,25 @@ public class PlantUMLRunner {
         this.workingDirectory = workingDirectory;
     }
 
-    public void setPu(String pu) {
-        this.setPu(Paths.get(pu));
+    public void setDiagram(String pu) {
+        this.setDiagram(Paths.get(pu));
     }
 
-    public void setPu(Path pu) {
-        this.pu = pu;
-        if (!Files.exists(pu)) {
-            throw new IllegalArgumentException(pu +
+    public void setDiagram(Path diagram) {
+        this.diagram = diagram;
+        if (!Files.exists(diagram)) {
+            throw new IllegalArgumentException(diagram +
                     " does not exist");
         }
     }
 
-    public void setOutput(String output) throws IOException {
-        this.setOutput(Paths.get(output));
+    public void setOutdir(String outdir) throws IOException {
+        this.setOutdir(Paths.get(outdir));
     }
 
-    public void setOutput(Path output) throws IOException {
-        this.output = output;
-        Files.createDirectories(output.getParent());
+    public void setOutdir(Path outdir) throws IOException {
+        this.outdir = outdir;
+        Files.createDirectories(outdir);
     }
 
     public void run() throws IOException, InterruptedException {
@@ -64,12 +59,10 @@ public class PlantUMLRunner {
             workingDirectory = Paths.get(".");
         }
         Subprocess.CompletedProcess cp;
+        List<String> commandline = getCommandline();
         cp = new Subprocess().cwd(workingDirectory.toFile())
-                .run(Arrays.asList(executable.toString(),
-                        pu.toString(),
-                        "-o", output.toString(),
-                        "-progress",
-                        "-tpdf"));
+                .run(commandline);
+        logger.info("commandline: " + cp.commandline());
         cp.stdout().forEach(System.out::println);
         cp.stderr().forEach(System.err::println);
         if (cp.returncode() != 0) {
@@ -77,15 +70,26 @@ public class PlantUMLRunner {
         }
     }
 
+    private List<String> getCommandline() {
+        List<String> commandline;
+        if (outdir != null) {
+            commandline = Arrays.asList(
+                    "docker", "run", "ghcr.io/plantuml/plantuml",
+                    diagram.toString(),
+                    "-o", outdir.toString(),
+                    "-progress", "-tpdf", "--verbose");
+        } else {
+            commandline = Arrays.asList(
+                    "docker", "run", "ghcr.io/plantuml/plantuml",
+                    diagram.toString(),
+                    "-progress", "-tpdf", "--verbose");
+        }
+        return commandline;
+    }
+
     private void validateParams() {
-        if (Files.notExists(executable)) {
-            throw new IllegalArgumentException(executable + " does not exist");
-        }
-        if (pu == null) {
+        if (diagram == null) {
             throw new IllegalArgumentException("pathPuFile is required but not given");
-        }
-        if (output == null) {
-            throw new IllegalArgumentException("pathOutput is required but not given");
         }
     }
 }

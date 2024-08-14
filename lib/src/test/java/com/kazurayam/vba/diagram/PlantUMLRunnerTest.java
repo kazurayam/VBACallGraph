@@ -11,7 +11,6 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,13 +49,11 @@ public class PlantUMLRunnerTest {
         assertThat(pu).exists();
         //
         PlantUMLRunner runner = new PlantUMLRunner();
-        runner.setExecutable(PlantUMLRunner.EXE_PATH_MAC);
         runner.workingDirectory(classOutputDir);
-        runner.setPu(pu);
-        Path output = classOutputDir.resolve("test_smoke.pdf");
-        runner.setOutput(output);
-        runner.run();;
-        assertThat(output).exists();
-        assertThat(output.toFile().length()).isGreaterThan(1000000);
+        runner.setDiagram(pu);
+        runner.run();
+        Path out = classOutputDir.resolve("out.pdf");
+        assertThat(out).exists();
+        assertThat(out.toFile().length()).isGreaterThan(1000000);
     }
 }
