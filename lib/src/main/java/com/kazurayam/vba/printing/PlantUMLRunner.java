@@ -14,82 +14,107 @@ import java.util.List;
 /**
  * https://gist.github.com/GAM3RG33K/cc59290e8fe68d61c7ab2540f8471fd3
  */
-public class PlantUMLRunner {
+public class PlantUMLRunner extends AbstractCommandRunner{
 
     private static final Logger logger =
             LoggerFactory.getLogger(PlantUMLRunner.class);
 
-    private Path workingDirectory = null;
-    private Path diagram = null;
-    private Path outdir = null;
+    private final Path workingDirectory;
+    private final Path pumlFile;
+    private final Path outdir;
 
-    public PlantUMLRunner() {}
-
-    public void workingDirectory(Path workingDirectory) {
-        if (!Files.exists(workingDirectory)) {
-            throw new IllegalArgumentException("Working directory does not exist: " + workingDirectory);
-        }
-        this.workingDirectory = workingDirectory;
-    }
-
-    public void setDiagram(String pu) {
-        this.setDiagram(Paths.get(pu));
-    }
-
-    public void setDiagram(Path diagram) {
-        this.diagram = diagram;
-        if (!Files.exists(diagram)) {
-            throw new IllegalArgumentException(diagram +
-                    " does not exist");
-        }
-    }
-
-    public void setOutdir(String outdir) throws IOException {
-        this.setOutdir(Paths.get(outdir));
-    }
-
-    public void setOutdir(Path outdir) throws IOException {
-        this.outdir = outdir;
-        Files.createDirectories(outdir);
+    private PlantUMLRunner(Builder builder) {
+        this.workingDirectory = builder.workingDirectory;
+        this.pumlFile = builder.pumlFile;
+        this.outdir = builder.outdir;
     }
 
     public void run() throws IOException, InterruptedException {
-        validateParams();
-        if (workingDirectory == null) {
-            workingDirectory = Paths.get(".");
-        }
         Subprocess.CompletedProcess cp;
-        List<String> commandline = getCommandline();
-        cp = new Subprocess().cwd(workingDirectory.toFile())
-                .run(commandline);
-        logger.info("commandline: " + cp.commandline());
-        cp.stdout().forEach(System.out::println);
-        cp.stderr().forEach(System.err::println);
+        cp = new Subprocess()
+                .cwd(workingDirectory.toFile())
+                .run(makeCommandLine());
+        //cp.stdout().forEach(System.out::println);
+        //cp.stderr().forEach(System.err::println);
         if (cp.returncode() != 0) {
-            throw new IllegalStateException("Subprocess returns " + cp.returncode());
+            throw new IllegalStateException(cp.toString());
         }
     }
 
-    private List<String> getCommandline() {
+    private List<String> makeCommandLine() {
         List<String> commandline;
         if (outdir != null) {
             commandline = Arrays.asList(
-                    "docker", "run", "ghcr.io/plantuml/plantuml",
-                    diagram.toString(),
+                    findCommand("plantuml"),
+                    pumlFile.toString(),
                     "-o", outdir.toString(),
-                    "-progress", "-tpdf", "--verbose");
+                    "-progress", "-tpng", "--verbose");
         } else {
             commandline = Arrays.asList(
-                    "docker", "run", "ghcr.io/plantuml/plantuml",
-                    diagram.toString(),
-                    "-progress", "-tpdf", "--verbose");
+                    findCommand("plantuml"),
+                    pumlFile.toString(),
+                    "-progress", "-tpng", "--verbose");
         }
         return commandline;
     }
 
-    private void validateParams() {
-        if (diagram == null) {
-            throw new IllegalArgumentException("pathPuFile is required but not given");
+
+    /**
+     *
+     */
+    public static class Builder {
+        private Path workingDirectory;
+        private Path pumlFile;
+        private Path outdir;
+
+        public Builder() {
+            workingDirectory = Paths.get(".");
+            pumlFile = null;
+            outdir = null;
         }
+
+        public Builder workingDirectory(Path workingDirectory) throws IOException {
+            if (!Files.exists(workingDirectory)) {
+                throw new IOException("Working directory does not exist: " +
+                        workingDirectory);
+            }
+            this.workingDirectory = workingDirectory;
+            return this;
+        }
+
+        public Builder puml(String pumlString) throws IOException{
+            Path p = Paths.get(pumlString);
+            return puml(p);
+        }
+
+        public Builder puml(Path p) throws IOException{
+            if (!Files.exists(p)) {
+                throw new IOException(p + " does not exist");
+            }
+            this.pumlFile = p;
+            return this;
+        }
+
+        public Builder outdir(String outdirString) throws IOException {
+            Path dir = Paths.get(outdirString);
+            return this.outdir(dir);
+        }
+
+        public Builder outdir(Path outdir) throws IOException {
+            this.outdir = outdir;
+            Files.createDirectories(outdir);
+            return this;
+        }
+
+        public PlantUMLRunner build() {
+            if (workingDirectory == null) {
+                throw new IllegalArgumentException("workingDirectory is required but not given");
+            }
+            if (pumlFile == null) {
+                throw new IllegalArgumentException("puml file is required but not given");
+            }
+            return new PlantUMLRunner(this);
+        }
+
     }
 }

@@ -10,12 +10,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 
-public class MutoolPosterRunner {
+public class MutoolPosterRunner extends AbstractCommandRunner{
 
     private int x;
     private int y;
-    private Path original;   // PDF file
-    private Path poster;  // PDF with multiple pages with image pieces
+    private final Path original;   // PDF file
+    private final Path poster;  // PDF with multiple pages with image pieces
 
     private MutoolPosterRunner(Builder builder) {
         this.x = builder.x;
@@ -28,7 +28,7 @@ public class MutoolPosterRunner {
         CompletedProcess cp;
         cp = new Subprocess().cwd(new File("."))
                 .run(Arrays.asList(
-                        locateMutoolPath(),
+                        findCommand("mutool"),
                         "poster",
                         "-x", "" + this.x,
                         "-y", "" + this.y,
@@ -50,29 +50,6 @@ public class MutoolPosterRunner {
         return this.poster;
     }
 
-    private String locateMutoolPath() {
-        CommandLocator.CommandLocatingResult clr = CommandLocator.find("mutool");
-        if (clr.returncode() == 0) {
-            return clr.command();
-        } else {
-            throw new IllegalStateException("Could not find the full path of mutool command. " +
-                    "Possibly you have not installed the mutool. " +
-                    "Or the current environment variable PATH does not contain the mutool. " +
-                    "PATH=" + getPATH());
-        }
-    }
-
-    private String getPATH() {
-        String envPATH = System.getenv("PATH");
-        String[] envPATHComponents = envPATH.split(File.pathSeparator);
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < envPATHComponents.length; i++) {
-            sb.append(envPATHComponents[i]);
-            sb.append(File.pathSeparator);
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
     /**
      *
      */
@@ -129,8 +106,5 @@ public class MutoolPosterRunner {
             }
             return new MutoolPosterRunner(this);
         }
-
-
-
     }
 }

@@ -44,16 +44,19 @@ public class PlantUMLRunnerTest {
 
     @Test
     public void test_smoke() throws IOException, InterruptedException {
-        Path pu = classOutputDir.resolve("test_smoke.puml");
-        app.writeDiagram(pu);
-        assertThat(pu).exists();
+        Path puml = classOutputDir.resolve("test_smoke.puml");
+        app.writeDiagram(puml);
+        assertThat(puml).exists();
         //
-        PlantUMLRunner runner = new PlantUMLRunner();
-        runner.workingDirectory(classOutputDir);
-        runner.setDiagram(pu);
+        PlantUMLRunner runner =
+                new PlantUMLRunner.Builder()
+                        .workingDirectory(classOutputDir)
+                        .puml(puml)
+                        .outdir(classOutputDir)
+                        .build();
         runner.run();
-        Path out = classOutputDir.resolve("out.pdf");
+        Path out = classOutputDir.resolve("test_smoke.png");
         assertThat(out).exists();
-        assertThat(out.toFile().length()).isGreaterThan(1000000);
+        assertThat(out.toFile().length()).isGreaterThan(24000); // 24139
     }
 }
