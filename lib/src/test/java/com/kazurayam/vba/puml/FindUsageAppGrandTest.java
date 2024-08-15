@@ -40,7 +40,7 @@ public class FindUsageAppGrandTest {
 
     @Test
     public void test_writeDiagram_Options_KAZURAYAM() throws IOException {
-        original = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.pu");
+        original = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.puml");
         app.writeDiagram(original);
         assertThat(original).exists();
         assertThat(original.toFile().length()).isGreaterThan(0);

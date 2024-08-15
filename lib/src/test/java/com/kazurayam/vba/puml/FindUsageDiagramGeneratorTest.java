@@ -92,7 +92,7 @@ public class FindUsageDiagramGeneratorTest {
 
     @Test
     public void test_toString() throws IOException {
-        Path output = classOutputDir.resolve("test_toString.pu");
+        Path output = classOutputDir.resolve("test_toString.puml");
         VBAModule module = wb.getModule("年会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeStartUml();

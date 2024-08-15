@@ -70,7 +70,7 @@ public class FindUsageAppTest {
 
     @Test
     public void test_writeDiagram_Options_KAZURAYAM() throws IOException {
-        Path file = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.pu");
+        Path file = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.puml");
         app.writeDiagram(file);
         assertThat(file).exists();
         assertThat(file.toFile().length()).isGreaterThan(0);
@@ -78,7 +78,7 @@ public class FindUsageAppTest {
 
     @Test
     public void test_writeDiagram_Options_RELAXED() throws IOException {
-        Path file = classOutputDir.resolve("test_writeDiagram_Options_RELAXED.pu");
+        Path file = classOutputDir.resolve("test_writeDiagram_Options_RELAXED.puml");
         app.setOptions(Options.RELAXED);
         app.writeDiagram(file);
         assertThat(file).exists();
@@ -87,7 +87,7 @@ public class FindUsageAppTest {
 
     @Test
     public void test_writeDiagram_Options_DEFAULT() throws IOException {
-        Path file = classOutputDir.resolve("test_writeDiagram_Options_DEFAULT.pu");
+        Path file = classOutputDir.resolve("test_writeDiagram_Options_DEFAULT.puml");
         app.setOptions(Options.DEFAULT);
         app.writeDiagram(file);
         assertThat(file).exists();

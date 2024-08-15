@@ -44,7 +44,7 @@ public class PlantUMLRunnerTest {
 
     @Test
     public void test_smoke() throws IOException, InterruptedException {
-        Path pu = classOutputDir.resolve("test_smoke.pu");
+        Path pu = classOutputDir.resolve("test_smoke.puml");
         app.writeDiagram(pu);
         assertThat(pu).exists();
         //
