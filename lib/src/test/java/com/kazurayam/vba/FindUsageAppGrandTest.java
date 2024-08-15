@@ -4,6 +4,7 @@ import com.kazurayam.unittest.TestOutputOrganizer;
 import com.kazurayam.vbaexample.FindUsageAppFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
@@ -27,6 +28,7 @@ public class FindUsageAppGrandTest {
             too.getProjectDirectory().resolve("src/test/fixture/hub");
     private FindUsageApp app;
     private Path classOutputDir;
+    private Path original;
 
     @BeforeTest
     public void beforeTest() throws IOException {
@@ -36,9 +38,27 @@ public class FindUsageAppGrandTest {
 
     @Test
     public void test_writeDiagram_Options_KAZURAYAM() throws IOException {
-        Path file = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.pu");
-        app.writeDiagram(file);
-        assertThat(file).exists();
-        assertThat(file.toFile().length()).isGreaterThan(0);
+        original = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.pu");
+        app.writeDiagram(original);
+        assertThat(original).exists();
+        assertThat(original.toFile().length()).isGreaterThan(0);
+    }
+
+    @AfterMethod
+    public void afterMethod() throws IOException, InterruptedException {
+        Path image = classOutputDir.resolve("test_writeDiagram_Options_KAZURAYAM.png");
+        assertThat(image).exists();
+        // create a PDF from a PNG
+        Path originalFileName = PDFFromImageGenerator.resolvePDFFileNameFromImage(image);
+        Path original = classOutputDir.resolve(originalFileName);
+        PDFFromImageGenerator.generate(image, original);
+        // modify the original PDF to a poster PDF
+        MutoolPosterRunner runner =
+                new MutoolPosterRunner.Builder()
+                        .x(2)
+                        .y(2)
+                        .original(original)
+                        .build();
+        runner.run();
     }
 }
