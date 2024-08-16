@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.security.PublicKey;
 
 public class FindUsageDiagramGenerator {
 
@@ -38,12 +39,32 @@ public class FindUsageDiagramGenerator {
         switch (procedure.getProcKind()) {
             case Sub:
             case Function:
-                sb.append(String.format("    {method} %s\n", procedure.getProcedure()));
+                switch (procedure.getScope()) {
+                    case Public:
+                        sb.append(String.format("    {method} +%s\n", procedure.getProcedure()));
+                        break;
+                    case Private:
+                        sb.append(String.format("    {method} -%s\n", procedure.getProcedure()));
+                        break;
+                    default:
+                        sb.append(String.format("    {method} %s\n", procedure.getProcedure()));
+                        break;
+                }
                 break;
             case PropertyLet:
             case PropertyGet:
             case PropertySet:
-                sb.append(String.format("    {field} %s\n", procedure.getProcedure()));
+                switch (procedure.getScope()) {
+                    case Public:
+                        sb.append(String.format("    {field} +%s\n", procedure.getProcedure()));
+                        break;
+                    case Private:
+                        sb.append(String.format("    {field} -%s\n", procedure.getProcedure()));
+                        break;
+                    default:
+                        sb.append(String.format("    {field} %s\n", procedure.getProcedure()));
+                        break;
+                }
                 break;
             default:
                 sb.append(String.format("    %s\n", procedure.getProcedure()));

@@ -80,25 +80,25 @@ public class FindUsageDiagramGeneratorTest {
     }
 
     @Test
-    public void test_writeProcedure_as_method() {
+    public void test_writeProcedure_as_private_method() {
         VBAModule module = wbFeePaymentCheck.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeProcedure(module, procedure);
         logger.debug("[test_writeProcedure_as_method] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "{method} FindPaymentBy\n");
+                "{method} -FindPaymentBy\n");
     }
 
     @Test
-    public void test_writeProcedure_as_field() {
+    public void test_writeProcedure_as_public_field() {
         VBAModule module = wbCashbook.getModule("Account");
         VBAProcedure procedure = module.getProcedure("AccountName");
         pudgen.writeProcedure(module, procedure);
         logger.debug("[test_writeProcedure_as_field]" +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "{field} AccountName\n");
+                "{field} +AccountName\n");
     }
 
     @Test
