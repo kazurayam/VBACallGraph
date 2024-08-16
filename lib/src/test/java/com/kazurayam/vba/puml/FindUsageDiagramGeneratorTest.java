@@ -24,16 +24,21 @@ public class FindUsageDiagramGeneratorTest {
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private SensibleWorkbook wb;
+    private SensibleWorkbook wbFeePaymentCheck;
+    private SensibleWorkbook wbCashbook;
     private Path classOutputDir;
     private FindUsageDiagramGenerator pudgen;
 
     @BeforeTest
     public void beforeTest() throws IOException {
-        wb = new SensibleWorkbook(
+        wbFeePaymentCheck = new SensibleWorkbook(
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.FeePaymentCheck.getId());
+        wbCashbook = new SensibleWorkbook(
+                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
+                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Cashbook.getId());
         classOutputDir = too.cleanClassOutputDirectory();
     }
 
@@ -52,7 +57,7 @@ public class FindUsageDiagramGeneratorTest {
 
     @Test
     public void test_writeStartWorkbook_writeEndWorkbook() {
-        pudgen.writeStartWorkbook(wb);
+        pudgen.writeStartWorkbook(wbFeePaymentCheck);
         pudgen.writeEndWorkbook();
         logger.debug("[test_writeStartWorkbook_writeEndWorkbook] " +
                 pudgen.toString());
@@ -64,7 +69,7 @@ public class FindUsageDiagramGeneratorTest {
 
     @Test
     public void test_writeStartModule_writeEndModule() {
-        pudgen.writeStartModule(wb.getModule("会費納入状況チェック"));
+        pudgen.writeStartModule(wbFeePaymentCheck.getModule("会費納入状況チェック"));
         pudgen.writeEndModule();
         logger.debug("[test_writeStartModule_writeEndModule] " +
                 pudgen.toString());
@@ -75,28 +80,34 @@ public class FindUsageDiagramGeneratorTest {
     }
 
     @Test
-    public void test_writeProcedure() {
-        VBAModule module = wb.getModule("会費納入状況チェック");
+    public void test_writeProcedure_as_method() {
+        VBAModule module = wbFeePaymentCheck.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeProcedure(module, procedure);
-        logger.debug("[test_writeProcedure] " +
+        logger.debug("[test_writeProcedure_as_method] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
                 "{method} FindPaymentBy\n");
     }
 
     @Test
-    public void test_writeProcedureReference() {
-
+    public void test_writeProcedure_as_field() {
+        VBAModule module = wbCashbook.getModule("Account");
+        VBAProcedure procedure = module.getProcedure("AccountName");
+        pudgen.writeProcedure(module, procedure);
+        logger.debug("[test_writeProcedure_as_field]" +
+                pudgen.toString());
+        assertThat(pudgen.toString()).contains(
+                "{field} AccountName\n");
     }
 
     @Test
     public void test_toString() throws IOException {
         Path output = classOutputDir.resolve("test_toString.puml");
-        VBAModule module = wb.getModule("会費納入状況チェック");
+        VBAModule module = wbFeePaymentCheck.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeStartUml();
-        pudgen.writeStartWorkbook(wb);
+        pudgen.writeStartWorkbook(wbFeePaymentCheck);
         pudgen.writeStartModule(module);
         pudgen.writeProcedure(module, module.getProcedure("FindPaymentBy"));
         pudgen.writeProcedure(module, module.getProcedure("Main"));
