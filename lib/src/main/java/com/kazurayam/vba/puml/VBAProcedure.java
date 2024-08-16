@@ -200,6 +200,8 @@ public class VBAProcedure {
     public static enum Scope {
         Public,
         Private,
+        Friend,
+        Static,
         Unspecified;
     }
 
