@@ -1,4 +1,4 @@
-Attribute VB_Name = "年会費納入状況チェック"
+Attribute VB_Name = "会費納入状況チェック"
 Option Explicit
 
 '本Subは、青森県眼科医会の会員が本年度の会費をすでに納めたかどうかを
@@ -57,7 +57,7 @@ Public Sub Main()
     Dim cb As Cashbook
     Set cb = OpenCashbook()
     Debug.Print "cb.Count=" & cb.Count
-    Dim cs As CashSelector: Set cs = CreateCashSelector(cb, #4/1/2023#, #3/31/2024#)
+    Dim cs As CashSelector: Set cs = CreateCashSelector(cb, #4/1/2024#, #3/31/2025#)
     
     '各会員が会費を納入したかどうか調べてwork会員名簿に書き込む
     Dim i As Long

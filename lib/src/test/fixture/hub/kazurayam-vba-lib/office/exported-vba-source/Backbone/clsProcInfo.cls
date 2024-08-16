@@ -10,22 +10,32 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Public ModName As String
+Public ModType As String
 Public ProcName As String
 Public ProcKind As String
 Public LineNo As Long
 Public Source As String
 Public Comment As String
 
-Public Property Get ProcKindName() As String
+Public Property Get ModuleType() As String
+    Select Case ModType
+        Case 1
+            ModuleType = "Standard"
+        Case 2
+            ModuleType = "Class"
+    End Select
+End Property
+
+Public Property Get procKindName() As String
     Select Case ProcKind
         Case 0
-            ProcKindName = "Sub Function"
+            procKindName = "Sub Function"
         Case 1
-            ProcKindName = "Property Let"
+            procKindName = "Property Let"
         Case 2
-            ProcKindName = "Property Set"
+            procKindName = "Property Set"
         Case 3
-            ProcKindName = "Property Get"
+            procKindName = "Property Get"
     End Select
 End Property
 

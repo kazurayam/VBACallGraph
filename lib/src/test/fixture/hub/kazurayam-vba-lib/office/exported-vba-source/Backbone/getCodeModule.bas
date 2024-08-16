@@ -7,7 +7,8 @@ Option Explicit
 'Dictionaryにプロシージャー・プロパティ情報を格納
 Public Sub getCodeModule(ByRef dicProcInfo As Dictionary, _
                          ByVal wb As Workbook, _
-                         ByVal sMod As String)
+                         ByVal sMod As String, _
+                         ByVal ModuleType As String)
     Dim cProcInfo As clsProcInfo
     Dim sProcName As String
     Dim sProcKey As String
@@ -24,6 +25,7 @@ Public Sub getCodeModule(ByRef dicProcInfo As Dictionary, _
                 If Not dicProcInfo.Exists(sProcKey) Then
                     Set cProcInfo = New clsProcInfo
                     cProcInfo.ModName = sMod
+                    cProcInfo.ModType = ModuleType
                     cProcInfo.ProcName = sProcName
                     cProcInfo.ProcKind = iProcKind
                     cProcInfo.LineNo = i

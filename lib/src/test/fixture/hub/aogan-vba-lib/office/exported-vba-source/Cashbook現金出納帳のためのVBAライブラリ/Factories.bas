@@ -39,11 +39,13 @@ End Function
 
 
 
-Public Function CreateCashSelector(ByVal cb As Cashbook) As CashSelector
+Public Function CreateCashSelector(ByVal cb As Cashbook, _
+        Optional ByVal periodStart As Date = #4/1/2022#, _
+        Optional ByVal periodEnd As Date = #3/31/2023#) As CashSelector
     '引数として渡されたCashbookを入力としてCashSelectorオブジェクトを生成して返す
     '外部プロジェクトがCashSelectorオブジェクトを生成するためにPublicなこの関数が必要だ
     Dim cs As CashSelector: Set cs = New CashSelector
-    Call cs.Initialize(cb)
+    Call cs.Initialize(cb, periodStart, periodEnd)
     Set CreateCashSelector = cs
 End Function
 
