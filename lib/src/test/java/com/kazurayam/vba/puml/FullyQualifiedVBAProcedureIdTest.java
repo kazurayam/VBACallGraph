@@ -31,9 +31,9 @@ public class FullyQualifiedVBAProcedureIdTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         SensibleWorkbook wb = new SensibleWorkbook(
-                MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir));
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Member.getId());
         VBAModule module = wb.getModule("AoMemberUtils");
         VBAProcedure procedure = module.getProcedure("FetchMemberTable");
         fqpi = new FullyQualifiedVBAProcedureId(wb, module, procedure);
@@ -57,7 +57,7 @@ public class FullyQualifiedVBAProcedureIdTest {
     }
     @Test
     public void test_getProcedure() {
-        assertThat(fqpi.getProcedure().getName()).isEqualTo("FetchMemberTable");
+        assertThat(fqpi.getProcedure().getProcedure()).isEqualTo("FetchMemberTable");
     }
     @Test
     public void test_getProcedureName() {

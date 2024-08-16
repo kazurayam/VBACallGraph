@@ -35,7 +35,7 @@ public class FindUsageDiagramGenerator {
     }
 
     public void writeProcedure(VBAModule module, VBAProcedure procedure) {
-        sb.append(String.format("    {method} %s\n", procedure.getName()));
+        sb.append(String.format("    {method} %s\n", procedure.getProcedure()));
     }
 
     public void writeProcedureReference(VBAProcedureReference procedureReference) {

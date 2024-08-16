@@ -34,10 +34,9 @@ public class PlantUMLRunnerTest {
         classOutputDir = too.cleanClassOutputDirectory();
         app = new FindUsageApp();
         app.add(new SensibleWorkbook(
-                MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
-        );
+                .id(MyWorkbook.FeePaymentCheck.getId()));
         app.setOptions(Options.DEFAULT);
         //
     }
@@ -57,6 +56,6 @@ public class PlantUMLRunnerTest {
         runner.run();
         Path out = classOutputDir.resolve("test_smoke.png");
         assertThat(out).exists();
-        assertThat(out.toFile().length()).isGreaterThan(24000); // 24139
+        assertThat(out.toFile().length()).isGreaterThan(20000);
     }
 }

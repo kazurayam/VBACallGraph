@@ -17,9 +17,7 @@ public class Options {
 
     public static Options KAZURAYAM =
             new Options.Builder()
-                    .excludeModule(ModuleToBeExcluded.プロシージャー一覧を作る.getPattern())
-                    .excludeModule(ModuleToBeExcluded.プロシージャ一覧を作る.getPattern())
-                    .excludeModule(ModuleToBeExcluded.プロシジャ一覧を作る.getPattern())
+                    .excludeModule(ModuleToBeExcluded.XPORT.getPattern())
                     .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシージャー一覧を作る")
                     .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシージャ一覧を作る")
                     .ignoreRefereeProcedure(VBAModule.ModuleType.Standard, "プロシジャ一覧を作る")

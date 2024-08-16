@@ -68,7 +68,7 @@ public class VBAModule implements Comparable<VBAModule> {
 
     public VBAProcedure getProcedure(String procedureName) {
         for (VBAProcedure procedure : procedures) {
-            if (procedure.getName().equals(procedureName)) {
+            if (procedure.getProcedure().equals(procedureName)) {
                 return procedure;
             }
         }

@@ -34,28 +34,24 @@ public class FindUsageAppTest {
         classOutputDir = too.cleanClassOutputDirectory();
         app = new FindUsageApp();
         app.add(new SensibleWorkbook(
-                MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.FeePaymentCheck.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Cashbook.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Member.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.Backbone.getId(),
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Backbone.getId()));
         app.setOptions(Options.KAZURAYAM);
     }
 

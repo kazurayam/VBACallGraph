@@ -31,9 +31,9 @@ public class FindUsageDiagramGeneratorTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         wb = new SensibleWorkbook(
-                MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir));
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.FeePaymentCheck.getId());
         classOutputDir = too.cleanClassOutputDirectory();
     }
 
@@ -64,19 +64,19 @@ public class FindUsageDiagramGeneratorTest {
 
     @Test
     public void test_writeStartModule_writeEndModule() {
-        pudgen.writeStartModule(wb.getModule("年会費納入状況チェック"));
+        pudgen.writeStartModule(wb.getModule("会費納入状況チェック"));
         pudgen.writeEndModule();
         logger.debug("[test_writeStartModule_writeEndModule] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "stereotype 年会費納入状況チェック {\n");
+                "stereotype 会費納入状況チェック {\n");
         assertThat(pudgen.toString()).contains(
                 "}\n");
     }
 
     @Test
     public void test_writeProcedure() {
-        VBAModule module = wb.getModule("年会費納入状況チェック");
+        VBAModule module = wb.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeProcedure(module, procedure);
         logger.debug("[test_writeProcedure] " +
@@ -93,7 +93,7 @@ public class FindUsageDiagramGeneratorTest {
     @Test
     public void test_toString() throws IOException {
         Path output = classOutputDir.resolve("test_toString.puml");
-        VBAModule module = wb.getModule("年会費納入状況チェック");
+        VBAModule module = wb.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeStartUml();
         pudgen.writeStartWorkbook(wb);

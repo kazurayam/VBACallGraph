@@ -25,6 +25,9 @@ public class FullyQualifiedVBAProcedureId implements Comparable<FullyQualifiedVB
     }
 
     public FullyQualifiedVBAProcedureId(SensibleWorkbook workbook, VBAModule module, VBAProcedure procedure) {
+        assert workbook != null;
+        assert module != null;
+        assert procedure != null;
         this.workbook = workbook;
         this.module = module;
         this.procedure = procedure;
@@ -55,7 +58,7 @@ public class FullyQualifiedVBAProcedureId implements Comparable<FullyQualifiedVB
     }
 
     public String getProcedureName() {
-        return procedure.getName();
+        return procedure.getProcedure();
     }
 
     @Override

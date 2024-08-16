@@ -19,9 +19,9 @@ public class ModuleToBeExcludedTest {
     }
 
     @Test
-    public void test_matches_プロシージャ一覧を作る() {
-        applyMatches(ModuleToBeExcluded.プロシージャ一覧を作る,
-                "プロシージャ一覧を作る");
+    public void test_matches_XPORT() {
+        applyMatches(ModuleToBeExcluded.XPORT,
+                "Xport");
     }
 
     void applyMatches(ModuleToBeExcluded instance, String target) {

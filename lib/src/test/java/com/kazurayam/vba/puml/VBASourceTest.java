@@ -37,22 +37,22 @@ public class VBASourceTest {
         classOutputDir = too.cleanClassOutputDirectory();
         Path exportedSourceDir =
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir);
-        Path moduleSource = exportedSourceDir.resolve("年会費納入状況チェック.bas");
-        vbaSource = new VBASource("年会費納入状況チェック", moduleSource);
+        Path moduleSource = exportedSourceDir.resolve("会費納入状況チェック.bas");
+        vbaSource = new VBASource("会費納入状況チェック", moduleSource);
         assertThat(vbaSource).isNotNull();
     }
 
     @Test
     public void test_getModuleName() {
         String moduleName = vbaSource.getModuleName();
-        assertThat(moduleName).isEqualTo("年会費納入状況チェック");
+        assertThat(moduleName).isEqualTo("会費納入状況チェック");
     }
 
     @Test
     public void test_getSourcePath() {
         Path sourcePath = vbaSource.getSourcePath();
         assertThat(sourcePath.getFileName().toString())
-                .isEqualTo("年会費納入状況チェック.bas");
+                .isEqualTo("会費納入状況チェック.bas");
         assertThat(sourcePath).exists();
     }
 

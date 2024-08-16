@@ -35,13 +35,14 @@ public class ProcedureToBeIgnoredTest {
         classOutputDir = too.cleanClassOutputDirectory();
         SensibleWorkbook wbFeePaymentCheck =
                 new SensibleWorkbook(
-                        MyWorkbook.FeePaymentCheck.getId(),
                         MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir));
-        VBAModule md = wbFeePaymentCheck.getModule("プロシージャー一覧を作る");
-        VBAProcedure pr = md.getProcedure("プロシージャー一覧を作る");
-        referee =
-                new FullyQualifiedVBAProcedureId(wbFeePaymentCheck, md, pr);
+                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                        .id(MyWorkbook.FeePaymentCheck.getId());
+        VBAModule md = wbFeePaymentCheck.getModule("Xport");
+        assert md != null;
+        VBAProcedure pr = md.getProcedure("ExportThisWorkbook");
+        assert pr != null;
+        referee = new FullyQualifiedVBAProcedureId(wbFeePaymentCheck, md, pr);
     }
 
     @Test
@@ -57,7 +58,7 @@ public class ProcedureToBeIgnoredTest {
                 .matches(referee)).isFalse();
         assertThat(ProcedureToBeIgnored.Class_Class_Initialize
                 .matches(referee)).isFalse();
-        assertThat(ProcedureToBeIgnored.Standard_プロシージャー一覧を作る
+        assertThat(ProcedureToBeIgnored.Standard_ExportThisWorkbook
                 .matches(referee)).isTrue();
     }
 }

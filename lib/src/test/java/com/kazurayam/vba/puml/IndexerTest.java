@@ -44,14 +44,14 @@ public class IndexerTest {
         // FeePaymentCheck workbook
         SensibleWorkbook wbFeePaymentCheck =
                 new SensibleWorkbook(
-                        MyWorkbook.FeePaymentCheck.getId(),
                         MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir));
+                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                        .id(MyWorkbook.FeePaymentCheck.getId());
         indexer.add(wbFeePaymentCheck);
-        VBAModule md年会費納入状況チェック = wbFeePaymentCheck.getModule("年会費納入状況チェック");
+        VBAModule md会費納入状況チェック = wbFeePaymentCheck.getModule("会費納入状況チェック");
         FullyQualifiedVBAModuleId referrer =
-                new FullyQualifiedVBAModuleId(wbFeePaymentCheck, md年会費納入状況チェック);
-        VBASource referrerModuleSource = md年会費納入状況チェック.getVBASource();
+                new FullyQualifiedVBAModuleId(wbFeePaymentCheck, md会費納入状況チェック);
+        VBASource referrerModuleSource = md会費納入状況チェック.getVBASource();
         VBASourceLine referrerSourceLine =
                 new VBASourceLine(51,
                         "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)");
@@ -59,10 +59,9 @@ public class IndexerTest {
         // Member workbook
         SensibleWorkbook wbMember =
                 new SensibleWorkbook(
-                        MyWorkbook.Member.getId(),
                         MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Member.resolveSourceDirUnder(baseDir)
-                );
+                        MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                        .id(MyWorkbook.Member.getId());
         indexer.add(wbMember);
         VBAModule mdAoMemberUtil =
                 wbMember.getModule("AoMemberUtils");
@@ -88,7 +87,7 @@ public class IndexerTest {
         SortedSet<VBAProcedureReference> memo =
                 indexer.findAllProcedureReferences();
         assertThat(memo).isNotNull();
-        assertThat(memo.size()).isEqualTo(1);
+        assertThat(memo.size()).isEqualTo(3);
         Path out = classOutputDir.resolve("test_findAllProcedureReferences.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
         for (VBAProcedureReference ref : memo) {
@@ -121,9 +120,9 @@ public class IndexerTest {
     public void test_shouldIgnore_Initialize() throws IOException {
         SensibleWorkbook wbBackbone =
                 new SensibleWorkbook(
-                        MyWorkbook.Backbone.getId(),
                         MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Backbone.resolveSourceDirUnder(baseDir));
+                        MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                        .id(MyWorkbook.Backbone.getId());
         VBAModule mdDocTransformer = wbBackbone.getModule("DocTransformer");
         VBAProcedure prInitialize =
                 mdDocTransformer.getProcedure("Initialize");
@@ -138,9 +137,9 @@ public class IndexerTest {
     public void test_shouldIgnore_Class_Initialize() throws IOException {
         SensibleWorkbook wbCashbook =
                 new SensibleWorkbook(
-                        MyWorkbook.Cashbook.getId(),
                         MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir));
+                        MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                        .id(MyWorkbook.Cashbook.getId());
         VBAModule mdCash = wbCashbook.getModule("Cash");
         VBAProcedure prClassInitialize =
                 mdCash.getProcedure("Class_Initialize");

@@ -31,9 +31,9 @@ public class FullyQualifiedVBAModuleIdTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         SensibleWorkbook wb = new SensibleWorkbook(
-                MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir));
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Member.getId());
         VBAModule module = wb.getModule("AoMemberUtils");
         fqmi = new FullyQualifiedVBAModuleId(wb, module);
     }

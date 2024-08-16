@@ -28,11 +28,12 @@ public class VBAProcedureTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         proc = new VBAProcedure.Builder()
-                .name("AccountName")
+                .project("Cashbook")
+                .moduleType("Class")
                 .module("Account")
-                .type("Class")
                 .scope("Public")
-                .subOrFunc("Sub")
+                .procKind("Sub")
+                .procedure("AccountName")
                 .lineNo(68)
                 .source("Public Property Get AccountName() as String")
                 .comment("Sun also rises")
@@ -40,13 +41,13 @@ public class VBAProcedureTest {
     }
 
     @Test
-    public void test_getName() {
-        assertThat(proc.getName()).isEqualTo("AccountName");
+    public void test_getProject() {
+        assertThat(proc.getProject()).isEqualTo("Cashbook");
     }
 
     @Test
-    public void test_getType() {
-        assertThat(proc.getType()).isEqualTo(VBAModule.ModuleType.Class);
+    public void test_getModuleType() {
+        assertThat(proc.getModuleType()).isEqualTo(VBAModule.ModuleType.Class);
     }
 
     @Test
@@ -55,19 +56,25 @@ public class VBAProcedureTest {
     }
 
     @Test
-    public void test_getSourceFileName() {
-        assertThat(proc.getSourceFileName()).isEqualTo("Account.cls");
-    }
-
-    @Test
     public void test_getScope() {
         assertThat(proc.getScope()).isEqualTo(VBAProcedure.Scope.Public);
     }
 
     @Test
-    public void test_getSubOrFunc() {
-        assertThat(proc.getSubOrFunc()).isEqualTo(VBAProcedure.SubOrFunc.Sub);
+    public void test_getProcKind() {
+        assertThat(proc.getProcKind()).isEqualTo(VBAProcedure.ProcKind.Sub);
     }
+
+    @Test
+    public void test_getProcedure() {
+        assertThat(proc.getProcedure()).isEqualTo("AccountName");
+    }
+
+    @Test
+    public void test_getSourceFileName() {
+        assertThat(proc.getSourceFileName()).isEqualTo("Account.cls");
+    }
+
     @Test
     public void test_getLineNo() {
         assertThat(proc.getLineNo()).isEqualTo(68);

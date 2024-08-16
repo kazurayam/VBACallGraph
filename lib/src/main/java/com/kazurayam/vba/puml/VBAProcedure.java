@@ -10,11 +10,13 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
 
 public class VBAProcedure {
-    private final String name;
+    // |Project|ModuleType|Module|Scope|ProcKind|Procedure|LineNo|Source|Comment|
+    private final String project;
+    private final VBAModule.ModuleType moduleType;
     private final String module;
-    private final VBAModule.ModuleType type;
     private final Scope scope;
-    private final SubOrFunc subOrFunc;
+    private final ProcKind procKind;
+    private final String procedure;
     private final int lineNo;
     private final String source;
     private final String comment;
@@ -29,32 +31,35 @@ public class VBAProcedure {
     }
 
     private VBAProcedure(Builder builder) {
-        name = builder.name;
+        project = builder.project;
+        moduleType = builder.moduleType;
         module = builder.module;
-        type = builder.type;
         scope = builder.scope;
-        subOrFunc = builder.subOrFunc;
+        procKind = builder.procKind;
+        procedure = builder.procedure;
         lineNo = builder.lineNo;
         source = builder.source;
         comment = builder.comment;
     }
-    public String getName() { return name; }
+    public String getProject() { return project; }
+    public VBAModule.ModuleType getModuleType() { return moduleType; }
     public String getModule() { return module; }
-    public VBAModule.ModuleType getType() { return type; }
+    public Scope getScope() { return scope; }
+    public ProcKind getProcKind() { return procKind; }
+    public String getProcedure() { return procedure; }
     public String getSourceFileName() {
-        if (this.getType().equals(VBAModule.ModuleType.Class)) {
+        if (this.getModuleType().equals(VBAModule.ModuleType.Class)) {
             return getModule() + ".cls";
-        } else if (this.getType().equals(VBAModule.ModuleType.Standard)) {
+        } else if (this.getModuleType().equals(VBAModule.ModuleType.Standard)) {
             return getModule() + ".bas";
         } else {
             return getModule() + ".unknown";
         }
     }
-    public Scope getScope() { return scope; }
-    public SubOrFunc getSubOrFunc() { return subOrFunc; }
     public int getLineNo() { return lineNo; }
     public String getSource() { return source; }
     public String getComment() { return comment; }
+
     @Override
     public String toString() {
         //pretty print
@@ -74,38 +79,41 @@ public class VBAProcedure {
      *
      */
     public static class Builder {
-        private String name;
+        // |Project|ModuleType|Module|Scope|ProcKind|Procedure|LineNo|Source|Comment|
+        private String project;
+        private VBAModule.ModuleType moduleType;
         private String module;
-        private VBAModule.ModuleType type;
         private Scope scope;
-        private SubOrFunc subOrFunc;
+        private ProcKind procKind;
+        private String procedure;
         private int lineNo;
         private String source;
         private String comment;
         public Builder() {
-            name = "";
+            project = "";
+            moduleType = VBAModule.ModuleType.Unspecified;
             module = "";
-            type = VBAModule.ModuleType.Unspecified;
             scope = Scope.Unspecified;
-            subOrFunc = SubOrFunc.Unspecified;
+            procKind = ProcKind.Unspecified;
+            procedure = "";
             lineNo = 0;
             source = "";
             comment = "";
         }
-        public Builder name(String name) {
-            this.name = name;
+        public Builder project(String project) {
+            this.project = project;
+            return this;
+        }
+        public Builder moduleType(String moduleType) {
+            try {
+                this.moduleType = VBAModule.ModuleType.valueOf(moduleType);
+            } catch (IllegalArgumentException e) {
+                this.moduleType = VBAModule.ModuleType.Unspecified;
+            }
             return this;
         }
         public Builder module(String module) {
             this.module = module;
-            return this;
-        }
-        public Builder type(String type) {
-            try {
-                this.type = VBAModule.ModuleType.valueOf(type);
-            } catch (IllegalArgumentException e) {
-                this.type = VBAModule.ModuleType.Unspecified;
-            }
             return this;
         }
         public Builder scope(String scope) {
@@ -116,12 +124,31 @@ public class VBAProcedure {
             }
             return this;
         }
-        public Builder subOrFunc(String subOrFunc) {
-            try {
-                this.subOrFunc = VBAProcedure.SubOrFunc.valueOf(subOrFunc);
-            } catch (IllegalArgumentException e) {
-                this.subOrFunc = VBAProcedure.SubOrFunc.Unspecified;
+        public Builder procKind(String procKind) {
+            switch (procKind) {
+                case "Sub":
+                    this.procKind = ProcKind.Sub;
+                    break;
+                case "Function":
+                    this.procKind = ProcKind.Function;
+                    break;
+                case "Property Let":
+                    this.procKind = ProcKind.PropertyLet;
+                    break;
+                case "Property Get":
+                    this.procKind = ProcKind.PropertyGet;
+                    break;
+                case "Property Set":
+                    this.procKind = ProcKind.PropertySet;
+                    break;
+                default:
+                    this.procKind = ProcKind.Unspecified;
+                    break;
             }
+            return this;
+        }
+        public Builder procedure(String procedure) {
+            this.procedure = procedure;
             return this;
         }
         public Builder lineNo(int lineNo) {
@@ -157,13 +184,15 @@ public class VBAProcedure {
                 VBAProcedure proc, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
-            jgen.writeStringField("name", proc.getName());
-            jgen.writeStringField("module", proc.getModule());
-            jgen.writeStringField("scope", proc.getScope().toString());
-            jgen.writeStringField("subOrFunc", proc.getSubOrFunc().toString());
-            jgen.writeNumberField("lineNo", proc.getLineNo());
-            jgen.writeStringField("source", proc.getSource());
-            jgen.writeStringField("comment", proc.getComment());
+            jgen.writeStringField("Project", proc.getProject());
+            jgen.writeStringField("ModuleType", proc.getModuleType().name());
+            jgen.writeStringField("Module", proc.getModule());
+            jgen.writeStringField("Scope", proc.getScope().toString());
+            jgen.writeStringField("ProcKind", proc.getProcKind().toString());
+            jgen.writeStringField("Procedure", proc.getProcedure());
+            jgen.writeNumberField("LineNo", proc.getLineNo());
+            jgen.writeStringField("Source", proc.getSource());
+            jgen.writeStringField("Comment", proc.getComment());
             jgen.writeEndObject();
         }
     }
@@ -174,9 +203,12 @@ public class VBAProcedure {
         Unspecified;
     }
 
-    public static enum SubOrFunc {
+    public static enum ProcKind {
         Sub,
         Function,
+        PropertyLet,
+        PropertyGet,
+        PropertySet,
         Unspecified;
     }
 

@@ -26,47 +26,41 @@ public class FindUsageAppFactory {
         FindUsageApp app = new FindUsageApp();
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.FeePaymentCheck.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.PleasePayFeeLetter.getId(),
                 MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
-                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.PleasePayFeeLetter.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.WebCredentials.getId(),
                 MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
-                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.WebCredentials.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.Settlement.getId(),
                 MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Settlement.getId()
+                ));
 
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Cashbook.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Member.getId()));
 
         app.add(new SensibleWorkbook(
-                MyWorkbook.Backbone.getId(),
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)
-        ));
+                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Backbone.getId()));
 
         app.setOptions(Options.KAZURAYAM);
 

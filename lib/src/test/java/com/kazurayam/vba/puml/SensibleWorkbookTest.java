@@ -32,9 +32,9 @@ public class SensibleWorkbookTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         wb = new SensibleWorkbook(
-                MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir));
+                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Cashbook.getId());
         classOutputDir = too.cleanClassOutputDirectory();
     }
     @Test
@@ -69,9 +69,9 @@ public class SensibleWorkbookTest {
     @Test
     public void test_getModules() throws IOException {
         SensibleWorkbook wb = new SensibleWorkbook(
-                MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir));
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Member.getId());
         SortedMap<String, VBAModule> modules =
                 wb.getModules();
         assertThat(modules.keySet().size()).isEqualTo(3);

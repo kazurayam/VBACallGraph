@@ -32,22 +32,22 @@ public class VBAProcedureReferenceTest {
         //
         SensibleWorkbook wbFeePaymentCheck =
                 new SensibleWorkbook(
-                        MyWorkbook.FeePaymentCheck.getId(),
                         MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir));
-        VBAModule md年会費納入状況チェック = wbFeePaymentCheck.getModule("年会費納入状況チェック");
+                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                        .id(MyWorkbook.FeePaymentCheck.getId());
+        VBAModule md会費納入状況チェック = wbFeePaymentCheck.getModule("会費納入状況チェック");
         FullyQualifiedVBAModuleId referrer =
-                new FullyQualifiedVBAModuleId(wbFeePaymentCheck, md年会費納入状況チェック);
-        VBASource referrerModuleSource = md年会費納入状況チェック.getVBASource();
+                new FullyQualifiedVBAModuleId(wbFeePaymentCheck, md会費納入状況チェック);
+        VBASource referrerModuleSource = md会費納入状況チェック.getVBASource();
         VBASourceLine referrerSourceLine =
                 new VBASourceLine(52,
                         "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)\n");
         //
         SensibleWorkbook wbMember =
                 new SensibleWorkbook(
-                        MyWorkbook.Member.getId(),
                         MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Member.resolveSourceDirUnder(baseDir));
+                        MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                        .id(MyWorkbook.Member.getId());
         VBAModule mdAoMemberUtils = wbMember.getModule("AoMemberUtils");
         VBAProcedure procFetchMemberTable =
                 mdAoMemberUtils.getProcedure("FetchMemberTable");
@@ -65,7 +65,7 @@ public class VBAProcedureReferenceTest {
         FullyQualifiedVBAModuleId referrer = procedureReference.getReferrer();
         assertThat(referrer).isNotNull();
         VBAModule module = referrer.getModule();
-        assertThat(module.getName()).isEqualTo("年会費納入状況チェック");
+        assertThat(module.getName()).isEqualTo("会費納入状況チェック");
     }
 
     @Test
@@ -76,7 +76,7 @@ public class VBAProcedureReferenceTest {
         VBAModule module = referee.getModule();
         assertThat(module.getName()).isEqualTo("AoMemberUtils");
         VBAProcedure procedure = referee.getProcedure();
-        assertThat(procedure.getName()).isEqualTo("FetchMemberTable");
+        assertThat(procedure.getProcedure()).isEqualTo("FetchMemberTable");
     }
 
     @Test

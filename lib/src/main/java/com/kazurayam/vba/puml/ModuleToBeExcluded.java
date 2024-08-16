@@ -12,17 +12,9 @@ public class ModuleToBeExcluded {
             new ModuleToBeExcluded(Pattern.compile(
                     "\\.*Test$", Pattern.CASE_INSENSITIVE));
 
-    public static ModuleToBeExcluded プロシージャー一覧を作る =
+    public static ModuleToBeExcluded XPORT =
             new ModuleToBeExcluded(Pattern.compile(
-                    "^プロシージャー一覧を作る$", Pattern.CASE_INSENSITIVE));
-
-    public static ModuleToBeExcluded プロシージャ一覧を作る =
-            new ModuleToBeExcluded(Pattern.compile(
-                    "^プロシージャ一覧を作る$", Pattern.CASE_INSENSITIVE));
-
-    public static ModuleToBeExcluded プロシジャ一覧を作る =
-            new ModuleToBeExcluded(Pattern.compile(
-                    "^プロシジャ一覧を作る$", Pattern.CASE_INSENSITIVE));
+                    "^Xport$", Pattern.CASE_INSENSITIVE));
 
     private final Pattern pattern;
 

@@ -23,12 +23,13 @@ import java.util.TreeSet;
 
 public class SensibleWorkbook {
 
-    private final String id;
     private final Path workbookPath;
     private final Path sourceDirPath;
     private final SortedMap<String, VBAModule> modules;
 
-    private static final String SHEET_NAME = "プロシージャ一覧";
+    private String id;
+
+    private static final String SHEET_NAME = "ExportedModules";
     private final static ObjectMapper mapper;
 
     static {
@@ -39,13 +40,17 @@ public class SensibleWorkbook {
         mapper.registerModule(module);
     }
 
-    public SensibleWorkbook(String id, Path workbookPath, Path sourceDirPath) throws IOException {
-        this.id = id;
+    public SensibleWorkbook(Path workbookPath, Path sourceDirPath) throws IOException {
         this.workbookPath = workbookPath;
         InputStream is = Files.newInputStream(workbookPath);
         modules = this.loadModules(is);
         this.sourceDirPath = sourceDirPath;
         injectSourceIntoModules(modules, sourceDirPath);
+    }
+
+    public SensibleWorkbook id(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -113,29 +118,33 @@ public class SensibleWorkbook {
         Sheet sheet = wb.getSheet(SHEET_NAME);
         for (Row row : sheet) {
             if (row.getRowNum() > 0) { // we will skip the first row = header
-                String name = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                String module = row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                String type = row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                // |Project|ModuleType|Module|Scope|ProcKind|Procedure|LineNo|Source|Comment|
+                String project = row.getCell(0, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String moduleType = row.getCell(1, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String module = row.getCell(2, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
                 String scope = row.getCell(3, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                String subOrFunc = row.getCell(4, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                double dvalue = row.getCell(5, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getNumericCellValue();
-                Integer lineNo = ((Double)dvalue).intValue();
-                String source = row.getCell(6, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
-                String comment = row.getCell(7, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String procKind = row.getCell(4, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String procedure = row.getCell(5, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                double dvalue = row.getCell(6, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getNumericCellValue();
+                int lineNo = ((Double)dvalue).intValue();
+                String source = row.getCell(7, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
+                String comment = row.getCell(8, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL).getStringCellValue();
                 VBAProcedure proc =
                         new VBAProcedure.Builder()
-                                .name(name)
+                                .project(project)
+                                .moduleType(moduleType)
                                 .module(module)
-                                .type(type)
                                 .scope(scope)
-                                .subOrFunc(subOrFunc)
+                                .procKind(procKind)
+                                .procedure(procedure)
+                                .lineNo(lineNo)
                                 .source(source)
                                 .comment(comment)
                                 .build();
                 //
                 VBAModule vbaModule;
                 if (!modules.containsKey(module)) {
-                    vbaModule = new VBAModule(module, proc.getType());
+                    vbaModule = new VBAModule(module, proc.getModuleType());
                 } else {
                     vbaModule = modules.get(module);
                 }
@@ -143,6 +152,11 @@ public class SensibleWorkbook {
                 modules.put(module, vbaModule);
             }
         }
+        // if the Workbook.id was not specified, then set the project name of the Cell(1,0) as default
+        if (this.id != null) {
+            this.id = sheet.getRow(1).getCell(0).getStringCellValue();
+        }
+        //
         return modules;
     }
 

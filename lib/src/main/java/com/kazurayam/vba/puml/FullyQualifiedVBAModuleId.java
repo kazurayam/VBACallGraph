@@ -24,6 +24,8 @@ public class FullyQualifiedVBAModuleId implements Comparable<FullyQualifiedVBAMo
     }
 
     public FullyQualifiedVBAModuleId(SensibleWorkbook workbook, VBAModule module) {
+        assert workbook != null;
+        assert module != null;
         this.workbook = workbook;
         this.module = module;
     }

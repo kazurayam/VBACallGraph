@@ -32,33 +32,33 @@ public class SourceDirPrinterTest {
     public void test_printAllSourceDirs() throws IOException {
         SourceDirPrinter printer = new SourceDirPrinter();
         printer.add(new SensibleWorkbook(
-                MyWorkbook.Backbone.getId(),
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir)));
+                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Backbone.getId()));
         printer.add(new SensibleWorkbook(
-                MyWorkbook.Member.getId(),
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir)));
+                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Member.getId()));
         printer.add(new SensibleWorkbook(
-                MyWorkbook.Cashbook.getId(),
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir)));
+                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Cashbook.getId()));
         printer.add(new SensibleWorkbook(
-                MyWorkbook.Settlement.getId(),
                 MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir)));
+                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.Settlement.getId()));
         printer.add(new SensibleWorkbook(
-                MyWorkbook.FeePaymentCheck.getId(),
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir)));
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.FeePaymentCheck.getId()));
         printer.add(new SensibleWorkbook(
-                MyWorkbook.PleasePayFeeLetter.getId(),
                 MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
-                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir)));
+                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.PleasePayFeeLetter.getId()));
         printer.add(new SensibleWorkbook(
-                MyWorkbook.WebCredentials.getId(),
                 MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
-                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir)));
+                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir))
+                .id(MyWorkbook.WebCredentials.getId()));
         //
         Path report = classOutputDir.resolve("MyVBASourceDirs.md");
         Writer writer = Files.newBufferedWriter(report);

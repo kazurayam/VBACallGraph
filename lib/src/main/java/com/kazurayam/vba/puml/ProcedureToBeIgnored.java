@@ -13,9 +13,9 @@ public class ProcedureToBeIgnored {
             = new ProcedureToBeIgnored(VBAModule.ModuleType.Class,
             "Class_Initialize");
 
-    public static ProcedureToBeIgnored Standard_プロシージャー一覧を作る
+    public static ProcedureToBeIgnored Standard_ExportThisWorkbook
             = new ProcedureToBeIgnored(VBAModule.ModuleType.Standard,
-            "プロシージャー一覧を作る");
+            "ExportThisWorkbook");
 
     private VBAModule.ModuleType moduleType;
     private String procedureName;

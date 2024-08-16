@@ -28,11 +28,11 @@ public class VBAModuleTest {
         classOutputDir = too.cleanClassOutputDirectory();
         module = new VBAModule("Account", VBAModule.ModuleType.Class);
         VBAProcedure proc = new VBAProcedure.Builder()
-                .name("AccountName")
+                .procedure("AccountName")
                 .module("Account")
-                .type("Class")
+                .moduleType("Class")
                 .scope("Public")
-                .subOrFunc("Sub")
+                .procKind("Sub")
                 .lineNo(68)
                 .source("Public Property Get AccountName() as String")
                 .comment("Sun also rises")
