@@ -3,7 +3,7 @@ package com.kazurayam.vba.puml;
 import com.kazurayam.unittest.TestOutputOrganizer;
 import com.kazurayam.vba.printing.MutoolPosterRunner;
 import com.kazurayam.vba.printing.PDFFromImageGenerator;
-import com.kazurayam.vba.example.FindUsageAppFactory;
+import com.kazurayam.vba.example.CallGraphAppFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterTest;
@@ -15,20 +15,20 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FindUsageAppGrandTest {
+public class CallGraphAppGrandTest {
 
     private static final Logger logger =
-            LoggerFactory.getLogger(FindUsageAppGrandTest.class);
+            LoggerFactory.getLogger(CallGraphAppGrandTest.class);
 
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(FindUsageAppGrandTest.class)
+            new TestOutputOrganizer.Builder(CallGraphAppGrandTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(FindUsageAppGrandTest.class)
+                    .subOutputDirectory(CallGraphAppGrandTest.class)
                     .build();
 
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private FindUsageApp app;
+    private CallGraphApp app;
     private Path classOutputDir;
     private Path puml;
     private static String FILE_NAME_BODY = "test_writeDiagram_Options_KAZURAYAM";
@@ -36,7 +36,7 @@ public class FindUsageAppGrandTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        app = FindUsageAppFactory.createKazurayamSeven();
+        app = CallGraphAppFactory.createKazurayamSeven();
     }
 
     @Test

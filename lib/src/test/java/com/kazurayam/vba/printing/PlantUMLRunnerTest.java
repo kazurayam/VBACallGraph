@@ -1,7 +1,7 @@
 package com.kazurayam.vba.printing;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
-import com.kazurayam.vba.puml.FindUsageApp;
+import com.kazurayam.vba.puml.CallGraphApp;
 import com.kazurayam.vba.puml.Options;
 import com.kazurayam.vba.puml.ModelWorkbook;
 import com.kazurayam.vba.example.MyWorkbook;
@@ -26,13 +26,13 @@ public class PlantUMLRunnerTest {
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private FindUsageApp app;
+    private CallGraphApp app;
     private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        app = new FindUsageApp();
+        app = new CallGraphApp();
         app.add(new ModelWorkbook(
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))

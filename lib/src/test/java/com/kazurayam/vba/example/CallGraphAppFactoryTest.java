@@ -1,17 +1,17 @@
 package com.kazurayam.vba.example;
 
-import com.kazurayam.vba.puml.FindUsageApp;
+import com.kazurayam.vba.puml.CallGraphApp;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FindUsageAppFactoryTest {
+public class CallGraphAppFactoryTest {
 
     @Test
     public void test_createKazurayamSeven() throws IOException {
-        FindUsageApp app = FindUsageAppFactory.createKazurayamSeven();
+        CallGraphApp app = CallGraphAppFactory.createKazurayamSeven();
         assertThat(app.size()).isEqualTo(7);
     }
 }

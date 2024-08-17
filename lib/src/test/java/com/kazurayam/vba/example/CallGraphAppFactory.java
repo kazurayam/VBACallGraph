@@ -1,29 +1,29 @@
 package com.kazurayam.vba.example;
 
 import com.kazurayam.unittest.TestOutputOrganizer;
-import com.kazurayam.vba.puml.FindUsageApp;
+import com.kazurayam.vba.puml.CallGraphApp;
 import com.kazurayam.vba.puml.Options;
 import com.kazurayam.vba.puml.ModelWorkbook;
 
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class FindUsageAppFactory {
+public class CallGraphAppFactory {
 
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(FindUsageAppFactory.class)
+            new TestOutputOrganizer.Builder(CallGraphAppFactory.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(FindUsageAppFactory.class)
+                    .subOutputDirectory(CallGraphAppFactory.class)
                     .build();
 
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
 
-    private FindUsageAppFactory() {}
+    private CallGraphAppFactory() {}
 
-    public static FindUsageApp createKazurayamSeven() throws IOException {
+    public static CallGraphApp createKazurayamSeven() throws IOException {
 
-        FindUsageApp app = new FindUsageApp();
+        CallGraphApp app = new CallGraphApp();
 
         app.add(new ModelWorkbook(
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),

@@ -27,7 +27,7 @@ public class MutoolPosterRunnerTest {
     private Path classOutputDir;
     private Path original;
     private static final String originalFileName =
-            "FindUsageAppGrandTest.testWriteDiagram_Options_KAZURAYAM.pdf";
+            "CallGraphAppGrandTest.testWriteDiagram_Options_KAZURAYAM.pdf";
 
     @BeforeTest
     public void beforeTest() throws IOException {

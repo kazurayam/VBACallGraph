@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 
-public class FindUsageApp {
+public class CallGraphApp {
 
     private final List<ModelWorkbook> workbooks;
     private final Indexer indexer;
@@ -28,14 +28,14 @@ public class FindUsageApp {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(FindUsageApp.class,
-                new FindUsageAppSerializer());
+        module.addSerializer(CallGraphApp.class,
+                new CallGraphAppSerializer());
         module.addSerializer(ModelWorkbook.class,
                 new ModelWorkbook.ModelWorkbookSerializer());
         mapper.registerModule(module);
     }
 
-    public FindUsageApp() {
+    public CallGraphApp() {
         workbooks = new ArrayList<>();
         indexer = new Indexer();
         options = Options.DEFAULT;
@@ -72,8 +72,8 @@ public class FindUsageApp {
         indexer.setOptions(this.options);
         SortedSet<VBAProcedureReference> memo = indexer.findAllProcedureReferences();
         //
-        FindUsageDiagramGenerator pudgen =
-                new FindUsageDiagramGenerator();
+        CallGraphDiagramGenerator pudgen =
+                new CallGraphDiagramGenerator();
         pudgen.writeStartUml();
         for (ModelWorkbook wb : workbooks) {
             pudgen.writeStartWorkbook(wb);
@@ -125,14 +125,14 @@ public class FindUsageApp {
         return mapper.writeValueAsString(this);
     }
 
-    private static class FindUsageAppSerializer extends StdSerializer<FindUsageApp> {
-        public FindUsageAppSerializer() { this(null); }
-        public FindUsageAppSerializer(Class<FindUsageApp> t) {
+    private static class CallGraphAppSerializer extends StdSerializer<CallGraphApp> {
+        public CallGraphAppSerializer() { this(null); }
+        public CallGraphAppSerializer(Class<CallGraphApp> t) {
             super(t);
         }
         @Override
         public void serialize(
-                FindUsageApp app, JsonGenerator jgen, SerializerProvider provider)
+                CallGraphApp app, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();                             //{
             jgen.writeFieldName("VBAProcedureUsageAnalyzer"); //"VBAProcedureUsageAnalyzer":

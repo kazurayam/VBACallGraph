@@ -13,21 +13,21 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FindUsageDiagramGeneratorTest {
+public class CallGraphGeneratorTest {
 
-    private Logger logger = LoggerFactory.getLogger(FindUsageDiagramGeneratorTest.class);
+    private Logger logger = LoggerFactory.getLogger(CallGraphGeneratorTest.class);
 
     private static TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(FindUsageDiagramGeneratorTest.class)
+            new TestOutputOrganizer.Builder(CallGraphGeneratorTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(FindUsageDiagramGeneratorTest.class)
+                    .subOutputDirectory(CallGraphGeneratorTest.class)
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
     private ModelWorkbook wbFeePaymentCheck;
     private ModelWorkbook wbCashbook;
     private Path classOutputDir;
-    private FindUsageDiagramGenerator pudgen;
+    private CallGraphDiagramGenerator pudgen;
 
     @BeforeTest
     public void beforeTest() throws IOException {
@@ -44,7 +44,7 @@ public class FindUsageDiagramGeneratorTest {
 
     @BeforeMethod
     public void setup() {
-        pudgen = new FindUsageDiagramGenerator();
+        pudgen = new CallGraphDiagramGenerator();
     }
 
     @Test

@@ -13,26 +13,26 @@ import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class FindUsageAppTest {
+public class CallGraphAppTest {
 
     private static final Logger logger =
-            LoggerFactory.getLogger(FindUsageAppTest.class);
+            LoggerFactory.getLogger(CallGraphAppTest.class);
 
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(FindUsageAppTest.class)
+            new TestOutputOrganizer.Builder(CallGraphAppTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(FindUsageAppTest.class)
+                    .subOutputDirectory(CallGraphAppTest.class)
                     .build();
 
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private FindUsageApp app;
+    private CallGraphApp app;
     private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        app = new FindUsageApp();
+        app = new CallGraphApp();
         app.add(new ModelWorkbook(
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))

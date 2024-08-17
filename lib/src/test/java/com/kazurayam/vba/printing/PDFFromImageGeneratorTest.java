@@ -23,7 +23,7 @@ public class PDFFromImageGeneratorTest {
                     .build();
 
     private static final String pngFileName =
-            "FindUsageAppGrandTest.testWriteDiagram_Options_KAZURAYAM.png";
+            "CallGraphAppGrandTest.testWriteDiagram_Options_KAZURAYAM.png";
 
     private Path classOutputDir;
     private Path pngFile;
