@@ -94,7 +94,11 @@ public class FindUsageApp {
         SortedSet<VBAProcedureReference> moduleReferences = indexer.findAllProcedureReferences();
         for (VBAProcedureReference reference : moduleReferences) {
             if (!options.shouldExcludeModule(reference)) {
-                pudgen.writeProcedureReference(reference);
+                // we do not like to draw arrows between Module-A and Module-A
+                // just to simplify the diagram
+                if (!reference.isReferringToSameModule()) {
+                    pudgen.writeProcedureReference(reference);
+                }
             }
         }
 

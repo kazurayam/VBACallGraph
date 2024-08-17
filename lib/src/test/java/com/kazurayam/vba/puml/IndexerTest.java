@@ -87,7 +87,7 @@ public class IndexerTest {
         SortedSet<VBAProcedureReference> memo =
                 indexer.findAllProcedureReferences();
         assertThat(memo).isNotNull();
-        assertThat(memo.size()).isEqualTo(3);
+        assertThat(memo.size()).isEqualTo(22);
         Path out = classOutputDir.resolve("test_findAllProcedureReferences.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
         for (VBAProcedureReference ref : memo) {
@@ -105,7 +105,7 @@ public class IndexerTest {
         Set<VBAProcedureReference> references =
                 indexer.findProcedureReferenceTo(referee);
         assertThat(references).isNotNull();
-        assertThat(references).hasSize(1);
+        assertThat(references).hasSize(3);
         assertThat(references).contains(expectedReference);
         Path out = classOutputDir.resolve("test_findProcedureReferenceTo.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
@@ -156,7 +156,7 @@ public class IndexerTest {
         Set<VBAProcedureReference> foundReferences =
                 indexer.xref(workbookList, referee);
         assertThat(foundReferences).isNotNull();
-        assertThat(foundReferences).hasSize(1);
+        assertThat(foundReferences).hasSize(3);
         assertThat(foundReferences).contains(expectedReference);
     }
 

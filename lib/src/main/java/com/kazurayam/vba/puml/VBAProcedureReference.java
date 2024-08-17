@@ -62,6 +62,10 @@ public class VBAProcedureReference implements Comparable<VBAProcedureReference> 
         return referee;
     }
 
+    public Boolean isReferringToSameModule() {
+        return (referee.getModule().equals(referrer.getModule()));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

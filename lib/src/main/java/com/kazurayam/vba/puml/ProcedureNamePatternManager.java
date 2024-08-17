@@ -34,15 +34,37 @@ public class ProcedureNamePatternManager {
         return sb.toString();
     }
 
+    /**
+     * Given the patternString "AccountName", this returns a List of Pattern which contains a Pattern object,
+     * which is \.?AccountName\W+|\.?AccountName\W*\s*'|\.?AccountName\W*\s*$
+     * @param patternString
+     * @return
+     */
     public static List<Pattern> createPatterns(String patternString) {
         String escapedPart = escapeAsRegex(patternString);
         List<Pattern> patterns = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
-        sb.append(escapedPart).append("\\(");
+        // \s means white space, * means zero or more, ' means the start of a VB comment
+        sb.append("\\s").append(escapedPart).append("\\W");
         sb.append("|");  // | --- logical OR
-        sb.append(escapedPart).append("\\s*'");   // \s --- white space, * --- zero or more, ' --- VB commen
+        sb.append("\\s").append(escapedPart).append("\\s*'");
+        sb.append("|");  // | --- logical OR
+        sb.append("\\s").append(escapedPart).append("\\s*$");
+        sb.append("|");  // | --- logical OR
+        //
+        sb.append("\\.").append(escapedPart).append("\\W");
         sb.append("|");
-        sb.append(escapedPart).append("\\s*$");
+        sb.append("\\.").append(escapedPart).append("\\s*'");
+        sb.append("|");
+        sb.append("\\.").append(escapedPart).append("\\s*$");
+        sb.append("|");
+        //
+        sb.append("\\W").append(escapedPart).append("\\W");
+        sb.append("|");
+        sb.append("\\W").append(escapedPart).append("\\s*'");
+        sb.append("|");
+        sb.append("\\W").append(escapedPart).append("\\s*$");
+
         try {
             patterns.add(Pattern.compile(sb.toString()));
             return patterns;

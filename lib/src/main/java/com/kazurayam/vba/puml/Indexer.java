@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ import java.util.regex.Pattern;
  * - Whole indexing; do the partial index for all of candidate referees as one batch.
  */
 public class Indexer {
+
+    private static final Logger logger = LoggerFactory.getLogger(Indexer.class);
 
     private final List<SensibleWorkbook> workbooks;
     private final SortedSet<VBAProcedureReference> memo;
@@ -69,8 +73,10 @@ public class Indexer {
         for (SensibleWorkbook workbook : workbooks) {
             for (FullyQualifiedVBAProcedureId fqpi :
                     workbook.getAllFullyQualifiedProcedureId()) {
+                //
                 SortedSet<VBAProcedureReference> foundSet =
                         findProcedureReferenceTo(fqpi);
+                //
                 for (VBAProcedureReference procRef : foundSet) {
                     if (!options.shouldExcludeModule(procRef.getReferee().getModule())) {
                         memo.add(procRef);
@@ -89,6 +95,7 @@ public class Indexer {
         if (!options.shouldIgnoreRefereeProcedure(referee)) {
             SortedSet<VBAProcedureReference> scanResultByReferee =
                     this.scanMemoByVBAProcedureReferee(referee);
+
             if (scanResultByReferee.isEmpty()) {
                 SortedSet<VBAProcedureReference> crossReferences =
                         xref(workbooks, referee);
@@ -115,7 +122,7 @@ public class Indexer {
     }
 
     /**
-     * Given with the id of referee.
+     * Given with the referee.
      * Scan all VBA source code of all modules inside all workbooks given.
      * If any match with id of the referee found, record it.
      * Return a set of VBAProcedureReferences recorded.
@@ -123,25 +130,27 @@ public class Indexer {
     SortedSet<VBAProcedureReference> xref(List<SensibleWorkbook> workbooks,
                                           FullyQualifiedVBAProcedureId referee) {
         SortedSet<VBAProcedureReference> result = new TreeSet<>();
-        for (SensibleWorkbook workbook : workbooks) {
-            for (String moduleName : workbook.getModules().keySet()) {
-                VBAModule module = workbook.getModule(moduleName);
-                if (referee.getWorkbook().equals(workbook) &&
-                        referee.getModule().equals(module)) {
-                    break;   // we won't scan the VBASource of the referee itself
-                }
-                VBASource moduleSource = module.getVBASource();
+        for (SensibleWorkbook subjectWorkbook : workbooks) {
+            for (String subjectModuleName : subjectWorkbook.getModules().keySet()) {
+                VBAModule subjectModule = subjectWorkbook.getModule(subjectModuleName);
+
+                VBASource moduleSource = subjectModule.getVBASource();
                 // let's scan the VBASource to see if it mentions the referee
                 List<Pattern> patterns =
                         ProcedureNamePatternManager.createPatterns(
                                 referee.getProcedureName());
+
                 if (!patterns.isEmpty()) {
+
+                    // Now we will try to match the List<Pattern>
+                    // against the subject VBASource
                     List<VBASourceLine> linesFound = moduleSource.find(patterns);
+
                     if (!linesFound.isEmpty()) {
-                        // the referrer module refers to the referee!
+                        // the referrer subjectModule refers to the referee!
                         for (VBASourceLine line : linesFound) {
                             FullyQualifiedVBAModuleId referrer =
-                                    new FullyQualifiedVBAModuleId(workbook, module);
+                                    new FullyQualifiedVBAModuleId(subjectWorkbook, subjectModule);
                             VBAProcedureReference reference =
                                     new VBAProcedureReference(referrer, moduleSource, line, referee);
                             result.add(reference);
@@ -200,5 +209,4 @@ public class Indexer {
             jgen.writeEndObject();                               //}
         }
     }
-
 }

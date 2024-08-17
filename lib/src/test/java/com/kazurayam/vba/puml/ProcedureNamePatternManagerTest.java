@@ -54,4 +54,21 @@ public class ProcedureNamePatternManagerTest {
                         source))
                 .isEqualTo(expect);
     }
+
+    /**
+     * https://github.com/kazurayam/VBAProcedureUsageAnalyzer/issues/39
+     */
+    @Test
+    public void test_creatingPattern_that_match_a_Property() {
+        List<Pattern> patterns =
+                ProcedureNamePatternManager.createPatterns("AccountName");
+        assertThat(patterns).isNotEmpty();
+        Method m = new Object(){}.getClass().getEnclosingMethod();
+        logger.debug(String.format("[%s] %s", m.getName(), patterns));
+        String input = "       Set dic2(k) = cSel_.SelectCashList(acc.accType, acc.AccountName, acc.SubAccountName, _";
+        Matcher matcher = patterns.get(0).matcher(input);
+        assertThat(matcher.find()).as(String.format(
+                "Matcher %s does not match the input \"%s\"", patterns.get(0), input
+        )).isTrue();
+    }
 }
