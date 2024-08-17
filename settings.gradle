@@ -1,2 +1,2 @@
-rootProject.name = 'VBAProcedureUsageAnalyzer'
+rootProject.name = 'VBACallGraph'
 include('lib', 'app')

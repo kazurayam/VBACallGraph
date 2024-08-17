@@ -26,5 +26,5 @@ test {
 }
 
 jar {
-    archiveBaseName = 'vba-procedure-usage-analyzer'
+    archiveBaseName = 'vbacallgraph'
 }
