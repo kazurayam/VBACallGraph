@@ -1,3 +1,3 @@
-# VBA Procedure Usage Analyzer
+# VBA Call Graph
 
-see http://kazurayam.github.io/VBAProcedureUsageAnalyzer/
+see http://kazurayam.github.io/VBACallGraph/
