@@ -1,6 +1,5 @@
 package com.kazurayam.vba.printing;
 
-import com.kazurayam.subprocessj.CommandLocator;
 import com.kazurayam.subprocessj.Subprocess;
 import com.kazurayam.subprocessj.Subprocess.CompletedProcess;
 

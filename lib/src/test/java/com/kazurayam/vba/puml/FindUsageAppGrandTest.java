@@ -6,7 +6,6 @@ import com.kazurayam.vba.printing.PDFFromImageGenerator;
 import com.kazurayam.vba.example.FindUsageAppFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -70,8 +69,8 @@ public class FindUsageAppGrandTest {
         // modify the original PDF to a poster PDF
         MutoolPosterRunner mutool =
                 new MutoolPosterRunner.Builder()
-                        .x(2)
-                        .y(2)
+                        .x(3)
+                        .y(3)
                         .original(original)
                         .build();
         mutool.run();
