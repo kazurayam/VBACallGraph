@@ -18,7 +18,7 @@ import java.util.TreeSet;
 import java.util.regex.Pattern;
 
 /**
- * The Indexer class analyses a set of SensibleWorkbook objects
+ * The Indexer class analyses a set of ModelWorkbook objects
  * to find out a set of ProcedureReferences found amongst the
  * workbooks. The Indexer supports 2 ways of indexing.
  * - Partial indexing; accept a single FullyQualifiedProcedureId as a referee,
@@ -30,7 +30,7 @@ public class Indexer {
 
     private static final Logger logger = LoggerFactory.getLogger(Indexer.class);
 
-    private final List<SensibleWorkbook> workbooks;
+    private final List<ModelWorkbook> workbooks;
     private final SortedSet<VBAProcedureReference> memo;
     private Options options;
 
@@ -57,7 +57,7 @@ public class Indexer {
         options = Options.DEFAULT;
     }
 
-    public void add(SensibleWorkbook workbook) {
+    public void add(ModelWorkbook workbook) {
         this.workbooks.add(workbook);
     }
 
@@ -65,12 +65,12 @@ public class Indexer {
         this.options = options;
     }
 
-    public List<SensibleWorkbook> getWorkbooks() {
+    public List<ModelWorkbook> getWorkbooks() {
         return workbooks;
     }
 
     public SortedSet<VBAProcedureReference> findAllProcedureReferences() {
-        for (SensibleWorkbook workbook : workbooks) {
+        for (ModelWorkbook workbook : workbooks) {
             for (FullyQualifiedVBAProcedureId fqpi :
                     workbook.getAllFullyQualifiedProcedureId()) {
                 //
@@ -127,10 +127,10 @@ public class Indexer {
      * If any match with id of the referee found, record it.
      * Return a set of VBAProcedureReferences recorded.
      */
-    SortedSet<VBAProcedureReference> xref(List<SensibleWorkbook> workbooks,
+    SortedSet<VBAProcedureReference> xref(List<ModelWorkbook> workbooks,
                                           FullyQualifiedVBAProcedureId referee) {
         SortedSet<VBAProcedureReference> result = new TreeSet<>();
-        for (SensibleWorkbook subjectWorkbook : workbooks) {
+        for (ModelWorkbook subjectWorkbook : workbooks) {
             for (String subjectModuleName : subjectWorkbook.getModules().keySet()) {
                 VBAModule subjectModule = subjectWorkbook.getModule(subjectModuleName);
 
@@ -195,7 +195,7 @@ public class Indexer {
                 throws IOException {
             jgen.writeStartObject();                             //{
             jgen.writeArrayFieldStart("workbooks");      // "workbooks":[
-            for (SensibleWorkbook wb : indexer.getWorkbooks()) {
+            for (ModelWorkbook wb : indexer.getWorkbooks()) {
                 jgen.writeString(wb.getId());
             }
             jgen.writeEndArray();                                //  ],

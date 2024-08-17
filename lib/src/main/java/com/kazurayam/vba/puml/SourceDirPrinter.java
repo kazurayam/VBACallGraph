@@ -11,19 +11,19 @@ import java.util.List;
 
 public class SourceDirPrinter {
 
-    private final List<SensibleWorkbook> workbookList;
+    private final List<ModelWorkbook> workbookList;
 
     public SourceDirPrinter() {
          workbookList = new ArrayList<>();
     }
 
-    public void add(SensibleWorkbook workbook) {
+    public void add(ModelWorkbook workbook) {
         workbookList.add(workbook);
     }
 
     public void printAllSourceDirs(Writer writer) throws IOException {
         BufferedWriter bw = new BufferedWriter(writer);
-        for (SensibleWorkbook wb : workbookList) {
+        for (ModelWorkbook wb : workbookList) {
             SourceDirVisitor visitor =
                     new SourceDirVisitor();
             Files.walkFileTree(wb.getSourceDirPath(), visitor);
@@ -35,7 +35,7 @@ public class SourceDirPrinter {
         bw.close();
     }
 
-    void printSourceDir(SensibleWorkbook wb,
+    void printSourceDir(ModelWorkbook wb,
                         List<Path> sources,
                         Writer writer) {
         PrintWriter pw = new PrintWriter(new BufferedWriter(writer));

@@ -3,7 +3,7 @@ package com.kazurayam.vba.printing;
 import com.kazurayam.unittest.TestOutputOrganizer;
 import com.kazurayam.vba.puml.FindUsageApp;
 import com.kazurayam.vba.puml.Options;
-import com.kazurayam.vba.puml.SensibleWorkbook;
+import com.kazurayam.vba.puml.ModelWorkbook;
 import com.kazurayam.vba.example.MyWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public class PlantUMLRunnerTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         app = new FindUsageApp();
-        app.add(new SensibleWorkbook(
+        app.add(new ModelWorkbook(
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.FeePaymentCheck.getId()));

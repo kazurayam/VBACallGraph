@@ -30,7 +30,7 @@ public class FullyQualifiedVBAModuleIdTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        SensibleWorkbook wb = new SensibleWorkbook(
+        ModelWorkbook wb = new ModelWorkbook(
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.Member.getId());

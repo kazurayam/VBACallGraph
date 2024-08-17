@@ -33,8 +33,8 @@ public class ProcedureToBeIgnoredTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        SensibleWorkbook wbFeePaymentCheck =
-                new SensibleWorkbook(
+        ModelWorkbook wbFeePaymentCheck =
+                new ModelWorkbook(
                         MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                         MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
                         .id(MyWorkbook.FeePaymentCheck.getId());

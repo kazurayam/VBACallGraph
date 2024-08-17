@@ -19,7 +19,7 @@ import java.util.SortedSet;
 
 public class FindUsageApp {
 
-    private final List<SensibleWorkbook> workbooks;
+    private final List<ModelWorkbook> workbooks;
     private final Indexer indexer;
     private Options options = Options.DEFAULT;
 
@@ -30,8 +30,8 @@ public class FindUsageApp {
         SimpleModule module = new SimpleModule();
         module.addSerializer(FindUsageApp.class,
                 new FindUsageAppSerializer());
-        module.addSerializer(SensibleWorkbook.class,
-                new SensibleWorkbook.SensibleWorkbookSerializer());
+        module.addSerializer(ModelWorkbook.class,
+                new ModelWorkbook.ModelWorkbookSerializer());
         mapper.registerModule(module);
     }
 
@@ -45,16 +45,16 @@ public class FindUsageApp {
         this.options = options;
     }
 
-    public void add(SensibleWorkbook workbook) {
+    public void add(ModelWorkbook workbook) {
         workbooks.add(workbook);
         indexer.add(workbook);
     }
 
-    public SensibleWorkbook get(int index) {
+    public ModelWorkbook get(int index) {
         return workbooks.get(index);
     }
 
-    public Iterator<SensibleWorkbook> iterator() {
+    public Iterator<ModelWorkbook> iterator() {
         return workbooks.iterator();
     }
 
@@ -75,7 +75,7 @@ public class FindUsageApp {
         FindUsageDiagramGenerator pudgen =
                 new FindUsageDiagramGenerator();
         pudgen.writeStartUml();
-        for (SensibleWorkbook wb : workbooks) {
+        for (ModelWorkbook wb : workbooks) {
             pudgen.writeStartWorkbook(wb);
             for (String key : wb.getModules().keySet()) {
                 VBAModule module = wb.getModule(key);
@@ -138,9 +138,9 @@ public class FindUsageApp {
             jgen.writeFieldName("VBAProcedureUsageAnalyzer"); //"VBAProcedureUsageAnalyzer":
             jgen.writeStartObject();                             //  {
             jgen.writeArrayFieldStart("workbooks");     //    "workbooks": [
-            Iterator<SensibleWorkbook> iter = app.iterator();
+            Iterator<ModelWorkbook> iter = app.iterator();
             while(iter.hasNext()) {
-                SensibleWorkbook wb = iter.next();
+                ModelWorkbook wb = iter.next();
                 jgen.writeObject(wb);                            //      { ... },
             }
             jgen.writeEndArray();                                //    ]

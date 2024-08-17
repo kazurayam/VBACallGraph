@@ -16,22 +16,22 @@ import java.util.SortedSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class SensibleWorkbookTest {
+public class ModelWorkbookTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(SensibleWorkbookTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ModelWorkbookTest.class);
     private static final TestOutputOrganizer too =
-            new TestOutputOrganizer.Builder(SensibleWorkbookTest.class)
+            new TestOutputOrganizer.Builder(ModelWorkbookTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
-                    .subOutputDirectory(SensibleWorkbookTest.class)
+                    .subOutputDirectory(ModelWorkbookTest.class)
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private SensibleWorkbook wb;
+    private ModelWorkbook wb;
     private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
-        wb = new SensibleWorkbook(
+        wb = new ModelWorkbook(
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.Cashbook.getId());
@@ -68,7 +68,7 @@ public class SensibleWorkbookTest {
 
     @Test
     public void test_getModules() throws IOException {
-        SensibleWorkbook wb = new SensibleWorkbook(
+        ModelWorkbook wb = new ModelWorkbook(
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.Member.getId());
@@ -81,7 +81,7 @@ public class SensibleWorkbookTest {
     public void test_injectSourceIntoModules() throws IOException {
         SortedMap<String, VBAModule> modules = wb.getModules();
         Path sourceDirPath = wb.getSourceDirPath();
-        SensibleWorkbook.injectSourceIntoModules(modules, sourceDirPath);
+        ModelWorkbook.injectSourceIntoModules(modules, sourceDirPath);
         for (VBAModule module : modules.values()) {
             assertThat(module.getVBASource())
                     .as("asserting VBAModule \"%s\".getVBASource()", module.getName())

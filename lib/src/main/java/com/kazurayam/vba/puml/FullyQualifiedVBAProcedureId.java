@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class FullyQualifiedVBAProcedureId implements Comparable<FullyQualifiedVBAProcedureId> {
 
-    private final SensibleWorkbook workbook;
+    private final ModelWorkbook workbook;
     private final VBAModule module;
     private final VBAProcedure procedure;
 
@@ -24,7 +24,7 @@ public class FullyQualifiedVBAProcedureId implements Comparable<FullyQualifiedVB
         mapper.registerModule(module);
     }
 
-    public FullyQualifiedVBAProcedureId(SensibleWorkbook workbook, VBAModule module, VBAProcedure procedure) {
+    public FullyQualifiedVBAProcedureId(ModelWorkbook workbook, VBAModule module, VBAProcedure procedure) {
         assert workbook != null;
         assert module != null;
         assert procedure != null;
@@ -33,7 +33,7 @@ public class FullyQualifiedVBAProcedureId implements Comparable<FullyQualifiedVB
         this.procedure = procedure;
     }
 
-    public SensibleWorkbook getWorkbook() {
+    public ModelWorkbook getWorkbook() {
         return workbook;
     }
 

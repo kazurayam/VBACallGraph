@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class FullyQualifiedVBAModuleId implements Comparable<FullyQualifiedVBAModuleId> {
 
-    private final SensibleWorkbook workbook;
+    private final ModelWorkbook workbook;
     private final VBAModule module;
 
     private final static ObjectMapper mapper;
@@ -23,14 +23,14 @@ public class FullyQualifiedVBAModuleId implements Comparable<FullyQualifiedVBAMo
         mapper.registerModule(module);
     }
 
-    public FullyQualifiedVBAModuleId(SensibleWorkbook workbook, VBAModule module) {
+    public FullyQualifiedVBAModuleId(ModelWorkbook workbook, VBAModule module) {
         assert workbook != null;
         assert module != null;
         this.workbook = workbook;
         this.module = module;
     }
 
-    public SensibleWorkbook getWorkbook() { return workbook; }
+    public ModelWorkbook getWorkbook() { return workbook; }
 
     public String getWorkbookId() { return workbook.getId(); }
 

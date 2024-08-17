@@ -33,22 +33,22 @@ public class FindUsageAppTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         app = new FindUsageApp();
-        app.add(new SensibleWorkbook(
+        app.add(new ModelWorkbook(
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.FeePaymentCheck.getId()));
 
-        app.add(new SensibleWorkbook(
+        app.add(new ModelWorkbook(
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.Cashbook.getId()));
 
-        app.add(new SensibleWorkbook(
+        app.add(new ModelWorkbook(
                 MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Member.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.Member.getId()));
 
-        app.add(new SensibleWorkbook(
+        app.add(new ModelWorkbook(
                 MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.Backbone.getId()));

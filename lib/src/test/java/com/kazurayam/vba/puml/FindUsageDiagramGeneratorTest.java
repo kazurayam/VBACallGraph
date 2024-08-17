@@ -24,18 +24,18 @@ public class FindUsageDiagramGeneratorTest {
                     .build();
     private static final Path baseDir =
             too.getProjectDirectory().resolve("src/test/fixture/hub");
-    private SensibleWorkbook wbFeePaymentCheck;
-    private SensibleWorkbook wbCashbook;
+    private ModelWorkbook wbFeePaymentCheck;
+    private ModelWorkbook wbCashbook;
     private Path classOutputDir;
     private FindUsageDiagramGenerator pudgen;
 
     @BeforeTest
     public void beforeTest() throws IOException {
-        wbFeePaymentCheck = new SensibleWorkbook(
+        wbFeePaymentCheck = new ModelWorkbook(
                 MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                 MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.FeePaymentCheck.getId());
-        wbCashbook = new SensibleWorkbook(
+        wbCashbook = new ModelWorkbook(
                 MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                 MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
                 .id(MyWorkbook.Cashbook.getId());

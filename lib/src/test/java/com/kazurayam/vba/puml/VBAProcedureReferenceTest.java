@@ -30,8 +30,8 @@ public class VBAProcedureReferenceTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         //
-        SensibleWorkbook wbFeePaymentCheck =
-                new SensibleWorkbook(
+        ModelWorkbook wbFeePaymentCheck =
+                new ModelWorkbook(
                         MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                         MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
                         .id(MyWorkbook.FeePaymentCheck.getId());
@@ -43,8 +43,8 @@ public class VBAProcedureReferenceTest {
                 new VBASourceLine(52,
                         "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)\n");
         //
-        SensibleWorkbook wbMember =
-                new SensibleWorkbook(
+        ModelWorkbook wbMember =
+                new ModelWorkbook(
                         MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                         MyWorkbook.Member.resolveSourceDirUnder(baseDir))
                         .id(MyWorkbook.Member.getId());

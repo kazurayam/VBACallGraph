@@ -21,7 +21,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class SensibleWorkbook {
+public class ModelWorkbook {
 
     private final Path workbookPath;
     private final Path sourceDirPath;
@@ -35,12 +35,12 @@ public class SensibleWorkbook {
     static {
         mapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
-        module.addSerializer(SensibleWorkbook.class, new SensibleWorkbookSerializer());
+        module.addSerializer(ModelWorkbook.class, new ModelWorkbookSerializer());
         module.addSerializer(VBAModule.class, new VBAModule.VBAModuleSerializer());
         mapper.registerModule(module);
     }
 
-    public SensibleWorkbook(Path workbookPath, Path sourceDirPath) throws IOException {
+    public ModelWorkbook(Path workbookPath, Path sourceDirPath) throws IOException {
         this.workbookPath = workbookPath;
         InputStream is = Files.newInputStream(workbookPath);
         modules = this.loadModules(is);
@@ -48,7 +48,7 @@ public class SensibleWorkbook {
         injectSourceIntoModules(modules, sourceDirPath);
     }
 
-    public SensibleWorkbook id(String id) {
+    public ModelWorkbook id(String id) {
         this.id = id;
         return this;
     }
@@ -192,12 +192,12 @@ public class SensibleWorkbook {
     /**
      *
      */
-    public static class SensibleWorkbookSerializer extends StdSerializer<SensibleWorkbook> {
-        public SensibleWorkbookSerializer() { this(null); }
-        public SensibleWorkbookSerializer(Class<SensibleWorkbook> t) { super(t); }
+    public static class ModelWorkbookSerializer extends StdSerializer<ModelWorkbook> {
+        public ModelWorkbookSerializer() { this(null); }
+        public ModelWorkbookSerializer(Class<ModelWorkbook> t) { super(t); }
         @Override
         public void serialize(
-                SensibleWorkbook wb, JsonGenerator jgen, SerializerProvider provider)
+                ModelWorkbook wb, JsonGenerator jgen, SerializerProvider provider)
                 throws IOException {
             jgen.writeStartObject();
             jgen.writeStringField("id", wb.getId());

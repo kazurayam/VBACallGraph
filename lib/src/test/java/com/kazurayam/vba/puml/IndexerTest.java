@@ -42,8 +42,8 @@ public class IndexerTest {
         indexer.setOptions(Options.KAZURAYAM);
 
         // FeePaymentCheck workbook
-        SensibleWorkbook wbFeePaymentCheck =
-                new SensibleWorkbook(
+        ModelWorkbook wbFeePaymentCheck =
+                new ModelWorkbook(
                         MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
                         MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
                         .id(MyWorkbook.FeePaymentCheck.getId());
@@ -57,8 +57,8 @@ public class IndexerTest {
                         "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)");
 
         // Member workbook
-        SensibleWorkbook wbMember =
-                new SensibleWorkbook(
+        ModelWorkbook wbMember =
+                new ModelWorkbook(
                         MyWorkbook.Member.resolveWorkbookUnder(baseDir),
                         MyWorkbook.Member.resolveSourceDirUnder(baseDir))
                         .id(MyWorkbook.Member.getId());
@@ -78,7 +78,7 @@ public class IndexerTest {
 
     @Test
     public void test_getWorkbooks() {
-        List<SensibleWorkbook> workbookList = indexer.getWorkbooks();
+        List<ModelWorkbook> workbookList = indexer.getWorkbooks();
         assertThat(workbookList).hasSize(2);
     }
 
@@ -118,8 +118,8 @@ public class IndexerTest {
 
     @Test
     public void test_shouldIgnore_Initialize() throws IOException {
-        SensibleWorkbook wbBackbone =
-                new SensibleWorkbook(
+        ModelWorkbook wbBackbone =
+                new ModelWorkbook(
                         MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
                         MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
                         .id(MyWorkbook.Backbone.getId());
@@ -135,8 +135,8 @@ public class IndexerTest {
 
     @Test
     public void test_shouldIgnore_Class_Initialize() throws IOException {
-        SensibleWorkbook wbCashbook =
-                new SensibleWorkbook(
+        ModelWorkbook wbCashbook =
+                new ModelWorkbook(
                         MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
                         MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
                         .id(MyWorkbook.Cashbook.getId());
@@ -152,7 +152,7 @@ public class IndexerTest {
 
     @Test
     public void test_xref() {
-        List<SensibleWorkbook> workbookList = indexer.getWorkbooks();
+        List<ModelWorkbook> workbookList = indexer.getWorkbooks();
         Set<VBAProcedureReference> foundReferences =
                 indexer.xref(workbookList, referee);
         assertThat(foundReferences).isNotNull();

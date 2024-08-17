@@ -20,7 +20,7 @@ public class FindUsageDiagramGenerator {
         sb.append("left to right direction\n");
     }
 
-    public void writeStartWorkbook(SensibleWorkbook wb) {
+    public void writeStartWorkbook(ModelWorkbook wb) {
         sb.append(String.format("package %s {\n", wb.getId()));
     }
 
