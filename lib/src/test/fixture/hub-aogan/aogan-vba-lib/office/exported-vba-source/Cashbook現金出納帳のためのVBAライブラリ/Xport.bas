@@ -3,7 +3,7 @@ Option Explicit
 
 Public Sub ExportThisWorkbook()
 
-    Call KzSensible.ExportModules(ThisWorkbook)
+    Call VBACallGraphSetup.ExportModules(ThisWorkbook)
 
 End Sub
 

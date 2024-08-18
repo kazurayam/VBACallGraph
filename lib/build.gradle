@@ -28,3 +28,81 @@ test {
 jar {
     archiveBaseName = 'vbacallgraph'
 }
+
+
+
+// ========= importing the fixture from external local repositories ===========
+tasks.register('deleteExternalFixture') {
+    Map<String, File> fixtureDirs = new HashMap<>()
+    fixtureDirs.put('aogan-jimukyoku', projectDir.toPath()
+            .resolve('src/test/fixture/hub-aogan/aogan-jimukyoku').normalize().toFile());
+    fixtureDirs.put('aogan-vba-lib', projectDir.toPath()
+            .resolve('src/test/fixture/hub-aogan/aogan-vba-lib').normalize().toFile());
+    fixtureDirs.put('kazurayam-vba-lib', projectDir.toPath()
+            .resolve('src/test/fixture/hub-aogan/kazurayam-vba-lib').normalize().toFile());
+    fixtureDirs.put('VBACallGraphSetup', projectDir.toPath()
+            .resolve('src/test/fixture/hub-kazurayam/VBACallGraphSetup').normalize().toFile());
+    doLast {
+        delete fixtureDirs.get('aogan-jimukyoku')
+        delete fixtureDirs.get('aogan-vba-lib')
+        delete fixtureDirs.get('kazurayam-vba-lib')
+        delete fixtureDirs.get('VBACallGraphSetup')
+    }
+}
+
+tasks.register('importExternalFixture') {
+    Map<String, File> externalRepos = new HashMap<>();
+    externalRepos.put('aogan-jimukyoku', project.rootDir.toPath()
+            .resolve('../../github-aogan/aogan-jimukyoku').normalize().toFile())
+    externalRepos.put('aogan-vba-lib', project.rootDir.toPath()
+            .resolve('../../github-aogan/aogan-vba-lib').normalize().toFile())
+    externalRepos.put('kazurayam-vba-lib', project.rootDir.toPath()
+            .resolve('../../github-aogan/kazurayam-vba-lib').normalize().toFile())
+    externalRepos.put('VBACallGraphSetup', project.rootDir.toPath()
+            .resolve('../VBACallGraphSetup').normalize().toFile())
+
+    doFirst {
+        externalRepos.each {
+            assert it.value.exists();
+            println it.key + "=" + it.value
+        }
+    }
+    doLast {
+        copy {
+            from(externalRepos.get('aogan-jimukyoku')) {
+                include 'office/会員名簿からIDパスワード管理情報を生成する.xlsm'
+                include 'office/会費納入のお願いletterを作成する.xlsm'
+                include 'office/会費納入状況チェック_R6年度.xlsm'
+                include 'office/決算算出ワークブック_令和5年度.xlsm'
+                include 'office/exported-vba-source/**/*'
+            }
+            into projectDir.toPath()
+                    .resolve('src/test/fixture/hub-aogan/aogan-jimukyoku')
+        }
+        copy {
+            from(externalRepos.get('aogan-vba-lib')) {
+                include 'office/Cashbook*.xlsm'
+                include 'office/Member*.xlsm'
+                include 'office/exported-vba-source/**/*'
+            }
+            into projectDir.toPath()
+                    .resolve('src/test/fixture/hub-aogan/aogan-vba-lib')
+        }
+        copy {
+            from(externalRepos.get('kazurayam-vba-lib')) {
+                include 'office/Backbone.xlsm'
+                include 'office/exported-vba-source/**/*'
+            }
+            into projectDir.toPath()
+                    .resolve('src/test/fixture/hub-aogan/kazurayam-vba-lib')
+        }
+        copy {
+            from (externalRepos.get('VBACallGraphSetup')) {
+                include 'office/VBACallGraphSetup.xlsm'
+                include 'office/exported-vba-source/'
+            }
+            into projectDir.toPath()
+                    .resolve('src/test/fixture/hub-kazurayam/VBACallGraphSetup')
+        }
+    }
+}
