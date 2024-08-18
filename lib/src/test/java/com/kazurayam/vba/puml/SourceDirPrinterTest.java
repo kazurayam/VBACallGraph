@@ -20,8 +20,6 @@ public class SourceDirPrinterTest {
                     .subOutputDirectory(SourceDirPrinterTest.class)
                     .build();
 
-    private final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
-
     private Path classOutputDir;
 
     @BeforeTest
@@ -32,32 +30,32 @@ public class SourceDirPrinterTest {
     public void test_printAllSourceDirs() throws IOException {
         SourceDirPrinter printer = new SourceDirPrinter();
         printer.add(new ModelWorkbook(
-                MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Backbone.resolveWorkbookUnder(),
+                MyWorkbook.Backbone.resolveSourceDirUnder())
                 .id(MyWorkbook.Backbone.getId()));
         printer.add(new ModelWorkbook(
-                MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Member.resolveWorkbookUnder(),
+                MyWorkbook.Member.resolveSourceDirUnder())
                 .id(MyWorkbook.Member.getId()));
         printer.add(new ModelWorkbook(
-                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Cashbook.resolveWorkbookUnder(),
+                MyWorkbook.Cashbook.resolveSourceDirUnder())
                 .id(MyWorkbook.Cashbook.getId()));
         printer.add(new ModelWorkbook(
-                MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Settlement.resolveWorkbookUnder(),
+                MyWorkbook.Settlement.resolveSourceDirUnder())
                 .id(MyWorkbook.Settlement.getId()));
         printer.add(new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                 .id(MyWorkbook.FeePaymentCheck.getId()));
         printer.add(new ModelWorkbook(
-                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
-                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir))
+                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(),
+                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder())
                 .id(MyWorkbook.PleasePayFeeLetter.getId()));
         printer.add(new ModelWorkbook(
-                MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
-                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir))
+                MyWorkbook.WebCredentials.resolveWorkbookUnder(),
+                MyWorkbook.WebCredentials.resolveSourceDirUnder())
                 .id(MyWorkbook.WebCredentials.getId()));
         //
         Path report = classOutputDir.resolve("MyVBASourceDirs.md");

@@ -14,4 +14,10 @@ public class CallGraphAppFactoryTest {
         CallGraphApp app = CallGraphAppFactory.createKazurayamSeven();
         assertThat(app.size()).isEqualTo(7);
     }
+
+    @Test
+    public void test_createKazurayamSevenPlus() throws IOException {
+        CallGraphApp app = CallGraphAppFactory.createKazurayamSevenPlus();
+        assertThat(app.size()).isEqualTo(8);
+    }
 }

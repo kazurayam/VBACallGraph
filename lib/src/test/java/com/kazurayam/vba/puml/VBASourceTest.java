@@ -26,7 +26,6 @@ public class VBASourceTest {
                     .subOutputDirectory(VBASourceTest.class)
                     .build();
 
-    private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     private Path classOutputDir;
 
@@ -36,15 +35,15 @@ public class VBASourceTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        source会費納入状況チェック = createFixture(MyWorkbook.FeePaymentCheck, baseDir,
+        source会費納入状況チェック = createFixture(MyWorkbook.FeePaymentCheck,
                         "会費納入状況チェック.bas");
-        sourceAccountsFinder = createFixture(MyWorkbook.Cashbook, baseDir,
+        sourceAccountsFinder = createFixture(MyWorkbook.Cashbook,
                 "AccountsFinder.cls");
     }
 
-    private VBASource createFixture(MyWorkbook myWorkbook, Path baseDir, String fileName) {
+    private VBASource createFixture(MyWorkbook myWorkbook, String fileName) {
         Path exportedSourceDir =
-                myWorkbook.resolveSourceDirUnder(baseDir);
+                myWorkbook.resolveSourceDirUnder();
         Path moduleSource = exportedSourceDir.resolve(fileName);
         String moduleName = getModuleNameFromSourceFileName(moduleSource);
         VBASource vbaSource = new VBASource(moduleName, moduleSource);

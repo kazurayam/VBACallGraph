@@ -22,8 +22,6 @@ public class CallGraphGeneratorTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(CallGraphGeneratorTest.class)
                     .build();
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private ModelWorkbook wbFeePaymentCheck;
     private ModelWorkbook wbCashbook;
     private Path classOutputDir;
@@ -32,12 +30,12 @@ public class CallGraphGeneratorTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         wbFeePaymentCheck = new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                 .id(MyWorkbook.FeePaymentCheck.getId());
         wbCashbook = new ModelWorkbook(
-                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Cashbook.resolveWorkbookUnder(),
+                MyWorkbook.Cashbook.resolveSourceDirUnder())
                 .id(MyWorkbook.Cashbook.getId());
         classOutputDir = too.cleanClassOutputDirectory();
     }

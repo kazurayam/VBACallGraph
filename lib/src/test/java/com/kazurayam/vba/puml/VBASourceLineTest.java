@@ -26,7 +26,6 @@ public class VBASourceLineTest {
                     .subOutputDirectory(VBASourceLineTest.class)
                     .build();
 
-    private static final Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     private Path classOutputDir;
 

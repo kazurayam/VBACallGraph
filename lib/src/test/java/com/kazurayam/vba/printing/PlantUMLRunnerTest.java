@@ -24,8 +24,6 @@ public class PlantUMLRunnerTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(PlantUMLRunnerTest.class)
                     .build();
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private CallGraphApp app;
     private Path classOutputDir;
 
@@ -34,8 +32,8 @@ public class PlantUMLRunnerTest {
         classOutputDir = too.cleanClassOutputDirectory();
         app = new CallGraphApp();
         app.add(new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                 .id(MyWorkbook.FeePaymentCheck.getId()));
         app.setOptions(Options.DEFAULT);
         //

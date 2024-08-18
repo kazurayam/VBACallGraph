@@ -23,21 +23,20 @@ public class MyWorkbookTest {
                     .subOutputDirectory(MyWorkbookTest.class)
                     .build();
 
-    private Path baseDir = too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     @Test
     public void test_all_resolveWorkbookUnder() {
         MyWorkbook[] values = MyWorkbook.values();
         for (MyWorkbook ex : values) {
-            Assertions.assertThat(ex.resolveWorkbookUnder(baseDir)).exists();
+            Assertions.assertThat(ex.resolveWorkbookUnder()).exists();
         }
     }
     @Test
     public void test_all_resolveSourceDirUnder() {
         MyWorkbook[] values = MyWorkbook.values();
         for (MyWorkbook ex : values) {
-            Assertions.assertThat(ex.resolveWorkbookUnder(baseDir)).exists();
-            Assertions.assertThat(ex.resolveSourceDirUnder(baseDir)).exists();
+            Assertions.assertThat(ex.resolveWorkbookUnder()).exists();
+            Assertions.assertThat(ex.resolveSourceDirUnder()).exists();
         }
     }
 
@@ -49,7 +48,7 @@ public class MyWorkbookTest {
         logger.info("[test_toJson] " + json);
         assertThat(json).contains("id");
         assertThat(json).contains("Cashbook");
-        assertThat(json).contains("repositoryName");
+        assertThat(json).contains("localRepository");
         assertThat(json).contains("workbookSubPath");
         assertThat(json).contains("sourceDirSubPath");
     }

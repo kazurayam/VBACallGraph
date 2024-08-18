@@ -20,8 +20,6 @@ public class VBAProcedureReferenceTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(VBAProcedureReferenceTest.class)
                     .build();
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     private Path classOutputDir;
     private VBAProcedureReference procedureReference;
@@ -32,8 +30,8 @@ public class VBAProcedureReferenceTest {
         //
         ModelWorkbook wbFeePaymentCheck =
                 new ModelWorkbook(
-                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                         .id(MyWorkbook.FeePaymentCheck.getId());
         VBAModule md会費納入状況チェック = wbFeePaymentCheck.getModule("会費納入状況チェック");
         FullyQualifiedVBAModuleId referrer =
@@ -45,8 +43,8 @@ public class VBAProcedureReferenceTest {
         //
         ModelWorkbook wbMember =
                 new ModelWorkbook(
-                        MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                        MyWorkbook.Member.resolveWorkbookUnder(),
+                        MyWorkbook.Member.resolveSourceDirUnder())
                         .id(MyWorkbook.Member.getId());
         VBAModule mdAoMemberUtils = wbMember.getModule("AoMemberUtils");
         VBAProcedure procFetchMemberTable =

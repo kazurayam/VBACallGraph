@@ -23,8 +23,6 @@ public class ProcedureToBeIgnoredTest {
                     .subOutputDirectory(ProcedureToBeIgnoredTest.class)
                     .build();
 
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private Path classOutputDir;
 
     private ProcedureToBeIgnored procedureNameToBeIgnored;
@@ -35,8 +33,8 @@ public class ProcedureToBeIgnoredTest {
         classOutputDir = too.cleanClassOutputDirectory();
         ModelWorkbook wbFeePaymentCheck =
                 new ModelWorkbook(
-                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                         .id(MyWorkbook.FeePaymentCheck.getId());
         VBAModule md = wbFeePaymentCheck.getModule("Xport");
         assert md != null;

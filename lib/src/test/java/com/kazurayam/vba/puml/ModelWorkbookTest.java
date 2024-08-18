@@ -24,16 +24,14 @@ public class ModelWorkbookTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(ModelWorkbookTest.class)
                     .build();
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private ModelWorkbook wb;
     private Path classOutputDir;
 
     @BeforeTest
     public void beforeTest() throws IOException {
         wb = new ModelWorkbook(
-                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Cashbook.resolveWorkbookUnder(),
+                MyWorkbook.Cashbook.resolveSourceDirUnder())
                 .id(MyWorkbook.Cashbook.getId());
         classOutputDir = too.cleanClassOutputDirectory();
     }
@@ -69,8 +67,8 @@ public class ModelWorkbookTest {
     @Test
     public void test_getModules() throws IOException {
         ModelWorkbook wb = new ModelWorkbook(
-                MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Member.resolveWorkbookUnder(),
+                MyWorkbook.Member.resolveSourceDirUnder())
                 .id(MyWorkbook.Member.getId());
         SortedMap<String, VBAModule> modules =
                 wb.getModules();

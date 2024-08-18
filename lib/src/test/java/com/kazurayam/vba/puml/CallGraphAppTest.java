@@ -24,8 +24,6 @@ public class CallGraphAppTest {
                     .subOutputDirectory(CallGraphAppTest.class)
                     .build();
 
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private CallGraphApp app;
     private Path classOutputDir;
 
@@ -34,23 +32,23 @@ public class CallGraphAppTest {
         classOutputDir = too.cleanClassOutputDirectory();
         app = new CallGraphApp();
         app.add(new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                 .id(MyWorkbook.FeePaymentCheck.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Cashbook.resolveWorkbookUnder(),
+                MyWorkbook.Cashbook.resolveSourceDirUnder())
                 .id(MyWorkbook.Cashbook.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Member.resolveWorkbookUnder(),
+                MyWorkbook.Member.resolveSourceDirUnder())
                 .id(MyWorkbook.Member.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Backbone.resolveWorkbookUnder(),
+                MyWorkbook.Backbone.resolveSourceDirUnder())
                 .id(MyWorkbook.Backbone.getId()));
         app.setOptions(Options.KAZURAYAM);
     }

@@ -28,8 +28,6 @@ public class IndexerTest {
                     .subOutputDirectory(IndexerTest.class)
                     .build();
 
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private Path classOutputDir;
     private Indexer indexer;
     private FullyQualifiedVBAProcedureId referee;
@@ -44,8 +42,8 @@ public class IndexerTest {
         // FeePaymentCheck workbook
         ModelWorkbook wbFeePaymentCheck =
                 new ModelWorkbook(
-                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                         .id(MyWorkbook.FeePaymentCheck.getId());
         indexer.add(wbFeePaymentCheck);
         VBAModule md会費納入状況チェック = wbFeePaymentCheck.getModule("会費納入状況チェック");
@@ -59,8 +57,8 @@ public class IndexerTest {
         // Member workbook
         ModelWorkbook wbMember =
                 new ModelWorkbook(
-                        MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                        MyWorkbook.Member.resolveWorkbookUnder(),
+                        MyWorkbook.Member.resolveSourceDirUnder())
                         .id(MyWorkbook.Member.getId());
         indexer.add(wbMember);
         VBAModule mdAoMemberUtil =
@@ -120,8 +118,8 @@ public class IndexerTest {
     public void test_shouldIgnore_Initialize() throws IOException {
         ModelWorkbook wbBackbone =
                 new ModelWorkbook(
-                        MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                        MyWorkbook.Backbone.resolveWorkbookUnder(),
+                        MyWorkbook.Backbone.resolveSourceDirUnder())
                         .id(MyWorkbook.Backbone.getId());
         VBAModule mdDocTransformer = wbBackbone.getModule("DocTransformer");
         VBAProcedure prInitialize =
@@ -137,8 +135,8 @@ public class IndexerTest {
     public void test_shouldIgnore_Class_Initialize() throws IOException {
         ModelWorkbook wbCashbook =
                 new ModelWorkbook(
-                        MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                        MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                        MyWorkbook.Cashbook.resolveWorkbookUnder(),
+                        MyWorkbook.Cashbook.resolveSourceDirUnder())
                         .id(MyWorkbook.Cashbook.getId());
         VBAModule mdCash = wbCashbook.getModule("Cash");
         VBAProcedure prClassInitialize =

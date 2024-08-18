@@ -6,7 +6,6 @@ import com.kazurayam.vba.puml.Options;
 import com.kazurayam.vba.puml.ModelWorkbook;
 
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class CallGraphAppFactory {
 
@@ -16,9 +15,6 @@ public class CallGraphAppFactory {
                     .subOutputDirectory(CallGraphAppFactory.class)
                     .build();
 
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
-
     private CallGraphAppFactory() {}
 
     public static CallGraphApp createKazurayamSeven() throws IOException {
@@ -26,41 +22,55 @@ public class CallGraphAppFactory {
         CallGraphApp app = new CallGraphApp();
 
         app.add(new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(baseDir),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder(baseDir))
+                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
                 .id(MyWorkbook.FeePaymentCheck.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(baseDir),
-                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder(baseDir))
+                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(),
+                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder())
                 .id(MyWorkbook.PleasePayFeeLetter.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.WebCredentials.resolveWorkbookUnder(baseDir),
-                MyWorkbook.WebCredentials.resolveSourceDirUnder(baseDir))
+                MyWorkbook.WebCredentials.resolveWorkbookUnder(),
+                MyWorkbook.WebCredentials.resolveSourceDirUnder())
                 .id(MyWorkbook.WebCredentials.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.Settlement.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Settlement.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Settlement.resolveWorkbookUnder(),
+                MyWorkbook.Settlement.resolveSourceDirUnder())
                 .id(MyWorkbook.Settlement.getId()
                 ));
 
 
         app.add(new ModelWorkbook(
-                MyWorkbook.Cashbook.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Cashbook.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Cashbook.resolveWorkbookUnder(),
+                MyWorkbook.Cashbook.resolveSourceDirUnder())
                 .id(MyWorkbook.Cashbook.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Member.resolveWorkbookUnder(),
+                MyWorkbook.Member.resolveSourceDirUnder())
                 .id(MyWorkbook.Member.getId()));
 
         app.add(new ModelWorkbook(
-                MyWorkbook.Backbone.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Backbone.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Backbone.resolveWorkbookUnder(),
+                MyWorkbook.Backbone.resolveSourceDirUnder())
                 .id(MyWorkbook.Backbone.getId()));
+
+        app.setOptions(Options.KAZURAYAM);
+
+        return app;
+    }
+
+    public static CallGraphApp createKazurayamSevenPlus() throws IOException {
+
+        CallGraphApp app = createKazurayamSeven();
+
+        app.add(new ModelWorkbook(
+                MyWorkbook.VBACallGraphSetup.resolveWorkbookUnder(),
+                MyWorkbook.VBACallGraphSetup.resolveSourceDirUnder())
+                .id(MyWorkbook.VBACallGraphSetup.getId()));
 
         app.setOptions(Options.KAZURAYAM);
 

@@ -21,8 +21,6 @@ public class FullyQualifiedVBAProcedureIdTest {
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(FullyQualifiedVBAProcedureIdTest.class)
                     .build();
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
 
     private Path classOutputDir;
     private FullyQualifiedVBAProcedureId fqpi;
@@ -31,8 +29,8 @@ public class FullyQualifiedVBAProcedureIdTest {
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
         ModelWorkbook wb = new ModelWorkbook(
-                MyWorkbook.Member.resolveWorkbookUnder(baseDir),
-                MyWorkbook.Member.resolveSourceDirUnder(baseDir))
+                MyWorkbook.Member.resolveWorkbookUnder(),
+                MyWorkbook.Member.resolveSourceDirUnder())
                 .id(MyWorkbook.Member.getId());
         VBAModule module = wb.getModule("AoMemberUtils");
         VBAProcedure procedure = module.getProcedure("FetchMemberTable");

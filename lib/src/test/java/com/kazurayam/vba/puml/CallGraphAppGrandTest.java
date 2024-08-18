@@ -26,8 +26,6 @@ public class CallGraphAppGrandTest {
                     .subOutputDirectory(CallGraphAppGrandTest.class)
                     .build();
 
-    private static final Path baseDir =
-            too.getProjectDirectory().resolve("src/test/fixture/hub");
     private CallGraphApp app;
     private Path classOutputDir;
     private Path puml;
@@ -36,7 +34,7 @@ public class CallGraphAppGrandTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        app = CallGraphAppFactory.createKazurayamSeven();
+        app = CallGraphAppFactory.createKazurayamSevenPlus();
     }
 
     @Test
