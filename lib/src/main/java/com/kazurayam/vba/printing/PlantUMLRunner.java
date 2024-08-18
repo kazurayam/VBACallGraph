@@ -30,10 +30,12 @@ public class PlantUMLRunner extends AbstractCommandRunner{
     }
 
     public void run() throws IOException, InterruptedException {
+        Subprocess sp = new Subprocess()
+                .cwd(workingDirectory.toFile());
+        sp.environment().put("PLANTUML_LIMIT_SIZE", "8192");
+        assert sp.environment("PLANTUML_LIMIT_SIZE").equals("8192");
         Subprocess.CompletedProcess cp;
-        cp = new Subprocess()
-                .cwd(workingDirectory.toFile())
-                .run(makeCommandLine());
+        cp = sp.run(makeCommandLine());
         //cp.stdout().forEach(System.out::println);
         //cp.stderr().forEach(System.err::println);
         if (cp.returncode() != 0) {
