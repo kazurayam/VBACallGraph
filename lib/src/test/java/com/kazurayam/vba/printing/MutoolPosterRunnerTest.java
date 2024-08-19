@@ -37,13 +37,15 @@ public class MutoolPosterRunnerTest {
     }
 
     @Test
-    public void test_run() throws IOException, InterruptedException {
+    public void test_run_xy() throws IOException, InterruptedException {
         MutoolPosterRunner runner =
                 new MutoolPosterRunner.Builder()
+                        .original(original)
                         .x(2)
                         .y(2)
-                        .original(original)
                         .build();
+        assertThat(runner.getX()).isEqualTo(2);
+        assertThat(runner.getY()).isEqualTo(2);
         runner.run();
         Path poster = runner.getPoster();
         assertThat(poster).exists();
@@ -51,5 +53,22 @@ public class MutoolPosterRunnerTest {
         assertThat(poster.getFileName().toString()).endsWith("-poster.pdf");
     }
 
-
+    @Test
+    public void test_run_pieceSize() throws IOException, InterruptedException {
+        String pieceSize = "A3";
+        Path output = classOutputDir.resolve(pieceSize + "-poster.pdf");
+        MutoolPosterRunner runner =
+                new MutoolPosterRunner.Builder()
+                        .original(original)
+                        .pieceSize(pieceSize)
+                        .poster(output)
+                        .build();
+        assertThat(runner.getX()).isEqualTo(3);
+        assertThat(runner.getY()).isEqualTo(3);
+        runner.run();
+        Path poster = runner.getPoster();
+        assertThat(poster).exists();
+        assertThat(poster.toFile().length()).isGreaterThan(0);
+        assertThat(poster.getFileName().toString()).endsWith("-poster.pdf");
+    }
 }
