@@ -25,6 +25,7 @@ public class VBASource implements Comparable<VBASource> {
     private final Path sourcePath;
 
     private List<String> code;
+    private Charset vbaSourceCharset = Charset.forName("MS932");
     private boolean codeLoaded;
 
     private final static ObjectMapper mapper;
@@ -41,6 +42,10 @@ public class VBASource implements Comparable<VBASource> {
         this.sourcePath = sourcePath;
         code = new ArrayList<>();
         codeLoaded = false;
+    }
+
+    public void setCharset(Charset charset) {
+        this.vbaSourceCharset = charset;
     }
 
     public String getModuleName() {
@@ -94,7 +99,7 @@ public class VBASource implements Comparable<VBASource> {
      * @return List of all lines in a .bas file
      */
     List<String> loadCode() throws IOException {
-        return Files.readAllLines(sourcePath, Charset.forName("MS932"));
+        return Files.readAllLines(sourcePath, vbaSourceCharset);
     }
 
     @Override

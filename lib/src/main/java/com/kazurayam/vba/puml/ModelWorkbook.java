@@ -12,6 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ModelWorkbook {
     private final SortedMap<String, VBAModule> modules;
 
     private String id;
+    private Charset vbaSourceCharset = Charset.forName("MS932");
 
     private static final String SHEET_NAME = "ExportedModules";
     private final static ObjectMapper mapper;
@@ -48,6 +50,10 @@ public class ModelWorkbook {
         injectSourceIntoModules(modules, sourceDirPath);
     }
 
+    public void setCharset(Charset charset) {
+        this.vbaSourceCharset = charset;
+    }
+
     public ModelWorkbook id(String id) {
         this.id = id;
         return this;
@@ -56,7 +62,7 @@ public class ModelWorkbook {
     /**
      * inject VBASource objects into the VBAModule objects in the module variable
      */
-    static void injectSourceIntoModules(
+    void injectSourceIntoModules(
             SortedMap<String, VBAModule> modules,
             Path sourceDirPath) throws IOException {
         // get the list of VBA source files in the given sourceDir
@@ -72,6 +78,7 @@ public class ModelWorkbook {
                 if (sourceFile.getFileName().toString()
                         .equals(expectedSourceFileName)) {
                     VBASource vbaSource = new VBASource(module.getName(), sourceFile);
+                    vbaSource.setCharset(vbaSourceCharset);
                     module.setVBASource(vbaSource);
                     break;
                 }

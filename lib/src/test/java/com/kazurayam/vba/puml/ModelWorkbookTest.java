@@ -79,7 +79,7 @@ public class ModelWorkbookTest {
     public void test_injectSourceIntoModules() throws IOException {
         SortedMap<String, VBAModule> modules = wb.getModules();
         Path sourceDirPath = wb.getSourceDirPath();
-        ModelWorkbook.injectSourceIntoModules(modules, sourceDirPath);
+        wb.injectSourceIntoModules(modules, sourceDirPath);
         for (VBAModule module : modules.values()) {
             assertThat(module.getVBASource())
                     .as("asserting VBAModule \"%s\".getVBASource()", module.getName())
