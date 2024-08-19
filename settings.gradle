@@ -1,4 +1,4 @@
-rootProject.name = 'VBACallGraph'
+rootProject.name = 'vba-callgraph'
 include('lib', 'app')
 
 dependencyResolutionManagement {
