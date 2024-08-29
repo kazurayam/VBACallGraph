@@ -52,7 +52,7 @@ Private Sub QuickSort(ByRef targetVar() As String, ByVal min As Long, ByVal max 
     If min < max Then
         i = min
         j = max
-        pivot = strMed3(targetVar(i, 0), targetVar(Int((i + j) / 2), 0), targetVar(j, 0))
+        pivot = StrMed3(targetVar(i, 0), targetVar(Int((i + j) / 2), 0), targetVar(j, 0))
         Do
             Do While StrComp(targetVar(i, 0), pivot) < 0
                 i = i + 1
@@ -81,22 +81,22 @@ Private Sub QuickSort(ByRef targetVar() As String, ByVal min As Long, ByVal max 
 End Sub
 
 '' StringŒ^‚Ìx, y, z ‚ðŽ«‘‡”äŠr‚µ“ñ”Ô–Ú‚Ì‚à‚Ì‚ð•Ô‚·
-Private Function strMed3(ByVal x As String, ByVal y As String, ByVal z As String)
+Private Function StrMed3(ByVal x As String, ByVal y As String, ByVal z As String)
     If StrComp(x, y) < 0 Then
         If StrComp(y, z) < 0 Then
-            strMed3 = y
+            StrMed3 = y
         ElseIf StrComp(z, x) < 0 Then
-            strMed3 = x
+            StrMed3 = x
         Else
-            strMed3 = z
+            StrMed3 = z
         End If
     Else
         If StrComp(z, y) < 0 Then
-            strMed3 = y
+            StrMed3 = y
         ElseIf StrComp(x, z) < 0 Then
-            strMed3 = x
+            StrMed3 = x
         Else
-            strMed3 = z
+            StrMed3 = z
         End If
     End If
 End Function

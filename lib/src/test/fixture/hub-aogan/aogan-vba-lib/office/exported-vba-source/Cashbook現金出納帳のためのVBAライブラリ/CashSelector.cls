@@ -27,7 +27,7 @@ End Sub
 Public Function SelectCashListByAccount(ByVal acc As Account, _
                                         Optional ofReportingUnit = "*", Optional positiveLike = True) As CashList
     Dim result As CashList
-    Set result = SelectCashList(acc.accType(), acc.AccountName(), acc.SubAccountName(), _
+    Set result = SelectCashList(acc.AccType(), acc.AccountName(), acc.SubAccountName(), _
                             ofReportingUnit, positiveLike)
     Set SelectCashListByAccount = result
 End Function
@@ -47,10 +47,10 @@ Public Function SelectCashList(ByVal ofAccountType As AccountType, ByVal ofAccou
             ' positiveLikeがfalseならCashの収支報告単位がパラメータと合致しないCashデータを選ぶ
             If (positiveLike And cs.ReportingUnit Like ofReportingUnit) Or _
                (Not positiveLike And Not cs.ReportingUnit Like ofReportingUnit) Then
-                If cs.itsAccount.accType = ofAccountType Then
+                If cs.ItsAccount.AccType = ofAccountType Then
                     ' Cashの科目と補助科目がパラメータと合致したら
-                    If cs.itsAccount.AccountName Like ofAccountName And _
-                        cs.itsAccount.SubAccountName Like ofSubAccountName Then
+                    If cs.ItsAccount.AccountName Like ofAccountName And _
+                        cs.ItsAccount.SubAccountName Like ofSubAccountName Then
                         'つかまえる
                         result.Add cs
                     End If
@@ -81,10 +81,10 @@ Public Function SelectCashListByMatchingDescription( _
             ' Cashの収支報告単位がパラメータと合致するCashデータを選ぶ
             If cs.ReportingUnit Like ofReportingUnit Then
                 
-                If cs.itsAccount.accType = ofAccountType Then
+                If cs.ItsAccount.AccType = ofAccountType Then
                     ' Cashの科目と補助科目がパラメータと合致したら
-                    If cs.itsAccount.AccountName Like ofAccountName And _
-                        cs.itsAccount.SubAccountName Like ofSubAccountName Then
+                    If cs.ItsAccount.AccountName Like ofAccountName And _
+                        cs.ItsAccount.SubAccountName Like ofSubAccountName Then
                         '摘要の値がどこかにkeyを含んでいたら
                         If InStr(TrimAllSpaces(cs.Description), TrimAllSpaces(againstKey)) <> 0 Then
                             'つかまえる

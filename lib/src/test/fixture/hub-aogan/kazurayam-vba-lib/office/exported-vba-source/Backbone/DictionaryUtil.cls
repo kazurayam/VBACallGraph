@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = True
 Option Explicit
 
-Public Sub printDictionary(dict As Dictionary)
+Public Sub PrintDictionary(dict As Dictionary)
     Dim key As Variant
     For Each key In dict.keys
         Debug.Print key, dict(key)

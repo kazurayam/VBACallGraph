@@ -17,9 +17,9 @@ Public Function CreateCashbook(ByVal wb As Workbook, _
                                 ByVal tableId As String) As Cashbook
     '引数として渡されたWorkbookを入力としてCashbookオブジェクトを生成して返す
     '外部プロジェクトがCashbookオブジェクトを生成するためにPublicなこの関数が必要だ
-    Debug.Print "wbFullName=" & wb.FullName
-    Debug.Print "sheetName=" & sheetName
-    Debug.Print "tableId=" & tableId
+    Call KzUtil.KzLog("Factories", "CreateCashbook", "wbFullName=" & wb.FullName)
+    Call KzUtil.KzLog("Factories", "CreateCashbook", "sheetName=" & sheetName)
+    Call KzUtil.KzLog("Factories", "CreateCashbook", "tableId=" & tableId)
     
     Dim ws As Worksheet: Set ws = wb.Worksheets(sheetName)
     Dim tbl As ListObject: Set tbl = ws.ListObjects(tableId)

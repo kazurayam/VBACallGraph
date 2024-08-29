@@ -63,7 +63,7 @@ Private Sub TestExpenseAccount()
     Dim expenseAccount As Account: Set expenseAccount = New Account
     Call expenseAccount.Initialize(AccountType.Expense, "事業費", "広報費")
     'Assert:
-    Assert.AreEqual AccountType.Expense, expenseAccount.accType
+    Assert.AreEqual AccountType.Expense, expenseAccount.AccType
     Assert.AreEqual "事業費", expenseAccount.AccountName
     Assert.AreEqual "広報費", expenseAccount.SubAccountName()
     Assert.AreEqual "支出/事業費/広報費", expenseAccount.ToString()
@@ -82,7 +82,7 @@ Private Sub TestIncomeAccount()
     Dim incomeAccount As Account: Set incomeAccount = New Account
     Call incomeAccount.Initialize(AccountType.Income, "雑収入", "セミナー参加料")
     'Assert:
-    Assert.AreEqual AccountType.Income, incomeAccount.accType
+    Assert.AreEqual AccountType.Income, incomeAccount.AccType
     Assert.AreEqual "雑収入", incomeAccount.AccountName
     Assert.AreEqual "セミナー参加料", incomeAccount.SubAccountName
     Assert.AreEqual "収入/雑収入/セミナー参加料", incomeAccount.ToString()
@@ -99,14 +99,14 @@ Private Sub TestOfString()
     Dim incomeAccount As Account: Set incomeAccount = New Account
     Dim expenseAccount As Account: Set expenseAccount = New Account
     'Act:
-    incomeAccount.of ("収入/雑収入/セミナー参加料")
-    expenseAccount.of ("支出/事務費/通信費")
+    incomeAccount.Of ("収入/雑収入/セミナー参加料")
+    expenseAccount.Of ("支出/事務費/通信費")
     'Assert:
-    Assert.AreEqual AccountType.Income, incomeAccount.accType
+    Assert.AreEqual AccountType.Income, incomeAccount.AccType
     Assert.AreEqual "雑収入", incomeAccount.AccountName
     Assert.AreEqual "セミナー参加料", incomeAccount.SubAccountName
     Assert.AreEqual "収入/雑収入/セミナー参加料", incomeAccount.ToString()
-    Assert.AreEqual AccountType.Expense, expenseAccount.accType
+    Assert.AreEqual AccountType.Expense, expenseAccount.AccType
     Assert.AreEqual "事務費", expenseAccount.AccountName
     Assert.AreEqual "通信費", expenseAccount.SubAccountName
     Assert.AreEqual "支出/事務費/通信費", expenseAccount.ToString()

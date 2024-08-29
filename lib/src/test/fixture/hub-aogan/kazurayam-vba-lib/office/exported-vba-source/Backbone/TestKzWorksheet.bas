@@ -57,19 +57,24 @@ Private Sub Test_KzCreateWorksheetInWorkbook()
     'Assert
     ' tempワークシートができていることを確認する
     Assert.IsTrue KzIsWorksheetPresentInWorkbook(ThisWorkbook, wsName)
+    
 End Sub
 
 '@TestMethod("KzDeleteWorksheetInWorkbookをテストする")
 Private Sub Test_KzDeleteWorksheetInWorkbook()
     'Arrange
+    ' カレントのWorkbookにtempという名前のワークシートがもしもあったら削除する
+    Dim wsName As String: wsName = "temp"
+    Dim r As Boolean
+    If KzIsWorksheetPresentInWorkbook(ThisWorkbook, wsName) Then
+        r = KzDeleteWorksheetInWorkbook(ThisWorkbook, wsName)
+    End If
     ' カレントのWorkbookに一時的なワークシートを挿入する、
     ' シートの名前を temp とする
-    Dim wsName As String: wsName = "temp"
     Worksheets.Add(After:=Worksheets(Worksheets.Count)) _
         .Name = wsName
     'Act:
     ' 挿入したワークシートを削除する
-    Dim r As Boolean
     r = KzDeleteWorksheetInWorkbook(ThisWorkbook, wsName)
     ' 一時的に挿入したワークシートがもはや存在しないことを確認するA
     Assert.IsFalse KzIsWorksheetPresentInWorkbook(ThisWorkbook, wsName)

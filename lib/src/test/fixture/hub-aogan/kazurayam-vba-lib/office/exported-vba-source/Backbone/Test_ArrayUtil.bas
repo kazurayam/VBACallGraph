@@ -2,7 +2,7 @@ Attribute VB_Name = "Test_ArrayUtil"
 Option Explicit
 
 Public Sub Test_PrintArray2D()
-    Call G.Cls
+    Call KzUtil.KzCls
     Dim sheet As Worksheet: Set sheet = Worksheets("Sheet1")
     Dim accessor As ISheetAccessor: Set accessor = New SheetAccessor
     Dim arrUtil As ArrayUtil: Set arrUtil = New ArrayUtil
@@ -24,7 +24,7 @@ Public Sub Test_PrintArray1D()
 End Sub
 
 Public Sub Test_PrintArray1D_startsWith1()
-    Call G.Cls
+    Call KzUtil.KzCls
     Dim arr1D(3) As Variant
     arr1D(1) = "foo"
     arr1D(2) = "bar"

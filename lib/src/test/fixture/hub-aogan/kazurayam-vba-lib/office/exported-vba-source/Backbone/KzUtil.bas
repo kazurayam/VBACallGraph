@@ -10,6 +10,11 @@ Public Sub KzCls()
     Debug.Print String(200, vbCrLf)
 End Sub
 
+' print a log in the format of "[moduleName.procesureName] message"
+Public Sub KzLog(ByVal moduleName As String, ByVal procedureName As String, ByVal message As String)
+    Debug.Print "[" & moduleName & "." & procedureName + "] " & message
+End Sub
+
 
 Public Function KzVarTypeAsString(ByVal var As Variant) As String
     ' 引数varのtypeを調べて変数の型を示す文字列（"Integer"など）を返す
@@ -56,11 +61,15 @@ Public Function KzResolveExternalFilePath( _
     '.xlsmファイルから見た外部ファイルのパスをVBAコードのなかに
     '固定値として書くのではなく、
     'ワークシートのセルの値として書くことを可能にする。
-    Dim ws As Worksheet: Set ws = theWorkbook.Worksheets(sheetName)
-    Dim path As String
-    path = ws.Range(rangeLiteral)
-    
-    KzResolveExternalFilePath = KzAbsolutifyPath(KzToLocalFilePath(theWorkbook.path), path)
+    If KzWorksheet.KzIsWorksheetPresentInWorkbook(theWorkbook, sheetName) Then
+        Dim ws As Worksheet: Set ws = theWorkbook.Worksheets(sheetName)
+        Dim path As String
+        path = ws.Range(rangeLiteral)
+        KzResolveExternalFilePath = KzAbsolutifyPath(KzToLocalFilePath(theWorkbook.path), path)
+    Else
+        Debug.Print theWorkbook.FullName + " does not have a worksheet named " + sheetName
+        KzResolveExternalFilePath = ""
+    End If
 End Function
 
 

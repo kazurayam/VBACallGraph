@@ -72,7 +72,7 @@ Public Sub “üo‹à‹L˜^‚ğæ‚è‚Ş(ByVal wsCashSource As Worksheet, _
     Dim i As Long
     For i = 1 To tblSource.ListRows.Count
         Dim rowSource As ListRow: Set rowSource = tblSource.ListRows(i)
-        If isæ‚è‚Ş‚×‚«(rowSource, periodStart, periodEnd, ofReportingUnit, positiveLike) Then
+        If Isæ‚è‚Ş‚×‚«(rowSource, periodStart, periodEnd, ofReportingUnit, positiveLike) Then
             'ƒf[ƒ^‚ğÊ‚·
             Call TransferRow(rowSource, tblTarget)
         End If
@@ -108,38 +108,38 @@ Public Sub TransferRow(rowSource As ListRow, tblTarget As ListObject)
 End Sub
 
 
-Public Function isæ‚è‚Ş‚×‚«(ByVal rowSource As ListRow, _
+Public Function Isæ‚è‚Ş‚×‚«(ByVal rowSource As ListRow, _
                                 Optional ByVal periodStart As Date = #4/1/2022#, _
                                 Optional ByVal periodEnd As Date = #3/31/2023#, _
                                 Optional ofReportingUnit = "*", _
                                 Optional positiveLike = True) As Boolean
-    If is‹àŠz‚ª”ñƒ[ƒ‚¾(rowSource) Then
-        If is”N“x“à‚¾(rowSource, periodStart, periodEnd) Then
-            If isûx•ñ’PˆÊ‚ªŠY“–‚·‚é(rowSource, ofReportingUnit, positiveLike) Then
-                isæ‚è‚Ş‚×‚« = True
+    If Is‹àŠz‚ª”ñƒ[ƒ‚¾(rowSource) Then
+        If Is”N“x“à‚¾(rowSource, periodStart, periodEnd) Then
+            If Isûx•ñ’PˆÊ‚ªŠY“–‚·‚é(rowSource, ofReportingUnit, positiveLike) Then
+                Isæ‚è‚Ş‚×‚« = True
             Else
-                isæ‚è‚Ş‚×‚« = False
+                Isæ‚è‚Ş‚×‚« = False
             End If
         Else
-            isæ‚è‚Ş‚×‚« = False
+            Isæ‚è‚Ş‚×‚« = False
         End If
     Else
-        isæ‚è‚Ş‚×‚« = False
+        Isæ‚è‚Ş‚×‚« = False
     End If
 End Function
 
 
-Public Function is‹àŠz‚ª”ñƒ[ƒ‚¾(ByVal rowSource As ListRow) As Boolean
+Public Function Is‹àŠz‚ª”ñƒ[ƒ‚¾(ByVal rowSource As ListRow) As Boolean
     If rowSource.Range(enumSource.‘İ•û‹àŠz).value <> 0 Or _
         rowSource.Range(enumSource.Ø•û‹àŠz).value <> 0 Then
-        is‹àŠz‚ª”ñƒ[ƒ‚¾ = True
+        Is‹àŠz‚ª”ñƒ[ƒ‚¾ = True
     Else
-        is‹àŠz‚ª”ñƒ[ƒ‚¾ = False
+        Is‹àŠz‚ª”ñƒ[ƒ‚¾ = False
     End If
 End Function
 
 
-Public Function is”N“x“à‚¾(ByVal rowSource As ListRow, _
+Public Function Is”N“x“à‚¾(ByVal rowSource As ListRow, _
                             Optional ByVal periodStart As Date = #4/1/2022#, _
                             Optional ByVal periodEnd As Date = #3/31/2023#) As Boolean
     Dim dt As Date
@@ -147,22 +147,22 @@ Public Function is”N“x“à‚¾(ByVal rowSource As ListRow, _
                 rowSource.Range(enumSource.Œ).value, _
                 rowSource.Range(enumSource.“ú).value)
     If periodStart <= dt And dt <= periodEnd Then
-        is”N“x“à‚¾ = True
+        Is”N“x“à‚¾ = True
     Else
-        is”N“x“à‚¾ = False
+        Is”N“x“à‚¾ = False
     End If
 End Function
 
 
-Public Function isûx•ñ’PˆÊ‚ªŠY“–‚·‚é(ByVal rowSource As ListRow, _
+Public Function Isûx•ñ’PˆÊ‚ªŠY“–‚·‚é(ByVal rowSource As ListRow, _
                                          Optional ofReportingUnit = "*", _
                                          Optional positiveLike = True) As Boolean
     Dim rpUnit As String: rpUnit = rowSource.Range(enumSource.ûx•ñ’PˆÊ)
     If (positiveLike And rpUnit Like ofReportingUnit) Or _
         (Not positiveLike And Not rpUnit Like ofReportingUnit) Then
-        isûx•ñ’PˆÊ‚ªŠY“–‚·‚é = True
+        Isûx•ñ’PˆÊ‚ªŠY“–‚·‚é = True
     Else
-        isûx•ñ’PˆÊ‚ªŠY“–‚·‚é = False
+        Isûx•ñ’PˆÊ‚ªŠY“–‚·‚é = False
     End If
 End Function
 

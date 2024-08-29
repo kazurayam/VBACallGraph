@@ -11,13 +11,13 @@ Public Sub Test_FindLastColumn()
     Dim col As Long: col = accessor.FindLastColumn(sheet, 2, 2)
     
     ' 結果のアサーション
-    Call G.Cls
+    Call KzUtil.KzCls
     'Debug.Print "col=" & col
     Debug.Assert col = 4
 End Sub
 
 Public Sub Test_ReadMatrix()
-    Call G.Cls
+    Call KzUtil.KzCls
     Dim sheet As Worksheet: Set sheet = Worksheets("Sheet1")
     Dim accessor As ISheetAccessor: Set accessor = New SheetAccessor
     Dim arrUtil As ArrayUtil: Set arrUtil = New ArrayUtil
@@ -29,7 +29,7 @@ Public Sub Test_ReadMatrix()
 End Sub
 
 Public Sub Test_ReadSingleRow()
-    Call G.Cls
+    Call KzUtil.KzCls
     Dim sheet As Worksheet: Set sheet = Worksheets("Sheet1")
     Dim accessor As ISheetAccessor: Set accessor = New SheetAccessor
     Dim arrUtil As ArrayUtil: Set arrUtil = New ArrayUtil
@@ -40,21 +40,21 @@ Public Sub Test_ReadSingleRow()
 End Sub
 
 Public Sub Test_GetCellValue()
-    Call G.Cls
+    Call KzUtil.KzCls
     Dim sheet As Worksheet: Set sheet = Worksheets("Sheet1")
     Dim accessor As ISheetAccessor: Set accessor = New SheetAccessor
     Debug.Assert accessor.GetCellValue(sheet, 3, 4) = "A"
 End Sub
 
 Public Sub Test_CellExists_True()
-    Call G.Cls
+    Call KzUtil.KzCls
     Dim sheet As Worksheet: Set sheet = Worksheets("Sheet1")
     Dim accessor As ISheetAccessor: Set accessor = New SheetAccessor
     Debug.Assert accessor.CellExists(sheet, 2, 2)   ' 「名前」のセル
 End Sub
 
 Public Sub Test_CellExists_False()
-    Call G.Cls
+    Call KzUtil.KzCls
     Dim sheet As Worksheet: Set sheet = Worksheets("Sheet1")
     Dim accessor As ISheetAccessor: Set accessor = New SheetAccessor
     Debug.Assert Not accessor.CellExists(sheet, 5, 3)   ' 徳川家康の勤務先はシートに書いてない

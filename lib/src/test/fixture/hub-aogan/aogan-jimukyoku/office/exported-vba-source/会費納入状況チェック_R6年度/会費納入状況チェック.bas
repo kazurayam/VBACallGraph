@@ -29,20 +29,24 @@ Option Explicit
 
 Public Sub Main()
 
+    Dim modName As String: modName = "会費納入状況チェック"
+    Dim procName As String: procName = "Main"
+
     'イミディエイト・ウインドウを消す
     Call KzCls
     
-    Debug.Print ("会費納入状況チェックを行います")
+    
+    Call KzLog(modName, procName, "会費納入状況チェックを行います")
     
     '会員名簿Excelファイルのパス
     Dim memberFile As String: memberFile = _
         KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
-    Debug.Print ("会員名簿: " & memberFile)
+    Call KzLog(modName, procName, "会員名簿: " & memberFile)
     
     '現金出納帳Excelファイルのパス
     Dim cashbookFile As String: cashbookFile = _
         KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3")
-    Debug.Print ("現金出納帳: " & cashbookFile)
+    Call KzLog(modName, procName, "現金出納帳: " & cashbookFile)
     
     
     '============================================================================
@@ -50,18 +54,23 @@ Public Sub Main()
     'コピーする。"work会員名簿"シートが作られる。その内容をListObjectとして取り出す。
     Dim memberTable As ListObject
     Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
-    Set memberTable = OpenMemberTable("R6年度", True)
-    Debug.Print "memberTable.ListRows.Count=" & memberTable.ListRows.Count
+    Call KzLog(modName, procName, "会員の人数 memberTable.ListRows.Count=" & memberTable.ListRows.Count)
+    
+    'ListObjectの右端に列を追加する。列の名前を「会費納入状況」とする
+    
     
     'work現金出納帳ワークシートを作ってCashbookオブジェクトを掴む
     Dim cb As Cashbook
     Set cb = OpenCashbook()
-    Debug.Print "cb.Count=" & cb.Count
+    Call KzLog(modName, procName, "現金出納帳の行数 cb.Count=" & cb.Count)
+    
+    'チェックの対象とすべき開始日と終了日を指定したうえでCashSelectorオブジェクトを取得する
     Dim cs As CashSelector: Set cs = CreateCashSelector(cb, #4/1/2024#, #3/31/2025#)
     
     '各会員が会費を納入したかどうか調べてwork会員名簿に書き込む
-    Dim i As Long
+    
     '会員名簿の全行についてループ
+    Dim i As Long
     For i = 1 To memberTable.ListRows.Count
         '氏名漢字と氏名カナの２セルに字が書いてある行つまり名簿として有効な行を選ぶ
         Dim nameKanji As Variant: Set nameKanji = memberTable.ListColumns("氏名").DataBodyRange(i)
@@ -103,56 +112,13 @@ Public Sub Main()
             End If
         End If
     Next i
-    
+    Call KzLog(modName, procName, "会費納入状況チェックを完了しました")
 End Sub
 
-Private Function OpenMemberTable(Optional ByVal sheetName As String = "R6年度", Optional ByVal renew As Boolean = False) As ListObject
-    'マスタの会員名簿ワークブックを開いて名簿のワークシートをカレントのワークブックに取り込む
-    Dim targetWorkbook As Workbook: Set targetWorkbook = ThisWorkbook
-    Dim targetSheetName As String: targetSheetName = "work会員名簿"
-    'work会員名簿ワークシートがまだ存在しない、または
-    'ワークシートがすでに存在するがrenewパラメータがTrueならば
-    If (Not KzVerifyWorksheetExists(targetSheetName)) Or _
-        (KzVerifyWorksheetExists(targetSheetName) And renew = True) Then
-        Dim sourceWorkbook As Workbook: Set sourceWorkbook = Workbooks.Open(mbGetPathOfAoganMembers())
-        Dim sourceSheetName As String: sourceSheetName = sheetName
-        Call KzFetchWorksheetFromWorkbook(sourceWorkbook, sourceSheetName, targetWorkbook, targetSheetName)
-        '会員名簿ワークブックを閉じる
-        Application.DisplayAlerts = False   '「変更内容を保存しますか」ダイアログを表示しない
-        sourceWorkbook.Close
-        Application.DisplayAlerts = True
-    End If
-    'カレントのワークブックに取り込んだワークシートのなかのテーブルを掴む
-    Dim ws As Worksheet: Set ws = targetWorkbook.Worksheets(targetSheetName)
-    Dim tbl As ListObject: Set tbl = ws.ListObjects("MembersTable13")
-    
-    '会員名簿のテーブルの右端列が「列4」という名前であるところを「会費納入状況」に変更する
-    tbl.ListColumns(tbl.ListColumns.Count).Name = "会費納入状況"
-    
-    '列幅を調整
-    tbl.ListColumns("氏名カナ").Range.EntireColumn.AutoFit
-    tbl.ListColumns("勤務先名").Range.EntireColumn.AutoFit
-    tbl.ListColumns("異動").Range.EntireColumn.AutoFit
-    tbl.ListColumns("会費納入状況").Range.EntireColumn.AutoFit
-    
-    '重要でない列を非表示にする。シートを印刷したときに便利なように
-    tbl.ListColumns("年齢").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("医登No").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("医登録日").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("日眼医登録").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("勤務〒").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("勤務先住所").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("勤先TELNo").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("自宅〒").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("自宅住所").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("自宅TELNo").Range.EntireColumn.Hidden = True
-    tbl.ListColumns("携帯番号").Range.EntireColumn.Hidden = True
-    
-    Set OpenMemberTable = tbl
-End Function
-
+'現金出納帳ワークシートに外部からデータをロードしてCashbokオブジェクトを返す
 Private Function OpenCashbook() As Cashbook
-    Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))
+    Dim wb As Workbook
+    Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3"))
     Dim sheetName As String: sheetName = "現金出納帳"
     Dim tableId As String: tableId = "CashbookTable1"
     Dim cb As Cashbook: Set cb = CreateCashbook(wb, sheetName, tableId)
@@ -161,29 +127,6 @@ Private Function OpenCashbook() As Cashbook
     wb.Close
     Application.DisplayAlerts = True
 End Function
-
-'Private Function OpenCashbook(Optional ByVal renew As Boolean = False) As Cashbook
-'    'マスターの現金出納帳ワークブックをひらいて現金出納帳のワークシートをカレントのワークブックに取り込む
-'    Dim targetWorkbook As Workbook: Set targetWorkbook = ThisWorkbook
-'    Dim targetSheetName As String: targetSheetName = "work現金出納帳"
-'    'work会員名簿ワークシートがまだ存在しない、または
-'    'ワークシートがすでに存在するがrenewパラメータがTrueならば
-'    If (Not KzVerifyWorksheetExists(targetSheetName)) Or _
-'        (KzVerifyWorksheetExists(targetSheetName) And renew = True) Then
-'        Dim sourceWorkbook As Workbook: Set sourceWorkbook = Workbooks.Open(GetPathOfAoganCashbook)
-'        Dim sourceSheetName As String: sourceSheetName = "現金出納帳"
-'        Call KzFetchWorksheetFromWorkbook(sourceWorkbook, sourceSheetName, targetWorkbook, targetSheetName)
-'        '現金出納帳ワークブックを閉じる
-'        Application.DisplayAlerts = False   '「変更内容を保存しますか」ダイアログを表示しない
-'        sourceWorkbook.Close
-'        Application.DisplayAlerts = True
-'    End If
-'    'カレントのワークブックに取り込んだワークシートのなかのテーブルを掴む
-'    Dim cb As Cashbook: Set cb = CreateCashbook(targetWorkbook, targetSheetName)
-'    '
-'    Set OpenCashbook = cb
-'End Function
-
 
 
 Private Function FindPaymentBy(ByVal cs As CashSelector, ByVal nameKana As String)
@@ -210,7 +153,9 @@ Private Sub PrintFinding(ByVal i As Long, _
                             ByVal nameKana As String, _
                             ByVal entitlement As String, _
                             ByVal status As String)
-    Debug.Print "|"; i & "|" & nameKana & "|" & entitlement & "|" & status & "|"
+    Dim message As String
+    message = "|" & i & "|" & nameKana & "|" & entitlement & "|" & status & "|"
+    Call KzUtil.KzLog("会費納入状況チェック", "Main", message)
 End Sub
                     
 

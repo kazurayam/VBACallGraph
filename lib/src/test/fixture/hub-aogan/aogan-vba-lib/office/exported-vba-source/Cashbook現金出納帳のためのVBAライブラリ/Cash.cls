@@ -95,7 +95,7 @@ Public Function ToDate() As Date
     ToDate = d
 End Function
 
-Public Property Get itsAccount() As Account
+Public Property Get ItsAccount() As Account
     Dim acc As Account: Set acc = New Account
     If Len(incomeAccount) > 0 And Len(IncomeSubAccount) > 0 Then
         Call acc.Initialize(AccountType.Income, incomeAccount, IncomeSubAccount)
@@ -104,5 +104,5 @@ Public Property Get itsAccount() As Account
     Else
         Call acc.Initialize(AccountType.Undefined, "", "")
     End If
-    Set itsAccount = acc
+    Set ItsAccount = acc
 End Property

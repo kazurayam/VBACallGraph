@@ -98,13 +98,12 @@ On Error GoTo ErrorHandler
     
  '例外処理
 ErrorHandler:
-    Debug.Print ("Error occured in KzWorksheet.KzFetchWorksheetFromWorkbook")
-    Debug.Print ("    sourceWorkbook : " & sourceWorkbook.path)
-    Debug.Print ("    sourceSheetName: " & sourceSheetName)
-    Debug.Print ("    targetWorkbook : " & targetWorkbook.path)
-    Debug.Print ("    targetSheetName: " & targetSheetName)
     ' もしもエラーが起きていたならcall元に伝播させる
     If Err.Number <> 0 Then
+        Call KzUtil.KzLog("KzWorksheet", "KzFetchWorksheetFromWorkbook", "sourceWorkbook : " & sourceWorkbook.FullName)
+        Call KzUtil.KzLog("KzWorksheet", "KzFetchWorksheetFromWorkbook", "sourceSheetName: " & sourceSheetName)
+        Call KzUtil.KzLog("KzWorksheet", "KzFetchWorksheetFromWorkbook", "targetWorkbook : " & targetWorkbook.FullName)
+        Call KzUtil.KzLog("KzWorksheet", "KzFetchWorksheetFromWorkbook", "targetSheetName: " & targetSheetName)
         Err.Raise Err.Number, Err.Source, Err.Description, Err.HelpFile, Err.HelpContext
     End If
 

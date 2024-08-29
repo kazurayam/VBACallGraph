@@ -93,7 +93,7 @@ End Sub
 
 Private Sub TranscribeSum(ByRef cs As CashSelector, _
                                 ByVal theReportingUnit As String, _
-                                ByVal accType As AccountType, _
+                                ByVal AccType As AccountType, _
                                 ByVal accName As String, _
                                 ByVal subAccName As String, _
                                 ByRef targetCell As Range)
@@ -103,11 +103,11 @@ Private Sub TranscribeSum(ByRef cs As CashSelector, _
     
     'パラメータで指定された
     Dim selected As CashList
-    If accType = AccountType.Expense Then
-        Set selected = cs.SelectCashList(accType, accName, subAccName, theReportingUnit)
+    If AccType = AccountType.Expense Then
+        Set selected = cs.SelectCashList(AccType, accName, subAccName, theReportingUnit)
         targetCell.value = selected.SumOfExpenseAmount()
     Else
-        Set selected = cs.SelectCashList(accType, accName, subAccName, theReportingUnit)
+        Set selected = cs.SelectCashList(AccType, accName, subAccName, theReportingUnit)
         targetCell.value = selected.SumOfIncomeAmount()
     End If
     'tearDown
@@ -127,20 +127,20 @@ End Sub
 
 Private Sub TranscribeDetail(ByVal cs As CashSelector, _
                             ByVal rpUnit As String, _
-                            ByVal accType As AccountType, _
+                            ByVal AccType As AccountType, _
                             ByVal ofAccountName As String, _
                             ByVal ofSubAccountName As String, _
                             ByRef targetTable As ListObject)
     Dim selected As CashList
-    Set selected = cs.SelectCashList(accType, ofAccountName, ofSubAccountName, rpUnit)
+    Set selected = cs.SelectCashList(AccType, ofAccountName, ofSubAccountName, rpUnit)
     Dim i As Long
     Dim ch As Cash
     For i = 1 To selected.Count
         Set ch = selected.Items(i)
         With targetTable.ListRows.Add
-            .Range(1).value = ch.itsAccount.AccountTypeAsString
-            .Range(2).value = ch.itsAccount.AccountName
-            .Range(3).value = ch.itsAccount.SubAccountName
+            .Range(1).value = ch.ItsAccount.AccountTypeAsString
+            .Range(2).value = ch.ItsAccount.AccountName
+            .Range(3).value = ch.ItsAccount.SubAccountName
             .Range(4).value = ch.Description
             If ch.ExpenseAmount > 0 Then
                 .Range(5).value = ch.ExpenseAmount

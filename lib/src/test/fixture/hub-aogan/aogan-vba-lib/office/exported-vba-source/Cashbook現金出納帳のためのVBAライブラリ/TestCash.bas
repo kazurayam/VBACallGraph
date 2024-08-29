@@ -89,7 +89,7 @@ Private Sub TestExpense()
     Assert.AreEqual "会報第73号印刷代　凸版メディア", cs.Description   '適用
     Assert.AreEqual CLng(0), cs.IncomeAmount              '借方金額
     Assert.AreEqual CLng(495000), cs.ExpenseAmount        '貸方金額
-    Assert.AreEqual "支出/事業費/広報費", cs.itsAccount.ToString
+    Assert.AreEqual "支出/事業費/広報費", cs.ItsAccount.ToString
 TestExit:
     Exit Sub
 TestFail:
@@ -120,7 +120,7 @@ Private Sub TestIncome()
     Assert.AreEqual CLng(2000), cs.IncomeAmount            '借方金額
     Assert.AreEqual CLng(0), cs.ExpenseAmount        '貸方金額
     
-    Assert.AreEqual "収入/雑収入/セミナー参加料", cs.itsAccount.ToString()
+    Assert.AreEqual "収入/雑収入/セミナー参加料", cs.ItsAccount.ToString()
 TestExit:
     Exit Sub
 TestFail:

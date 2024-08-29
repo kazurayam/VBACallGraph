@@ -54,7 +54,7 @@ Public Function FindAccounts(Optional ofReportingUnit = "*", Optional positiveLi
                (Not positiveLike And Not cs.ReportingUnit Like ofReportingUnit) Then
 
                 Dim key As Variant
-                key = cs.itsAccount.ToString()
+                key = cs.ItsAccount.ToString()
                 
                 If dic1.Exists(key) = False Then
                     dic1.Add key, CLng(1)  ' Ç±ÇÃkeyÇÃèoåªâÒêîÇ∆ÇµÇƒ1ÇèëÇ´çûÇﬁ
@@ -72,8 +72,8 @@ Public Function FindAccounts(Optional ofReportingUnit = "*", Optional positiveLi
     
     For Each k In dic1.Keys
         Dim acc As Account: Set acc = New Account
-        Call acc.of(k)
-        Set dic2(k) = cSel_.SelectCashList(acc.accType, acc.AccountName, acc.SubAccountName, _
+        Call acc.Of(k)
+        Set dic2(k) = cSel_.SelectCashList(acc.AccType, acc.AccountName, acc.SubAccountName, _
                                            ofReportingUnit, positiveLike)
     Next
     

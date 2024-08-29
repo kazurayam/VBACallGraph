@@ -3,7 +3,7 @@ Attribute VB_Name = "Tasting"
 
 ' Tasting : 味見する、気軽に触ってみる、ちょっと試す、いろいろと
 
-Sub tasteCashbook()
+Sub TasteCashbook()
     ' Cashbookクラスを味見する
     ' Cashbookオブジェクトを生成して、Countプロパティを読みだしてPrintする
     Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))
@@ -17,7 +17,7 @@ Sub tasteCashbook()
 End Sub
 
 
-Sub tasteCash_ColumnHeader()
+Sub TasteCash_ColumnHeader()
     ' CashオブジェクトのColumnHeader()メソッドを味見する
     Dim cs As Cash
     Set cs = New Cash
@@ -25,7 +25,7 @@ Sub tasteCash_ColumnHeader()
 End Sub
 
 
-Sub tasteCash_ToString()
+Sub TasteCash_ToString()
     ' CashオブジェクトのToString()メソッドを味見する
     Call KzCls
     Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))
@@ -42,7 +42,7 @@ Sub tasteCash_ToString()
 End Sub
 
 
-Sub tasteCash_ToDate()
+Sub TasteCash_ToDate()
     ' CashオブジェクトのToDate()メソッドを味見する
     Call KzCls
     Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))
@@ -58,7 +58,7 @@ Sub tasteCash_ToDate()
     wb.Close
 End Sub
 
-Sub tasteCashSelector_SelectCashList_ofIncome()
+Sub TasteCashSelector_SelectCashList_ofIncome()
     ' CashSelectorオブジェクトのSelectCashListメソッドを味見する
     ' Incomeの場合
     Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))
@@ -80,7 +80,7 @@ Sub tasteCashSelector_SelectCashList_ofIncome()
 End Sub
 
 
-Sub tasteCashSelector_SelectCashList_ofExpense()
+Sub TasteCashSelector_SelectCashList_ofExpense()
     ' CashSelectorオブジェクトのSelectCashListOfIncomeメソッドを味見する
     Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))
     Dim ws As Worksheet: Set ws = wb.Worksheets("現金出納帳")
@@ -102,26 +102,26 @@ Sub tasteCashSelector_SelectCashList_ofExpense()
 End Sub
 
 
-Sub tasteAccount()
+Sub TasteAccount()
     Call KzCls
     ' Expense account
     Dim accExpense As Account: Set accExpense = New Account
     Call accExpense.Initialize(AccountType.Expense, "事業費", "広報費")
-    Debug.Print "accExpense.accType: " & accExpense.accType
+    Debug.Print "accExpense.accType: " & accExpense.AccType
     Debug.Print "accExpense.AccountName: " & accExpense.AccountName
     Debug.Print "accExpense.SubAccountName: " & accExpense.SubAccountName
     Debug.Print "accExpense.ToString(): " & accExpense.ToString()
     ' Income account
     Dim accIncome As Account: Set accIncome = New Account
     Call accIncome.Initialize(AccountType.Income, "雑収入", "セミナー参加料")
-    Debug.Print "accIncome.accType: " & accIncome.accType
+    Debug.Print "accIncome.accType: " & accIncome.AccType
     Debug.Print "accIncome.AccountName: " & accIncome.AccountName
     Debug.Print "accIncome.SubAccountName: " & accIncome.SubAccountName
     Debug.Print "accIncome.ToString(): " & accIncome.ToString()
 End Sub
 
 
-Sub tasteAccountsFinder_allUnit()
+Sub TasteAccountsFinder_allUnit()
     ' AccountsFinderクラスを味見する
     'Arrange
     Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))
@@ -189,7 +189,7 @@ End Sub
 
 
 
-Sub tasteAccountsFinder_specifyReportingUnit()
+Sub TasteAccountsFinder_specifyReportingUnit()
     ' AccountsFinderクラスを味見する ただし収支報告単位を特定して
     'Arrange
     Dim wb As Workbook: Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "現金出納帳ファイルのパス", "B2"))

@@ -1,17 +1,10 @@
 @startuml
 left to right direction
 package 会費納入状況チェック {
-  stereotype Environment {
-    {method} mbGetPathOfAoganCashbook
-    {method} mbGetPathOfAoganMembers
-    {method} Test_mbGetPathOfAoganCashbook
-    {method} Test_mbGetPathOfAoganMembers
-  }
   stereotype 会費納入状況チェック {
     {method} -FindPaymentBy
     {method} +Main
     {method} -OpenCashbook
-    {method} -OpenMemberTable
     {method} -PrintFinding
     {method} -RecordFindingIntoMemberTable
   }
@@ -39,18 +32,18 @@ package Cashbook現金出納帳のためのVBAライブラリ {
   class Account {
     {field} +AccountName
     {field} +AccountTypeAsString
-    {field} +accType
+    {field} +AccType
     {method} +Initialize
-    {method} +of
+    {method} +Of
     {field} +SubAccountName
     {method} +ToString
   }
   stereotype AccountSum {
     {method} +Get小計
-    {method} +is金額が非ゼロだ
-    {method} +is取り込むべき
-    {method} +is収支報告単位が該当する
-    {method} +is年度内だ
+    {method} +Is金額が非ゼロだ
+    {method} +Is取り込むべき
+    {method} +Is収支報告単位が該当する
+    {method} +Is年度内だ
     {method} +Test_Get小計
     {method} +Test勘定科目の小計を算出する
     {method} +Test小計の表を作る
@@ -72,7 +65,7 @@ package Cashbook現金出納帳のためのVBAライブラリ {
     {method} -Class_Initialize
     {method} +ColumnHeader
     {method} +Initialize
-    {field} +itsAccount
+    {field} +ItsAccount
     {method} +ToDate
     {method} +ToString
   }
@@ -109,21 +102,21 @@ package Cashbook現金出納帳のためのVBAライブラリ {
     {method} +PrintAccounts
   }
   stereotype LearningModule {
-    {method} ListWorksheetsInAoganCashbook
+    {method} +ListWorksheetsInAoganCashbook
   }
   stereotype Tasting {
-    {method} tasteAccount
-    {method} tasteAccountsFinder_allUnit
-    {method} tasteAccountsFinder_specifyReportingUnit
-    {method} tasteCash_ColumnHeader
-    {method} tasteCash_ToDate
-    {method} tasteCash_ToString
-    {method} tasteCashbook
-    {method} tasteCashSelector_SelectCashList_ofExpense
-    {method} tasteCashSelector_SelectCashList_ofIncome
+    {method} +TasteAccount
+    {method} +TasteAccountsFinder_allUnit
+    {method} +TasteAccountsFinder_specifyReportingUnit
+    {method} +TasteCash_ColumnHeader
+    {method} +TasteCash_ToDate
+    {method} +TasteCash_ToString
+    {method} +TasteCashbook
+    {method} +TasteCashSelector_SelectCashList_ofExpense
+    {method} +TasteCashSelector_SelectCashList_ofIncome
   }
   stereotype 収支報告書作成サンプル {
-    {method} Main_TohokuBlockLectures45th
+    {method} +Main_TohokuBlockLectures45th
     {method} -PrintAccounts
     {method} -TranscribeDetail
     {method} -TranscribeSum
@@ -146,11 +139,11 @@ package Backboneライブラリ {
   stereotype DicSortModule {
     {method} +DicSort
     {method} -QuickSort
-    {method} -strMed3
+    {method} -StrMed3
     {method} +TestDicSort
   }
   class DictionaryUtil {
-    {method} +printDictionary
+    {method} +PrintDictionary
   }
   class DocTransformer {
     {method} +Initialize
@@ -185,12 +178,9 @@ package Backboneライブラリ {
   stereotype KzRange {
     {method} +KzGetUniqueItems
   }
-  stereotype KzSensible {
-    {method} +ExportModules
-    {method} -FormatProcKindName
-  }
   stereotype KzUtil {
     {method} +KzCls
+    {method} +KzLog
     {method} +KzResolveExternalFilePath
     {method} +KzVarTypeAsString
     {method} -Test_KzResolveExternalFilePath
@@ -221,65 +211,70 @@ package Backboneライブラリ {
     {method} +Class_Initialize
     {method} +HasNext
     {method} +Initialize
-    {method} +nextDictionary
+    {method} +NextDictionary
   }
-  class clsProcInfo {
-    {field} +ModuleType
-    {field} +procKindName
-    {field} +Scope
-  }
-  stereotype getCodeModule {
+}
+package VBACallGraphSetup {
+  stereotype CodeModuleUtil {
     {method} +getCodeModule
     {method} -getProcComment
     {method} -getProcSource
     {method} -isProcLine
   }
+  class ProcedureInfo {
+    {field} +ModuleType
+    {field} +procKindName
+    {field} +Scope
+  }
+  stereotype VBACallGraphSetup {
+    {method} +ExportModules
+    {method} -FormatProcKindName
+    {method} -KzCreateWorksheetInWorkbook
+    {method} +KzIsWorksheetPresentInWorkbook
+  }
 }
 Backboneライブラリ.ArraySortModule o-- Backboneライブラリ.TestArraySort : Test_InsertionSort
 Backboneライブラリ.KzRange o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
-Backboneライブラリ.KzSensible o-- Backboneライブラリ.KzWorksheet : KzCreateWorksheetInWorkbook
-Backboneライブラリ.KzSensible o-- Backboneライブラリ.clsProcInfo : ModuleType
-Backboneライブラリ.KzSensible o-- Backboneライブラリ.clsProcInfo : Scope
-Backboneライブラリ.KzSensible o-- Backboneライブラリ.clsProcInfo : procKindName
-Backboneライブラリ.KzSensible o-- Backboneライブラリ.getCodeModule : getCodeModule
-Backboneライブラリ.KzSensible o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 Backboneライブラリ.KzUtil o-- Backboneライブラリ.KzFile : KzAbsolutifyPath
 Backboneライブラリ.KzUtil o-- Backboneライブラリ.KzFile : KzToLocalFilePath
+Backboneライブラリ.KzUtil o-- Backboneライブラリ.KzWorksheet : KzIsWorksheetPresentInWorkbook
+Backboneライブラリ.KzUtil o-- VBACallGraphSetup.VBACallGraphSetup : KzIsWorksheetPresentInWorkbook
+Backboneライブラリ.KzWorksheet o-- Backboneライブラリ.KzUtil : KzLog
 Backboneライブラリ.KzWorksheet o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
+Backboneライブラリ.KzWorksheet o-- VBACallGraphSetup.VBACallGraphSetup : KzCreateWorksheetInWorkbook
+Backboneライブラリ.KzWorksheet o-- VBACallGraphSetup.VBACallGraphSetup : KzIsWorksheetPresentInWorkbook
 Backboneライブラリ.TableIterator o-- Backboneライブラリ.ArrayUtil : PrintArray1D
 Backboneライブラリ.TableIterator o-- Backboneライブラリ.ISheetAccessor : FindLastColumn
 Backboneライブラリ.TableIterator o-- Backboneライブラリ.ISheetAccessor : GetCellValue
 Backboneライブラリ.TableIterator o-- Backboneライブラリ.ISheetAccessor : GetRowBottom
 Backboneライブラリ.TableIterator o-- Backboneライブラリ.ISheetAccessor : ReadSingleRow
 Backboneライブラリ.TableIterator o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
-Backboneライブラリ.getCodeModule o-- Backboneライブラリ.clsProcInfo : ModuleType
-Backboneライブラリ.getCodeModule o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 Cashbook現金出納帳のためのVBAライブラリ.AccountSum o-- Backboneライブラリ.KzRange : KzGetUniqueItems
 Cashbook現金出納帳のためのVBAライブラリ.AccountSum o-- Backboneライブラリ.Test_DocTransformer : Test
-Cashbook現金出納帳のためのVBAライブラリ.AccountSum o-- Cashbook現金出納帳のためのVBAライブラリ.Account : of
 Cashbook現金出納帳のためのVBAライブラリ.AccountSum o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ToDate
 Cashbook現金出納帳のためのVBAライブラリ.AccountSum o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Backboneライブラリ.DicSortModule : DicSort
+Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccType
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccountName
+Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Account : Of
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Account : SubAccountName
-Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Account : accType
-Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Account : of
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.AccountSum : ToDate
+Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ItsAccount
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ToDate
-Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : itsAccount
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfExpenseAmount
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfIncomeAmount
 Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder o-- Cashbook現金出納帳のためのVBAライブラリ.CashSelector : SelectCashList
 Cashbook現金出納帳のためのVBAライブラリ.Cash o-- Cashbook現金出納帳のためのVBAライブラリ.AccountSum : ToDate
+Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccType
 Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccountName
 Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.Account : SubAccountName
-Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.Account : accType
 Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.AccountSum : ToDate
+Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ItsAccount
 Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ToDate
-Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : itsAccount
 Cashbook現金出納帳のためのVBAライブラリ.CashSelector o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 Cashbook現金出納帳のためのVBAライブラリ.Cashbook o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
+Cashbook現金出納帳のためのVBAライブラリ.Factories o-- Backboneライブラリ.KzUtil : KzLog
 Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Backboneライブラリ.ArraySortModule : InsertionSort
 Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder : FindAccounts
 Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfExpenseAmount
@@ -288,9 +283,9 @@ Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金
 Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル : PrintAccounts
 Cashbook現金出納帳のためのVBAライブラリ.LearningModule o-- Backboneライブラリ.KzUtil : KzResolveExternalFilePath
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Backboneライブラリ.KzUtil : KzResolveExternalFilePath
+Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccType
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccountName
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.Account : SubAccountName
-Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.Account : accType
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.AccountSum : ToDate
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder : FindAccounts
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder : FindKeysAsString
@@ -299,14 +294,14 @@ Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.CashSelector : SelectCashList
 Cashbook現金出納帳のためのVBAライブラリ.Tasting o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateCashbook
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Backboneライブラリ.KzUtil : KzResolveExternalFilePath
+Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccType
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccountName
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Account : AccountTypeAsString
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Account : SubAccountName
-Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Account : accType
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.AccountSum : ToDate
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.AccountsFinder : FindAccounts
+Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ItsAccount
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ToDate
-Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : itsAccount
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfExpenseAmount
 Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サンプル o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfIncomeAmount
@@ -316,6 +311,16 @@ Cashbook現金出納帳のためのVBAライブラリ.収支報告書作成サ�
 Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- Backboneライブラリ.KzFile : KzAbsolutifyPath
 Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- Backboneライブラリ.KzWorksheet : KzFetchWorksheetFromWorkbook
 Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- Backboneライブラリ.KzWorksheet : KzIsWorksheetPresentInWorkbook
+Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- VBACallGraphSetup.VBACallGraphSetup : KzIsWorksheetPresentInWorkbook
+VBACallGraphSetup.CodeModuleUtil o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
+VBACallGraphSetup.CodeModuleUtil o-- VBACallGraphSetup.ProcedureInfo : ModuleType
+VBACallGraphSetup.VBACallGraphSetup o-- Backboneライブラリ.KzWorksheet : KzCreateWorksheetInWorkbook
+VBACallGraphSetup.VBACallGraphSetup o-- Backboneライブラリ.KzWorksheet : KzIsWorksheetPresentInWorkbook
+VBACallGraphSetup.VBACallGraphSetup o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
+VBACallGraphSetup.VBACallGraphSetup o-- VBACallGraphSetup.CodeModuleUtil : getCodeModule
+VBACallGraphSetup.VBACallGraphSetup o-- VBACallGraphSetup.ProcedureInfo : ModuleType
+VBACallGraphSetup.VBACallGraphSetup o-- VBACallGraphSetup.ProcedureInfo : Scope
+VBACallGraphSetup.VBACallGraphSetup o-- VBACallGraphSetup.ProcedureInfo : procKindName
 会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.DocTransformer : Transform
 会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.DocTransformerUtil : Create
 会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.KzFile : KzAbsolutifyPath
@@ -334,15 +339,13 @@ Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- Backboneラ�
 会費納入をお願いするletterを作成する.会費納入のお願いを作成 o-- Backboneライブラリ.KzUtil : KzResolveExternalFilePath
 会費納入をお願いするletterを作成する.会費納入のお願いを作成 o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 会費納入をお願いするletterを作成する.会費納入のお願いを作成 o-- Member会員名簿のためのVBAライブラリ.AoMemberUtils : FetchMemberTable
-会費納入状況チェック.Environment o-- Backboneライブラリ.KzUtil : KzResolveExternalFilePath
+会費納入状況チェック.会費納入状況チェック o-- Backboneライブラリ.KzUtil : KzLog
 会費納入状況チェック.会費納入状況チェック o-- Backboneライブラリ.KzUtil : KzResolveExternalFilePath
-会費納入状況チェック.会費納入状況チェック o-- Backboneライブラリ.KzWorksheet : KzFetchWorksheetFromWorkbook
 会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.CashSelector : SelectCashListByMatchingDescription
 会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateCashSelector
 会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateCashbook
 会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateEmptyCashList
 会費納入状況チェック.会費納入状況チェック o-- Member会員名簿のためのVBAライブラリ.AoMemberUtils : FetchMemberTable
-会費納入状況チェック.会費納入状況チェック o-- 会費納入状況チェック.Environment : mbGetPathOfAoganMembers
 決算算出ワークブック.決算書作成 o-- Backboneライブラリ.KzUtil : KzResolveExternalFilePath
 決算算出ワークブック.決算書作成 o-- Cashbook現金出納帳のためのVBAライブラリ.AccountSum : 入出金記録をソートする
 決算算出ワークブック.決算書作成 o-- Cashbook現金出納帳のためのVBAライブラリ.AccountSum : 入出金記録を取り込む

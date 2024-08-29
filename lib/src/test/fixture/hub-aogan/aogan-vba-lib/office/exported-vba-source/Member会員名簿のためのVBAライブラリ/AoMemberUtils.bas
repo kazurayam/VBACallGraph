@@ -5,8 +5,11 @@ Option Explicit
 ' AoMemberUtils --- 会員名簿のExcelワークシートを扱う共用のSubとFunctionを提供する
 '
 
-' 会員名簿のExcelファイルのなかのワークシートの内容を指定されたワークブックにコピーする。
-' そしてコピーされたシート含まれているExcel Tableの内容ListObjectに変換して返す。
+' 会員名簿のExcelファイルのパスをパラメータとして受ける。
+' そのなかの会員名簿ワークシートの名前をmemberSheetNameパラメータとして受ける。
+' ワークシートを読み取って、指定されたワークブックのなかにコピーする。
+' 出力先としてのワークシートの名前を指定しなければデフォルトとして「work会員名簿」とする。
+' そして出力されたワークシートにに含まれているExcel Tableの内容ListObjectに変換して返す。
 Public Function FetchMemberTable(memberFilePath As String, _
         memberSheetName As String, _
         targetWorkbook As Workbook, _
@@ -43,19 +46,16 @@ Public Function FetchMemberTable(memberFilePath As String, _
     
     ' targetワークブックの”work会員名簿”シートのなかにExcel Tableがあるはず
     Dim ws As Worksheet: Set ws = targetWorkbook.Worksheets(targetSheetName)
+    
     ' テーブルをListObjectに変換する
     Dim tbl As ListObject: Set tbl = ws.ListObjects(tableId)
     
     ' ListObjectの形を整える --------------------------------------------------
     
-    '会員名簿のテーブルの右端列が「列4」という名前であるところを「会費納入状況」に変更する
-    tbl.ListColumns(tbl.ListColumns.Count).Name = "会費納入状況"
-    
     '列幅を調整
     tbl.ListColumns("氏名カナ").Range.EntireColumn.AutoFit
     'tbl.ListColumns("勤務先名").Range.EntireColumn.AutoFit
     'tbl.ListColumns("異動").Range.EntireColumn.AutoFit
-    'tbl.ListColumns("会費納入状況").Range.EntireColumn.AutoFit
     
     '重要でない列を非表示にする。シートを印刷したときに便利なように
     'tbl.ListColumns("年齢").Range.EntireColumn.Hidden = True

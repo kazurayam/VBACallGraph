@@ -33,8 +33,8 @@ Public Function ToString() As String
     ToString = AccountTypeAsString & "/" & accountName_ & "/" & subAccountName_
 End Function
 
-Public Property Get accType() As Long
-    accType = accountType_
+Public Property Get AccType() As Long
+    AccType = accountType_
 End Property
 
 
@@ -54,7 +54,7 @@ End Property
 ' "支出/事務費/通信費"のような文字列を引数として受け取る
 ' 受け取った文字列を「支出」「事務費」「通信費」のように部分に分けて
 ' それに基づいてAccountオブジェクトのプロパティを初期化する。
-Public Sub of(ByVal accStr As String)
+Public Sub Of(ByVal accStr As String)
     Dim arr() As String
     arr = Split(accStr, "/")
     'Debug.Print "UBound(arr)=" & UBound(arr)

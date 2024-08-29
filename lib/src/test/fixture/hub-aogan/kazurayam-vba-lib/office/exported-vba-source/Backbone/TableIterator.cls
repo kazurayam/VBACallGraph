@@ -81,7 +81,7 @@ End Sub
 ' Trueが返ってくることを確かめるべきである。
 ' すべてのデータ行を取り扱ったあとでさらにCallされたらNextDictionary()
 ' は警告メッセージを表示し、結果として空のDictionaryを返す。
-Public Function nextDictionary() As Dictionary
+Public Function NextDictionary() As Dictionary
     Dim i As Integer
     If HasNext() = True Then
         
@@ -105,10 +105,10 @@ Public Function nextDictionary() As Dictionary
         ' increment the index
         currentRowIndex = currentRowIndex + 1
         
-        Set nextDictionary = dict
+        Set NextDictionary = dict
     Else
         Debug.Print "HasNext() returned False"
-        Set nextDictionary = New Dictionary
+        Set NextDictionary = New Dictionary
     End If
 End Function
 

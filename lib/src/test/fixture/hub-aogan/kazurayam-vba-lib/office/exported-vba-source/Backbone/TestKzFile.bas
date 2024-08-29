@@ -75,7 +75,7 @@ Private Sub Test_KzAbsolutifyPath_absolute()
     Const givenPath = "C:\Users\someone\tmp\Book1.xlsx"
     'Act
     Dim absPath As String: absPath = KzAbsolutifyPath(base, givenPath)
-    'Assert
+    'Asserth
     Debug.Print "base : " & base
     Debug.Print "given: " & givenPath
     Debug.Print "abs  : " & absPath

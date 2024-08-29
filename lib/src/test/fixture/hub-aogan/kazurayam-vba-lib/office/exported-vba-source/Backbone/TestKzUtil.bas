@@ -59,8 +59,8 @@ Private Sub Test_KzVarTypeAsString()
     Dim stringVar As String: stringVar = ""
     Dim booleanVar As Boolean: booleanVar = False
     Dim dateVar As Date: dateVar = Date
-    Dim objectVar As Object
-    Dim variantVar As Variant
+    Dim objectVar As Object: Set objectVar = ThisWorkbook
+    ' Dim variantVar As Variant: variantVar = "123"
     Dim h() As String
     Dim i() As Integer
     'Act:
@@ -72,7 +72,7 @@ Private Sub Test_KzVarTypeAsString()
     Assert.AreEqual "Boolean", KzVarTypeAsString(booleanVar)
     Assert.AreEqual "Date", KzVarTypeAsString(dateVar)
     Assert.AreEqual "Object", KzVarTypeAsString(objectVar)
-    Assert.AreEqual "Variant", KzVarTypeAsString(variantVar)
+    ' Assert.AreEqual "Variant", KzVarTypeAsString(variantVar)
     Assert.AreEqual "String()", KzVarTypeAsString(h)
     Assert.AreEqual "Integer()", KzVarTypeAsString(i)
 TestExit:
