@@ -72,7 +72,7 @@ public class CallGraphDiagramGenerator {
     }
 
     public void writeProcedureReference(VBAProcedureReference procedureReference) {
-        sb.append(String.format("%s.%s o-- %s.%s : %s\n",
+        sb.append(String.format("%s.%s ..> %s.%s : %s\n",
                 procedureReference.getReferrer().getWorkbookId(),
                 procedureReference.getReferrer().getModule().getName(),
                 procedureReference.getReferee().getWorkbookId(),
