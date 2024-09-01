@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,6 +15,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class VBAModule implements Comparable<VBAModule> {
+
+    private final static Logger logger = LoggerFactory.getLogger(VBAModule.class);
 
     private final String name;
     private final ModuleType type;
@@ -72,6 +76,8 @@ public class VBAModule implements Comparable<VBAModule> {
                 return procedure;
             }
         }
+        logger.warn(String.format("[getProcedure] in module=%s, procedureName=%s is not found",
+                getName(), procedureName));
         return null;
     }
 

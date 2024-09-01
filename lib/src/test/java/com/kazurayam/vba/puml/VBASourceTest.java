@@ -38,7 +38,7 @@ public class VBASourceTest {
         source会費納入状況チェック = createFixture(MyWorkbook.FeePaymentCheck,
                         "会費納入状況チェック.bas");
         sourceAccountsFinder = createFixture(MyWorkbook.Cashbook,
-                "AccountsFinder.cls");
+                "CashbookTransformer.cls");
     }
 
     private VBASource createFixture(MyWorkbook myWorkbook, String fileName) {
@@ -94,7 +94,8 @@ public class VBASourceTest {
     }
 
     /**
-     * see https://github.com/kazurayam/VBAProcedureUsageAnalyzer/issues/39
+     * see
+     * https://github.com/kazurayam/VBACallGraph/issues/39
      */
     @Test
     public void test_find_AccountName() throws IOException {

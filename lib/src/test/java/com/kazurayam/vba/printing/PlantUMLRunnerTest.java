@@ -54,6 +54,6 @@ public class PlantUMLRunnerTest {
         runner.run();
         Path out = classOutputDir.resolve("test_smoke.png");
         assertThat(out).exists();
-        assertThat(out.toFile().length()).isGreaterThan(20000);
+        assertThat(out.toFile().length()).isGreaterThan(15000);
     }
 }

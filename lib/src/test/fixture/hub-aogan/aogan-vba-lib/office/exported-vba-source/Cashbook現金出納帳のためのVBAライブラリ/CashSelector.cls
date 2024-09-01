@@ -24,7 +24,7 @@ Public Sub Initialize(ByVal source As Cashbook, Optional ByVal periodStart As Da
     periodEnd_ = periodEnd
 End Sub
 
-Public Function SelectCashListByAccount(ByVal acc As Account, _
+Public Function SelectCashListByAccount(ByVal acc As account, _
                                         Optional ofReportingUnit = "*", Optional positiveLike = True) As CashList
     Dim result As CashList
     Set result = SelectCashList(acc.AccType(), acc.AccountName(), acc.SubAccountName(), _
@@ -39,7 +39,7 @@ Public Function SelectCashList(ByVal ofAccountType As AccountType, ByVal ofAccou
     Dim result As CashList: Set result = New CashList
     Dim i As Long
     For i = 1 To cb_.Count
-        Dim cs As Cash: Set cs = cb_.Items(i)
+        Dim cs As cash: Set cs = cb_.Items(i)
         Dim csDate As Date: csDate = cs.ToDate()
         '指定された年度のデータだけを選ぶ、デフォルトとして本年度のデータを選ぶ
         If periodStart_ <= csDate And csDate <= periodEnd_ Then
@@ -74,7 +74,7 @@ Public Function SelectCashListByMatchingDescription( _
     Dim result As CashList: Set result = New CashList
     Dim i As Long
     For i = 1 To cb_.Count
-        Dim cs As Cash: Set cs = cb_.Items(i)
+        Dim cs As cash: Set cs = cb_.Items(i)
         Dim csDate As Date: csDate = cs.ToDate()
         '指定された年度のデータだけを選ぶ、デフォルトとして本年度のデータを選ぶ
         If periodStart_ <= csDate And csDate <= periodEnd_ Then

@@ -17,9 +17,9 @@ Public Function CreateCashbook(ByVal wb As Workbook, _
                                 ByVal tableId As String) As Cashbook
     '引数として渡されたWorkbookを入力としてCashbookオブジェクトを生成して返す
     '外部プロジェクトがCashbookオブジェクトを生成するためにPublicなこの関数が必要だ
-    Call KzUtil.KzLog("Factories", "CreateCashbook", "wbFullName=" & wb.FullName)
-    Call KzUtil.KzLog("Factories", "CreateCashbook", "sheetName=" & sheetName)
-    Call KzUtil.KzLog("Factories", "CreateCashbook", "tableId=" & tableId)
+    Call BbLog.Info("Factories", "CreateCashbook", "wbFullName=" & wb.FullName)
+    Call BbLog.Info("Factories", "CreateCashbook", "sheetName=" & sheetName)
+    Call BbLog.Info("Factories", "CreateCashbook", "tableId=" & tableId)
     
     Dim ws As Worksheet: Set ws = wb.Worksheets(sheetName)
     Dim tbl As ListObject: Set tbl = ws.ListObjects(tableId)
@@ -29,12 +29,12 @@ Public Function CreateCashbook(ByVal wb As Workbook, _
 End Function
 
 
-Public Function CreateAccountsFinder(ByVal cb As Cashbook) As AccountsFinder
-    '引数として渡されたCashbookを入力としてAccountsFinderオブジェクトを生成して返す
-    '外部プロジェクトがAccountsFinderオブジェクトを生成するためにPublicなこの関数が必要だ
-    Dim accFinder As AccountsFinder: Set accFinder = New AccountsFinder
-    Call accFinder.Initialize(cb)
-    Set CreateAccountsFinder = accFinder
+Public Function CreateCashbookTransformer(ByVal cb As Cashbook) As CashbookTransformer
+    '引数として渡されたCashbookを入力としてCashbookTransformerオブジェクトを生成して返す
+    '外部プロジェクトがCashbookTransformerオブジェクトを生成するためにPublicなこの関数が必要だ
+    Dim cbTransformer As CashbookTransformer: Set cbTransformer = New CashbookTransformer
+    Call cbTransformer.Initialize(cb)
+    Set CreateCashbookTransformer = cbTransformer
 End Function
 
 

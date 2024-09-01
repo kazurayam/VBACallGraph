@@ -26,16 +26,16 @@ Public Property Get ModuleType() As String
     End Select
 End Property
 
-Public Property Get procKindName() As String
+Public Property Get ProcKindName() As String
     Select Case ProcKind
         Case 0
-            procKindName = "Sub Function"
+            ProcKindName = "Sub Function"
         Case 1
-            procKindName = "Property Let"
+            ProcKindName = "Property Let"
         Case 2
-            procKindName = "Property Set"
+            ProcKindName = "Property Set"
         Case 3
-            procKindName = "Property Get"
+            ProcKindName = "Property Get"
     End Select
 End Property
 

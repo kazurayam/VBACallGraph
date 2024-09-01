@@ -23,33 +23,36 @@ Option Explicit
 
 '==============================================================================
 Public Sub 決算書作成()
-    KzCls    ' イミディエイトウィンドウを初期化する
-    Debug.Print "現金出納記録ワークシートを更新します"
+
+    Call KzUtil.KzCls      ' イミディエイトウィンドウを初期化する
+    Call KzUtil.KzLog("決算書作成", "決算書作成", "現金出納記録ワークシートを更新します")
     
     'このワークブックのなかに【現金出納記録】ワークシートを作る
-    Call 現金出納記録ワークシートが無ければ作る
+    Call CashbookPrj.WriteSettlement.現金出納記録ワークシートが無ければ作る(ThisWorkbook, "現金出納記録")
+    
     Dim ws現金出納記録 As Worksheet
     Set ws現金出納記録 = ThisWorkbook.Worksheets("現金出納記録")
     
     '現金出納帳ワークブックを開く
     Dim sourcePath As String
-    sourcePath = KzResolveExternalFilePath(ThisWorkbook, "実行環境", "B2")
-    Debug.Print "入力: " & sourcePath
+    sourcePath = KzUtil.KzResolveExternalFilePath(ThisWorkbook, "実行環境", "B2")
+    Call KzUtil.KzLog("決算書作成", "決算書作成", "入力: " & sourcePath)
+    
     Dim wb現金出納帳 As Workbook: Set wb現金出納帳 = Workbooks.Open(sourcePath)
     Dim wsSource As Worksheet: Set wsSource = wb現金出納帳.Worksheets("現金出納帳")
     
     '現金出納帳のデータを選別しながらimportして[テーブル現金出納記録]に転記する
     '令和5年４月１日から令和6年３月３１日までの入出金を選択する
     '収支報告単位が「東北ブロック講習会」であるレコードを除外する。
-    Call 入出金記録を取り込む(wsSource, ws現金出納記録, _
+    Call CashbookPrj.WriteSettlement.入出金記録を取り込む(wsSource, ws現金出納記録, _
                                 periodStart:=#4/1/2023#, periodEnd:=#3/31/2024#, _
                                 ofReportingUnit:="東北ブロック講習会", positiveLike:=False)
     
     '[現金出納記録]テーブルのデータ行を並べ替える、勘定科目毎の明細を読み取れるように
-    Call 入出金記録をソートする(ws現金出納記録)
+    Call CashbookPrj.WriteSettlement.入出金記録をソートする(ws現金出納記録)
     
     '[テーブル勘定科目ごとの小計]を更新する
-    Call 小計の表を作る(ws現金出納記録)
+    Call CashbookPrj.WriteSettlement.小計の表を作る(ws現金出納記録)
     
     ' 「変更内容を保存しますか」ダイアログを表示しないように設定して
     Application.DisplayAlerts = False
@@ -57,7 +60,7 @@ Public Sub 決算書作成()
     wb現金出納帳.Close
     Set wb現金出納帳 = Nothing
     
-    Debug.Print "現金出納記録ワークシートを更新しました"
+    Call KzUtil.KzLog("決算書作成", "決算書作成", "現金出納記録ワークシートを更新しました")
     
 End Sub
 

@@ -36,8 +36,8 @@ Public Sub Initialize(ByVal tbl As ListObject)
     ' entries_ïœêîÇ…äiî[Ç∑ÇÈ
     Dim i As Long
     For i = 1 To tbl.ListRows.Count
-        Dim cs As Cash
-        Set cs = New Cash
+        Dim cs As cash
+        Set cs = New cash
         Call cs.Initialize(tbl.ListRows(i).Range)
         Call cashRecords.Add(cs, str(i))
     Next i
@@ -50,12 +50,11 @@ Public Function Count() As Long
 End Function
 
 
-Public Function Items(ByVal index As Long) As Cash
-    Set Items = cashRecords.item(index)
+Public Function Items(ByVal index As Long) As cash
+    Set Items = cashRecords(index)
 End Function
 
 
-Public Function GetCashByKey(ByVal key As String) As Cash
-    Set GetCashByKey = cashRecords.item(key)
+Public Function GetCashByKey(ByVal key As String) As cash
+    Set GetCashByKey = cashRecords(key)
 End Function
-

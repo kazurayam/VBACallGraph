@@ -23,7 +23,7 @@ Private Sub Class_Initialize()
 End Sub
 
 
-Public Sub Add(ByVal cs As Cash)
+Public Sub Add(ByVal cs As cash)
     Call csList.Add(cs)
 End Sub
 
@@ -33,7 +33,7 @@ Public Function Count() As Long
 End Function
 
 
-Public Function Items(ByVal index As Long) As Cash
+Public Function Items(ByVal index As Long) As cash
     Set Items = csList(index)
 End Function
 
@@ -43,7 +43,7 @@ Public Function SumOfIncomeAmount() As Long
     Dim sum As Long: sum = 0
     Dim i As Long
     For i = 1 To csList.Count
-        Dim cs As Cash: Set cs = csList(i)
+        Dim cs As cash: Set cs = csList(i)
         sum = sum + cs.IncomeAmount
     Next i
     SumOfIncomeAmount = sum
@@ -55,7 +55,7 @@ Public Function SumOfExpenseAmount() As Long
     Dim sum As Long: sum = 0
     Dim i As Long
     For i = 1 To csList.Count
-        Dim cs As Cash: Set cs = csList(i)
+        Dim cs As cash: Set cs = csList(i)
         sum = sum + cs.ExpenseAmount
     Next i
     SumOfExpenseAmount = sum
@@ -66,7 +66,7 @@ Public Function ToString() As String
     Dim s As String: s = ""
     Dim i As Long
     For i = 1 To csList.Count
-        Dim cs As Cash: Set cs = csList(i)
+        Dim cs As cash: Set cs = csList(i)
         s = s & cs.ToString() & vbCrLf
     Next i
     ToString = s

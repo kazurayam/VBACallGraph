@@ -33,20 +33,20 @@ Public Sub Main()
     Dim procName As String: procName = "Main"
 
     'イミディエイト・ウインドウを消す
-    Call KzCls
+    Call BbLog.Clear
     
     
-    Call KzLog(modName, procName, "会費納入状況チェックを行います")
+    Call BbLog.Info(modName, procName, "会費納入状況チェックを行います")
     
     '会員名簿Excelファイルのパス
     Dim memberFile As String: memberFile = _
-        KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
-    Call KzLog(modName, procName, "会員名簿: " & memberFile)
+        BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
+    Call BbLog.Info(modName, procName, "会員名簿: " & memberFile)
     
     '現金出納帳Excelファイルのパス
     Dim cashbookFile As String: cashbookFile = _
-        KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3")
-    Call KzLog(modName, procName, "現金出納帳: " & cashbookFile)
+        BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3")
+    Call BbLog.Info(modName, procName, "現金出納帳: " & cashbookFile)
     
     
     '============================================================================
@@ -54,7 +54,7 @@ Public Sub Main()
     'コピーする。"work会員名簿"シートが作られる。その内容をListObjectとして取り出す。
     Dim memberTable As ListObject
     Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
-    Call KzLog(modName, procName, "会員の人数 memberTable.ListRows.Count=" & memberTable.ListRows.Count)
+    Call BbLog.Info(modName, procName, "会員の人数 memberTable.ListRows.Count=" & memberTable.ListRows.Count)
     
     'ListObjectの右端に列を追加する。列の名前を「会費納入状況」とする
     
@@ -62,7 +62,7 @@ Public Sub Main()
     'work現金出納帳ワークシートを作ってCashbookオブジェクトを掴む
     Dim cb As Cashbook
     Set cb = OpenCashbook()
-    Call KzLog(modName, procName, "現金出納帳の行数 cb.Count=" & cb.Count)
+    Call BbLog.Info(modName, procName, "現金出納帳の行数 cb.Count=" & cb.Count)
     
     'チェックの対象とすべき開始日と終了日を指定したうえでCashSelectorオブジェクトを取得する
     Dim cs As CashSelector: Set cs = CreateCashSelector(cb, #4/1/2024#, #3/31/2025#)
@@ -112,13 +112,13 @@ Public Sub Main()
             End If
         End If
     Next i
-    Call KzLog(modName, procName, "会費納入状況チェックを完了しました")
+    Call BbLog.Info(modName, procName, "会費納入状況チェックを完了しました")
 End Sub
 
 '現金出納帳ワークシートに外部からデータをロードしてCashbokオブジェクトを返す
 Private Function OpenCashbook() As Cashbook
     Dim wb As Workbook
-    Set wb = Workbooks.Open(KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3"))
+    Set wb = Workbooks.Open(BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3"))
     Dim sheetName As String: sheetName = "現金出納帳"
     Dim tableId As String: tableId = "CashbookTable1"
     Dim cb As Cashbook: Set cb = CreateCashbook(wb, sheetName, tableId)
@@ -155,7 +155,7 @@ Private Sub PrintFinding(ByVal i As Long, _
                             ByVal status As String)
     Dim message As String
     message = "|" & i & "|" & nameKana & "|" & entitlement & "|" & status & "|"
-    Call KzUtil.KzLog("会費納入状況チェック", "Main", message)
+    Call BbLog.Info("会費納入状況チェック", "Main", message)
 End Sub
                     
 

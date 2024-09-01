@@ -93,6 +93,6 @@ public class ModelWorkbookTest {
         SortedSet<FullyQualifiedVBAProcedureId> memo =
                 wb.getAllFullyQualifiedProcedureId();
         assertThat(memo).isNotNull();
-        assertThat(memo.size()).isEqualTo(131);
+        assertThat(memo.size()).isEqualTo(127);
     }
 }

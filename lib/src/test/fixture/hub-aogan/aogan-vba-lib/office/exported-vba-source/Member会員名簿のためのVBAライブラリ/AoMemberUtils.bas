@@ -21,19 +21,19 @@ Public Function FetchMemberTable(memberFilePath As String, _
     ' targetワークブックのなかに　"work会員名簿" シートが無ければ作る。
     ' すでにコピーが存在していてかつrenewがTrueと指定されていたらコピーを上書きする。
     ' すでにコピーが存在していてかつrenewがFalseならば何もしない。
-    If (Not KzWorksheet.KzIsWorksheetPresentInWorkbook(targetWorkbook, targetSheetName)) Or _
-        (KzWorksheet.KzIsWorksheetPresentInWorkbook(targetWorkbook, targetSheetName) And renew = True) Then
+    If (Not BbWorksheet.IsWorksheetPresentInWorkbook(targetWorkbook, targetSheetName)) Or _
+        (BbWorksheet.IsWorksheetPresentInWorkbook(targetWorkbook, targetSheetName) And renew = True) Then
         
         ' 外部にある会員名簿ワークブックのウインドウを開く
         Dim sourceWorkbook As Workbook
         ' memberFilePathがtargetWorkbookのPathを基底とする相対パスで指定されていても大丈夫なように用心する
-        Set sourceWorkbook = Workbooks.Open(KzFile.KzAbsolutifyPath( _
+        Set sourceWorkbook = Workbooks.Open(BbFile.AbsolutifyPath( _
                                             targetWorkbook.Path, memberFilePath))
                                             
         '別のワークブックをopenするとThisWorkbookが自動的に切り替わってしまう事に注意せよ
         
         ' 外部にある会員名簿ExcelファイルのワークシートをカレントのWookbookにコピーする
-        Call KzWorksheet.KzFetchWorksheetFromWorkbook( _
+        Call BbWorksheet.FetchWorksheetFromWorkbook( _
                 sourceWorkbook, memberSheetName, _
                 targetWorkbook, targetSheetName)
         

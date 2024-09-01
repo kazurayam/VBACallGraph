@@ -10,7 +10,7 @@ Public Sub ExportModules(ByVal wb As Workbook)
     'ブックの全モジュールを処理
     With wb.VBProject
         For i = 1 To .VBComponents.Count
-            Call CodeModuleUtil.getCodeModule(dicProcInfo, wb, .VBComponents(i).Name, .VBComponents(i).Type)
+            Call CodeModuleUtil.GetCodeModule(dicProcInfo, wb, .VBComponents(i).Name, .VBComponents(i).Type)
         Next
     End With
   
@@ -34,7 +34,7 @@ Public Sub ExportModules(ByVal wb As Workbook)
             .Cells(i, 3) = v.ModName           ' KzSensible
             .Cells(i, 4) = v.Scope             ' Public | Private | Static
             ' .Cells(i, 5) = v.ProcKindName
-            .Cells(i, 5) = FormatProcKindName(v.procKindName, v.Source)
+            .Cells(i, 5) = FormatProcKindName(v.ProcKindName, v.Source)
             .Cells(i, 6) = v.ProcName          ' KzProcedureList
             .Cells(i, 7) = v.LineNo
             .Cells(i, 8) = v.Source
@@ -95,12 +95,12 @@ Public Function KzIsWorksheetPresentInWorkbook(ByVal wb As Workbook, ByVal sheet
 End Function
 
 
-Private Function FormatProcKindName(ByVal procKindName As String, ByVal Source As String) As String
+Private Function FormatProcKindName(ByVal ProcKindName As String, ByVal Source As String) As String
     If (InStr(1, LCase(Source), "function ") > 0) Then
         FormatProcKindName = "Function"
     ElseIf (InStr(1, LCase(Source), "sub ") > 0) Then
         FormatProcKindName = "Sub"
     Else
-        FormatProcKindName = procKindName  ' Property Let | Property Set | Property Get
+        FormatProcKindName = ProcKindName  ' Property Let | Property Set | Property Get
     End If
 End Function

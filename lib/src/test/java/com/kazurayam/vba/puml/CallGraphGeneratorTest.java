@@ -104,13 +104,13 @@ public class CallGraphGeneratorTest {
         Path output = classOutputDir.resolve("test_toString.puml");
         VBAModule module = wbFeePaymentCheck.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
+        assertThat(procedure).isNotNull();
         pudgen.writeStartUml();
         pudgen.writeStartWorkbook(wbFeePaymentCheck);
         pudgen.writeStartModule(module);
         pudgen.writeProcedure(module, module.getProcedure("FindPaymentBy"));
         pudgen.writeProcedure(module, module.getProcedure("Main"));
         pudgen.writeProcedure(module, module.getProcedure("OpenCashbook"));
-        pudgen.writeProcedure(module, module.getProcedure("OpenMemberTable"));
         pudgen.writeProcedure(module, module.getProcedure("PrintFinding"));
         pudgen.writeProcedure(module, module.getProcedure("RecordFindingIntoMemberTable"));
         pudgen.writeEndModule();

@@ -51,7 +51,7 @@ public class IndexerTest {
                 new FullyQualifiedVBAModuleId(wbFeePaymentCheck, md会費納入状況チェック);
         VBASource referrerModuleSource = md会費納入状況チェック.getVBASource();
         VBASourceLine referrerSourceLine =
-                new VBASourceLine(51,
+                new VBASourceLine(55,
                         "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)");
 
         // Member workbook
@@ -85,7 +85,7 @@ public class IndexerTest {
         SortedSet<VBAProcedureReference> memo =
                 indexer.findAllProcedureReferences();
         assertThat(memo).isNotNull();
-        assertThat(memo.size()).isEqualTo(22);
+        assertThat(memo.size()).isEqualTo(16);
         Path out = classOutputDir.resolve("test_findAllProcedureReferences.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
         for (VBAProcedureReference ref : memo) {
@@ -121,7 +121,7 @@ public class IndexerTest {
                         MyWorkbook.Backbone.resolveWorkbookUnder(),
                         MyWorkbook.Backbone.resolveSourceDirUnder())
                         .id(MyWorkbook.Backbone.getId());
-        VBAModule mdDocTransformer = wbBackbone.getModule("DocTransformer");
+        VBAModule mdDocTransformer = wbBackbone.getModule("BbDocTransformer");
         VBAProcedure prInitialize =
                 mdDocTransformer.getProcedure("Initialize");
         FullyQualifiedVBAProcedureId referee =
