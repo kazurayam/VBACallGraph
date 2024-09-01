@@ -110,7 +110,6 @@ package Member会員名簿のためのVBAライブラリ {
 package Backboneライブラリ {
   stereotype BbArraySort {
     {method} +InsertionSort
-    {method} +Test_InsertionSort
   }
   class BbDocTransformer {
     {method} +Initialize
@@ -139,7 +138,6 @@ package Backboneライブラリ {
   }
   stereotype BbUtil {
     {method} +ResolveExternalFilePath
-    {method} -Test_ResolveExternalFilePath
     {method} +VarTypeAsString
   }
   stereotype BbWorksheet {
@@ -168,8 +166,6 @@ package VBACallGraphSetup {
     {method} +KzIsWorksheetPresentInWorkbook
   }
 }
-Backboneライブラリ.BbArraySort o-- Backboneライブラリ.BbArraySortTest : Test_InsertionSort
-Backboneライブラリ.BbArraySort o-- Backboneライブラリ.BbLog : Clear
 Backboneライブラリ.BbRange o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 Backboneライブラリ.BbUtil o-- Backboneライブラリ.BbFile : AbsolutifyPath
 Backboneライブラリ.BbUtil o-- Backboneライブラリ.BbFile : ToLocalFilePath

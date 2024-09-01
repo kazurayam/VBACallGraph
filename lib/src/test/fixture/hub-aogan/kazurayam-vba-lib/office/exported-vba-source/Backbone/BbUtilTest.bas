@@ -65,3 +65,12 @@ TestExit:
 TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
+
+
+'@TestMethod("ResolveExternalFilePath関数をテストする")
+Private Sub Test_ResolveExternalFilePath()
+    Dim p As String
+    p = ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
+    Debug.Print p
+End Sub
+

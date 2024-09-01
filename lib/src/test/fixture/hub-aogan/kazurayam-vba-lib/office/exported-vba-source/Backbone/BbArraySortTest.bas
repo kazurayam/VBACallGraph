@@ -3,7 +3,7 @@ Attribute VB_Name = "BbArraySortTest"
 Option Explicit
 Option Private Module
 
-' TestArraySort: ArraySortモジュールをテストする
+'BbArraySortTest: ArraySortモジュールをテストする
 '@TestModule
 '@Folder("Tests")
 
@@ -65,5 +65,24 @@ TestFail:
     Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
 End Sub
 
+
+'@TestMethod("BbArraySort.InsertionSortをテストする")
+Private Sub Test_InsertionSort_more()
+    On Error GoTo TestFail
+    Call BbLog.Clear
+    Dim data() As Variant
+    data = Array(7, 2, 6, 3, 9, 1, 8, 0, 5, 4)
+    ' 並べ替える
+    Call InsertionSort(data, LBound(data), UBound(data))
+    Dim d As Variant
+    For Each d In data
+        Debug.Print d
+        ' 0 1 2 3 4 5 6 7 8 9
+    Next
+TestExit:
+    Exit Sub
+TestFail:
+    Assert.Fail "Test raised an error: #" & Err.Number & " - " & Err.Description
+End Sub
 
 

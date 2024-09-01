@@ -5,19 +5,6 @@ Option Explicit
 
 ' https://www.tipsfound.com/vba/02020
 
-Public Sub Test_InsertionSort()
-    Call BbLog.Clear
-    Dim data() As Variant
-    data = Array(7, 2, 6, 3, 9, 1, 8, 0, 5, 4)
-    ' •À‚×‘Ö‚¦‚é
-    Call InsertionSort(data, LBound(data), UBound(data))
-    Dim d As Variant
-    For Each d In data
-        Debug.Print d
-        ' 0 1 2 3 4 5 6 7 8 9
-    Next
-End Sub
-
 
 Public Sub InsertionSort(ByRef data As Variant, ByVal low As Long, ByVal high As Long)
     Dim i As Variant

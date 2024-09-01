@@ -61,9 +61,3 @@ Public Function ResolveExternalFilePath( _
 End Function
 
 
-'ResolveExternalFilePath関数をテストする
-Private Sub Test_ResolveExternalFilePath()
-    Dim p As String
-    p = ResolveExternalFilePath(ThisWorkbook, "外部ワークブックファイルのパス", "B2")
-    Debug.Print p
-End Sub
