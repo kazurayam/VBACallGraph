@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * run "mutool poster" command in a commandline subprocess
@@ -44,15 +45,18 @@ public class MutoolPosterRunner extends AbstractCommandRunner {
 
     public void run() throws IOException, InterruptedException {
         CompletedProcess cp;
+        List<String> commandline = Arrays.asList(
+                findCommand("mutool"),
+                "poster",
+                "-x", String.valueOf(this.xDecimationFactor),
+                "-y", String.valueOf(this.yDecimationFactor),
+                original.toString(),
+                poster.toString()
+        );
+        logger.info(String.join(" ", commandline));
         cp = new Subprocess().cwd(new File("."))
-                .run(Arrays.asList(
-                        findCommand("mutool"),
-                        "poster",
-                        "-x", String.valueOf(this.xDecimationFactor),
-                        "-y", String.valueOf(this.yDecimationFactor),
-                        original.toString(),
-                        poster.toString()
-                ));
+                .run(commandline);
+
         if (!cp.stderr().isEmpty()) {
             cp.stderr().forEach(System.err::println);
         }
