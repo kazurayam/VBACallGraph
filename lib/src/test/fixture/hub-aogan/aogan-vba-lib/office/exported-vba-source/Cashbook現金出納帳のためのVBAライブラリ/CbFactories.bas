@@ -1,7 +1,7 @@
-Attribute VB_Name = "Factories"
+Attribute VB_Name = "CbFactories"
 Option Explicit
 
-' Factories --- Cashbookプロジェクトのクラスモジュールのうち外部プロジェクトがインスタンスを生成するために利用するFunctionたち
+' CbFactories --- Cashbookプロジェクトのクラスモジュールのうち外部プロジェクトがインスタンスを生成するために利用するFunctionたち
 
 ' ここで宣言されたFunctionをユニットテストするコードがTestFactoriesモジュールにある
 

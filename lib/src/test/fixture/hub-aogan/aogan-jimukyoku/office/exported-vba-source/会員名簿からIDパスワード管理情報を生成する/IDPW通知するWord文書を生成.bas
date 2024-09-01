@@ -11,31 +11,32 @@ Option Explicit
 Public Sub IDPW通知文書を生成()
 
     ' イミディエイト・ウインドウを消す
-    Call KzCls
+    Call BbLog.Clear
+    
     
     Debug.Print ("ID/PWを通知するWord文書を生成します")
     
     ' 会員名簿Excelファイルのパス
     Dim memberFile As String: memberFile = _
-        KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
+        BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
     Debug.Print ("会員名簿: " & memberFile)
     
     ' テンプレートとしてのWordファイルのパス
     Dim templateFile As String: templateFile = _
-        KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3")
+        BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3")
     Debug.Print ("テンプレート: " & templateFile)
     
     ' 出力フォルダのパス
-    Dim outDir As String: outDir = KzFile.KzAbsolutifyPath( _
+    Dim outDir As String: outDir = BbFile.AbsolutifyPath( _
         ThisWorkbook.Path, _
-        KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B4"))
+        BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B4"))
     Debug.Print ("出力フォルダ: " & outDir)
     
     ' 出力先フォルダがもしもまだ存在していなかったら作る
-    Call KzFile.KzEnsureFolders(outDir)
+    Call BbFile.EnsureFolders(outDir)
 
-    ' DocTransformerインスタンスを生成して
-    Dim DT As DocTransformer: Set DT = DocTransformerUtil.Create
+    ' BbDocTransformerインスタンスを生成して
+    Dim DT As BbDocTransformer: Set DT = BbDocTransformerFactory.CreateDocTransformer()
     ' Wordアプリケーションのインスタンスを与えて
     Dim WordApp As Word.Application: Set WordApp = CreateObject("Word.application")
     ' DocTransformerを初期化する
@@ -43,7 +44,7 @@ Public Sub IDPW通知文書を生成()
 
     ' 外部にある会員名簿Excelファイルからシートをコピーして取り込み、その中にある会員名簿をListObjectとしてとりだす
     Dim memberTable As ListObject
-    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
+    Set memberTable = MbMemberTableUtil.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
     Debug.Print "memberTable.ListRows.Count=" & memberTable.ListRows.count
     
     

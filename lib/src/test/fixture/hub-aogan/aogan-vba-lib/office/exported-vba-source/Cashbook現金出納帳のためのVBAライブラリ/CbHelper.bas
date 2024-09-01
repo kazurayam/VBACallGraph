@@ -1,13 +1,13 @@
-Attribute VB_Name = "Helpers"
+Attribute VB_Name = "CbHelper"
 Option Explicit
 
-' Helpers
+' CbHelper
 
 ' Cashbookに記載された入出金データを勘定科目ごとに分類し件数を数えて表示する
 Public Sub PrintAccounts(ByVal cb As Cashbook, ByVal rpUnit As String, ByVal positiveLike As Boolean)
     'Debug.Print "PrintAccounts was called"
     Dim cbTransformer As CashbookTransformer
-    Set cbTransformer = Factories.CreateCashbookTransformer(cb)
+    Set cbTransformer = CbFactories.CreateCashbookTransformer(cb)
     Call cbTransformer.Initialize(cb, periodStart:=#4/1/2022#, periodEnd:=#3/31/2023#)
     'Debug.Print "initialized AccountFinder"
     Dim cashListDic As Dictionary

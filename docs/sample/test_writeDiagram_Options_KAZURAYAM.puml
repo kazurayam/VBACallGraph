@@ -74,13 +74,13 @@ package Cashbook現金出納帳のためのVBAライブラリ {
     {method} +FindKeysAsString
     {method} +Initialize
   }
-  stereotype Factories {
+  stereotype CbFactories {
     {method} +CreateCashbook
     {method} +CreateCashbookTransformer
     {method} +CreateCashSelector
     {method} +CreateEmptyCashList
   }
-  stereotype Helpers {
+  stereotype CbHelper {
     {method} +PrintAccounts
   }
   stereotype WriteSettlement {
@@ -103,7 +103,7 @@ package Cashbook現金出納帳のためのVBAライブラリ {
   }
 }
 package Member会員名簿のためのVBAライブラリ {
-  stereotype AoMemberUtils {
+  stereotype MbMemberTableUtil {
     {method} +FetchMemberTable
   }
 }
@@ -193,20 +193,21 @@ Cashbook現金出納帳のためのVBAライブラリ.CashbookTransformer o-- Ca
 Cashbook現金出納帳のためのVBAライブラリ.CashbookTransformer o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfIncomeAmount
 Cashbook現金出納帳のためのVBAライブラリ.CashbookTransformer o-- Cashbook現金出納帳のためのVBAライブラリ.CashSelector : SelectCashList
 Cashbook現金出納帳のためのVBAライブラリ.CashbookTransformer o-- Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement : ToDate
-Cashbook現金出納帳のためのVBAライブラリ.Factories o-- Backboneライブラリ.BbLog : Info
-Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Backboneライブラリ.BbArraySort : InsertionSort
-Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfExpenseAmount
-Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfIncomeAmount
-Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金出納帳のためのVBAライブラリ.CashbookTransformer : ByAccounts
-Cashbook現金出納帳のためのVBAライブラリ.Helpers o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateCashbookTransformer
+Cashbook現金出納帳のためのVBAライブラリ.CbFactories o-- Backboneライブラリ.BbLog : Info
+Cashbook現金出納帳のためのVBAライブラリ.CbHelper o-- Backboneライブラリ.BbArraySort : InsertionSort
+Cashbook現金出納帳のためのVBAライブラリ.CbHelper o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfExpenseAmount
+Cashbook現金出納帳のためのVBAライブラリ.CbHelper o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : SumOfIncomeAmount
+Cashbook現金出納帳のためのVBAライブラリ.CbHelper o-- Cashbook現金出納帳のためのVBAライブラリ.CashbookTransformer : ByAccounts
+Cashbook現金出納帳のためのVBAライブラリ.CbHelper o-- Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateCashbookTransformer
 Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement o-- Backboneライブラリ.BbLog : Clear
 Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement o-- Backboneライブラリ.BbLog : Info
+Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement o-- Backboneライブラリ.BbRange : GetUniqueItems
 Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement o-- Backboneライブラリ.BbWorksheet : IsWorksheetPresentInWorkbook
 Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement o-- Cashbook現金出納帳のためのVBAライブラリ.Cash : ToDate
 Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
-Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- Backboneライブラリ.BbFile : AbsolutifyPath
-Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- Backboneライブラリ.BbWorksheet : FetchWorksheetFromWorkbook
-Member会員名簿のためのVBAライブラリ.AoMemberUtils o-- Backboneライブラリ.BbWorksheet : IsWorksheetPresentInWorkbook
+Member会員名簿のためのVBAライブラリ.MbMemberTableUtil o-- Backboneライブラリ.BbFile : AbsolutifyPath
+Member会員名簿のためのVBAライブラリ.MbMemberTableUtil o-- Backboneライブラリ.BbWorksheet : FetchWorksheetFromWorkbook
+Member会員名簿のためのVBAライブラリ.MbMemberTableUtil o-- Backboneライブラリ.BbWorksheet : IsWorksheetPresentInWorkbook
 VBACallGraphSetup.CodeModuleUtil o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 VBACallGraphSetup.CodeModuleUtil o-- VBACallGraphSetup.ProcedureInfo : ModuleType
 VBACallGraphSetup.VBACallGraphSetup o-- Backboneライブラリ.BbLog : Clear
@@ -216,21 +217,29 @@ VBACallGraphSetup.VBACallGraphSetup o-- VBACallGraphSetup.ProcedureInfo : Module
 VBACallGraphSetup.VBACallGraphSetup o-- VBACallGraphSetup.ProcedureInfo : ProcKindName
 VBACallGraphSetup.VBACallGraphSetup o-- VBACallGraphSetup.ProcedureInfo : Scope
 会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.BbDocTransformer : Transform
+会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.BbDocTransformerFactory : CreateDocTransformer
+会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.BbFile : AbsolutifyPath
+会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.BbFile : EnsureFolders
+会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.BbLog : Clear
+会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Backboneライブラリ.BbUtil : ResolveExternalFilePath
 会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
-会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Member会員名簿のためのVBAライブラリ.AoMemberUtils : FetchMemberTable
+会員名簿からIDパスワード管理情報を生成する.IDPW通知するWord文書を生成 o-- Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
+会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 o-- Backboneライブラリ.BbFile : EnsureFolders
+会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 o-- Backboneライブラリ.BbLog : Clear
+会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 o-- Backboneライブラリ.BbUtil : ResolveExternalFilePath
 会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
-会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 o-- Member会員名簿のためのVBAライブラリ.AoMemberUtils : FetchMemberTable
+会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 o-- Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
 会費納入をお願いするletterを作成する.会費納入のお願いを作成 o-- Backboneライブラリ.BbDocTransformer : Transform
 会費納入をお願いするletterを作成する.会費納入のお願いを作成 o-- Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
-会費納入をお願いするletterを作成する.会費納入のお願いを作成 o-- Member会員名簿のためのVBAライブラリ.AoMemberUtils : FetchMemberTable
+会費納入をお願いするletterを作成する.会費納入のお願いを作成 o-- Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
 会費納入状況チェック.会費納入状況チェック o-- Backboneライブラリ.BbLog : Clear
 会費納入状況チェック.会費納入状況チェック o-- Backboneライブラリ.BbLog : Info
 会費納入状況チェック.会費納入状況チェック o-- Backboneライブラリ.BbUtil : ResolveExternalFilePath
 会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.CashSelector : SelectCashListByMatchingDescription
-会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateCashSelector
-会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateCashbook
-会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.Factories : CreateEmptyCashList
-会費納入状況チェック.会費納入状況チェック o-- Member会員名簿のためのVBAライブラリ.AoMemberUtils : FetchMemberTable
+会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateCashSelector
+会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateCashbook
+会費納入状況チェック.会費納入状況チェック o-- Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateEmptyCashList
+会費納入状況チェック.会費納入状況チェック o-- Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
 決算算出ワークブック.決算書作成 o-- Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement : 入出金記録をソートする
 決算算出ワークブック.決算書作成 o-- Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement : 入出金記録を取り込む
 決算算出ワークブック.決算書作成 o-- Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement : 小計の表を作る

@@ -67,9 +67,8 @@ public class CallGraphAppGrandTest {
         // modify the original PDF to a poster PDF
         MutoolPosterRunner mutool =
                 new MutoolPosterRunner.Builder()
-                        .x(3)
-                        .y(3)
                         .original(original)
+                        .pieceSize("A4")
                         .build();
         mutool.run();
         Path poster = classOutputDir.resolve(FILE_NAME_BODY + "-poster.pdf");

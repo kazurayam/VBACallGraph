@@ -1,8 +1,8 @@
-Attribute VB_Name = "AoMemberUtils"
+Attribute VB_Name = "MbMemberTableUtil"
 Option Explicit
 
 '
-' AoMemberUtils --- 会員名簿のExcelワークシートを扱う共用のSubとFunctionを提供する
+' MbMemberTableUtil --- 会員名簿のExcelワークシートを扱う共用のSubとFunctionを提供する
 '
 
 ' 会員名簿のExcelファイルのパスをパラメータとして受ける。

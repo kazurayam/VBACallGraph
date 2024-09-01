@@ -32,7 +32,7 @@ public class FullyQualifiedVBAProcedureIdTest {
                 MyWorkbook.Member.resolveWorkbookUnder(),
                 MyWorkbook.Member.resolveSourceDirUnder())
                 .id(MyWorkbook.Member.getId());
-        VBAModule module = wb.getModule("AoMemberUtils");
+        VBAModule module = wb.getModule("MbMemberTableUtil");
         VBAProcedure procedure = module.getProcedure("FetchMemberTable");
         fqpi = new FullyQualifiedVBAProcedureId(wb, module, procedure);
     }
@@ -47,11 +47,11 @@ public class FullyQualifiedVBAProcedureIdTest {
     }
     @Test
     public void test_getModule() {
-        assertThat(fqpi.getModule().getName()).isEqualTo("AoMemberUtils");
+        assertThat(fqpi.getModule().getName()).isEqualTo("MbMemberTableUtil");
     }
     @Test
     public void test_getModuleName() {
-        assertThat(fqpi.getModuleName()).isEqualTo("AoMemberUtils");
+        assertThat(fqpi.getModuleName()).isEqualTo("MbMemberTableUtil");
     }
     @Test
     public void test_getProcedure() {

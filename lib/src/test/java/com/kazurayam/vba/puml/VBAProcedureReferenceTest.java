@@ -39,18 +39,18 @@ public class VBAProcedureReferenceTest {
         VBASource referrerModuleSource = md会費納入状況チェック.getVBASource();
         VBASourceLine referrerSourceLine =
                 new VBASourceLine(52,
-                        "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)\n");
+                        "    Set memberTable = MbMemberTableUtil.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)\n");
         //
         ModelWorkbook wbMember =
                 new ModelWorkbook(
                         MyWorkbook.Member.resolveWorkbookUnder(),
                         MyWorkbook.Member.resolveSourceDirUnder())
                         .id(MyWorkbook.Member.getId());
-        VBAModule mdAoMemberUtils = wbMember.getModule("AoMemberUtils");
+        VBAModule mdMbMemberTableUtil = wbMember.getModule("MbMemberTableUtil");
         VBAProcedure procFetchMemberTable =
-                mdAoMemberUtils.getProcedure("FetchMemberTable");
+                mdMbMemberTableUtil.getProcedure("FetchMemberTable");
         FullyQualifiedVBAProcedureId referee =
-                new FullyQualifiedVBAProcedureId(wbMember, mdAoMemberUtils,
+                new FullyQualifiedVBAProcedureId(wbMember, mdMbMemberTableUtil,
                         procFetchMemberTable);
         //
         procedureReference =
@@ -72,7 +72,7 @@ public class VBAProcedureReferenceTest {
         FullyQualifiedVBAProcedureId referee = procedureReference.getReferee();
         assertThat(referee).isNotNull();
         VBAModule module = referee.getModule();
-        assertThat(module.getName()).isEqualTo("AoMemberUtils");
+        assertThat(module.getName()).isEqualTo("MbMemberTableUtil");
         VBAProcedure procedure = referee.getProcedure();
         assertThat(procedure.getProcedure()).isEqualTo("FetchMemberTable");
     }

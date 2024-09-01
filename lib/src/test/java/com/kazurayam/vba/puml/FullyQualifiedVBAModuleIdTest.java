@@ -32,7 +32,7 @@ public class FullyQualifiedVBAModuleIdTest {
                 MyWorkbook.Member.resolveWorkbookUnder(),
                 MyWorkbook.Member.resolveSourceDirUnder())
                 .id(MyWorkbook.Member.getId());
-        VBAModule module = wb.getModule("AoMemberUtils");
+        VBAModule module = wb.getModule("MbMemberTableUtil");
         fqmi = new FullyQualifiedVBAModuleId(wb, module);
     }
 
@@ -46,11 +46,11 @@ public class FullyQualifiedVBAModuleIdTest {
     }
     @Test
     public void test_getModule() {
-        assertThat(fqmi.getModule().getName()).isEqualTo("AoMemberUtils");
+        assertThat(fqmi.getModule().getName()).isEqualTo("MbMemberTableUtil");
     }
     @Test
     public void test_getModuleName() {
-        assertThat(fqmi.getModuleName()).isEqualTo("AoMemberUtils");
+        assertThat(fqmi.getModuleName()).isEqualTo("MbMemberTableUtil");
     }
     @Test
     public void test_toJson() throws JsonProcessingException {

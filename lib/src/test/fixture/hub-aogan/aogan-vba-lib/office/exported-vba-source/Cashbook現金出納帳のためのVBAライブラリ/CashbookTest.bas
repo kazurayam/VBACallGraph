@@ -82,7 +82,7 @@ End Sub
 '@TestMethod("Cashbookオブジェクトを生成して、Countプロパティを読みだしてPrintする")
 Private Sub TasteCashbook()
     'Act:
-    Dim cb As Cashbook: Set cb = Factories.CreateCashbook(wb, "現金出納帳", "CashbookTable1")
+    Dim cb As Cashbook: Set cb = CbFactories.CreateCashbook(wb, "現金出納帳", "CashbookTable1")
     'Assert:
     Debug.Print "cb.Count=" & cb.Count
     'TearDown

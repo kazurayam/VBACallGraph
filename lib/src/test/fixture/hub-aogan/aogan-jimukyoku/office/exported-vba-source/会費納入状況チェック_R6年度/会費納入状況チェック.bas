@@ -53,7 +53,7 @@ Public Sub Main()
     '外部にある会員名簿Excelファイルの "R6年度" シートをカレントのワークブックに
     'コピーする。"work会員名簿"シートが作られる。その内容をListObjectとして取り出す。
     Dim memberTable As ListObject
-    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
+    Set memberTable = MbMemberTableUtil.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
     Call BbLog.Info(modName, procName, "会員の人数 memberTable.ListRows.Count=" & memberTable.ListRows.Count)
     
     'ListObjectの右端に列を追加する。列の名前を「会費納入状況」とする
@@ -65,7 +65,7 @@ Public Sub Main()
     Call BbLog.Info(modName, procName, "現金出納帳の行数 cb.Count=" & cb.Count)
     
     'チェックの対象とすべき開始日と終了日を指定したうえでCashSelectorオブジェクトを取得する
-    Dim cs As CashSelector: Set cs = CreateCashSelector(cb, #4/1/2024#, #3/31/2025#)
+    Dim cs As CashSelector: Set cs = CbFactories.CreateCashSelector(cb, #4/1/2024#, #3/31/2025#)
     
     '各会員が会費を納入したかどうか調べてwork会員名簿に書き込む
     
@@ -121,7 +121,7 @@ Private Function OpenCashbook() As Cashbook
     Set wb = Workbooks.Open(BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B3"))
     Dim sheetName As String: sheetName = "現金出納帳"
     Dim tableId As String: tableId = "CashbookTable1"
-    Dim cb As Cashbook: Set cb = CreateCashbook(wb, sheetName, tableId)
+    Dim cb As Cashbook: Set cb = CbFactories.CreateCashbook(wb, sheetName, tableId)
     Set OpenCashbook = cb
     Application.DisplayAlerts = False
     wb.Close
@@ -144,7 +144,7 @@ Private Function FindPaymentBy(ByVal cs As CashSelector, ByVal nameKana As Strin
     ElseIf csD.Count > 0 Then
         Set FindPaymentBy = csD
     Else
-        Set FindPaymentBy = CreateEmptyCashList()
+        Set FindPaymentBy = CbFactories.CreateEmptyCashList()
     End If
 End Function
 

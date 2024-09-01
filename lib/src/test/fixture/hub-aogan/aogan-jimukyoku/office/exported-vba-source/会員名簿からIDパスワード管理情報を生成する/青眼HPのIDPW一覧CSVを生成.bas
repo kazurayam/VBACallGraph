@@ -8,25 +8,25 @@ Option Explicit
 Public Sub CSVを生成()
 
     ' イミディエイトウインドウをけす
-    Call KzUtil.KzCls
+    Call BbLog.Clear
     
     Debug.Print "青眼HPのIDとパスワードの組の一覧をCSVファイルに出力する"
     
     ' 会員名簿Excelファイルのパス
     Dim memberFile As String: memberFile = _
-        KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
+        BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
     Debug.Print ("会員名簿: " & memberFile)
     
     
     ' 出力先フォルダのパス
     Dim outDir As String: outDir = _
-        KzUtil.KzResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B5")
+        BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B5")
     ' CSVファイルの出力先パス
     Dim CSV As String: CSV = outDir & "\web_account.csv"
     Debug.Print "出力先: " + CSV
     
     ' 出力先フォルダがもしもまだ存在していなかったら作る
-    Call KzFile.KzEnsureFolders(outDir)
+    Call BbFile.EnsureFolders(outDir)
     
     ' CSVテキストを出力するためにストリームを開く
     Dim fs As New FileSystemObject
@@ -46,7 +46,7 @@ Public Sub CSVを生成()
     ' 外部にある会員名簿Excelファイルからシートをコピーして取り込み、
     ' その中にある会員名簿をListObjectとしてとりだす
     Dim memberTable As ListObject
-    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
+    Set memberTable = MbMemberTableUtil.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
     Debug.Print "memberTable.ListRows.Count=" & memberTable.ListRows.count
     
     ' 会員名簿の行を処理する

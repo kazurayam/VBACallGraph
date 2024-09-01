@@ -1,8 +1,8 @@
-Attribute VB_Name = "HelpersTest"
+Attribute VB_Name = "CbHelperTest"
 Option Explicit
 Option Private Module
 
-' TestHelpers : Helpersモジュールが定義するSubやFunctionをユニットテストする
+' CbHelperTest : CbHelperモジュールが定義するSubやFunctionをユニットテストする
 
 '@TestModule
 '@Folder("Tests")
@@ -47,7 +47,7 @@ Private Sub Test_PrintAccounts()
     On Error GoTo TestFail
     Call BbLog.Clear
     'Arrange:
-    Dim cb As Cashbook: Set cb = Factories.CreateCashbook(wb, "現金出納帳", "CashbookTable1")
+    Dim cb As Cashbook: Set cb = CbFactories.CreateCashbook(wb, "現金出納帳", "CashbookTable1")
     Dim rpUnit As String: rpUnit = "東北ブロック講習会"
     Dim positiveLike As Boolean: positiveLike = False
     'Act:

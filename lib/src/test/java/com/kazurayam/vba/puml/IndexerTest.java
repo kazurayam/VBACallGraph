@@ -52,7 +52,7 @@ public class IndexerTest {
         VBASource referrerModuleSource = md会費納入状況チェック.getVBASource();
         VBASourceLine referrerSourceLine =
                 new VBASourceLine(55,
-                        "    Set memberTable = AoMemberUtils.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)");
+                        "    Set memberTable = MbMemberTableUtil.FetchMemberTable(memberFile, \"R6年度\", ThisWorkbook)");
 
         // Member workbook
         ModelWorkbook wbMember =
@@ -62,7 +62,7 @@ public class IndexerTest {
                         .id(MyWorkbook.Member.getId());
         indexer.add(wbMember);
         VBAModule mdAoMemberUtil =
-                wbMember.getModule("AoMemberUtils");
+                wbMember.getModule("MbMemberTableUtil");
         VBAProcedure prFetchMemberTable =
                 mdAoMemberUtil.getProcedure("FetchMemberTable");
         referee = new FullyQualifiedVBAProcedureId(wbMember,

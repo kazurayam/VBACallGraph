@@ -1,4 +1,4 @@
-Attribute VB_Name = "AoMemberUtilsTest"
+Attribute VB_Name = "MbMemberTableUtilTest"
 Option Explicit
 Option Private Module
 
@@ -42,7 +42,7 @@ Private Sub Test_FetchMemberTable()
     '「外部ファイルのパス」シートのB2セルに会員名簿Excelファイルのパスが書いてあるはず、それを読み取る
     Dim filePath As String: filePath = BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B2")
     'Act:
-    Dim tbl As ListObject: Set tbl = FetchMemberTable(filePath, "R6年度", ThisWorkbook)
+    Dim tbl As ListObject: Set tbl = MbMemberTableUtil.FetchMemberTable(filePath, "R6年度", ThisWorkbook)
     'Assert:
     Debug.Print ("会員テーブルの行数: " & tbl.ListRows.Count)
     Assert.IsTrue tbl.ListRows.Count > 0

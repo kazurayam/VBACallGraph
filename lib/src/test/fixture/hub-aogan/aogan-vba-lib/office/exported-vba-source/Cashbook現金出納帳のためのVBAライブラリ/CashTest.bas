@@ -74,9 +74,9 @@ Private Sub TestExpense()
     'Act:
     Call cs.Initialize(data)
     'Assert:
-        'Debug.Print "cs.ReceiptNo is " + KzVarTypeAsString(cs.ReceiptNo)
-        'Debug.Print "5 is " + KzVarTypeAsString(5)
-        'Debug.Print "CLng(5) is " + KzVarTypeAsString(CLng(5))
+        'Debug.Print "cs.ReceiptNo is " + BbUtil.VarTypeAsString(cs.ReceiptNo)
+        'Debug.Print "5 is " + BbUtil.VarTypeAsString(5)
+        'Debug.Print "CLng(5) is " + BbUtil.VarTypeAsString(CLng(5))
     Assert.AreEqual CLng(5), cs.ReceiptNo     '領収書No.
     Assert.AreEqual CLng(4), cs.YY            '年度（令和）
     Assert.AreEqual CLng(5), cs.MM            '月

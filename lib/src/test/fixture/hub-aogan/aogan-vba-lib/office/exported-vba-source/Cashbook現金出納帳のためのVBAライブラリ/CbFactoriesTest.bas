@@ -1,8 +1,8 @@
-Attribute VB_Name = "FactoriesTest"
+Attribute VB_Name = "CbFactoriesTest"
 Option Explicit
 Option Private Module
 
-'TestFactories: Factoriesモジュールをユニットテストする
+'CbFactoriesTest: CbFactoriesモジュールをユニットテストする
 
 '@TestModule
 '@Folder("Tests")
@@ -66,7 +66,7 @@ End Sub
 Private Sub TestCreateCashbookTransformer()
     'Act
     Dim cbTransformer As CashbookTransformer
-    Set cbTransformer = CreateCashbookTransformer(cb)
+    Set cbTransformer = CbFactories.CreateCashbookTransformer(cb)
     Call BbLog.Clear
     Debug.Print cbTransformer.FindKeysAsString
     '

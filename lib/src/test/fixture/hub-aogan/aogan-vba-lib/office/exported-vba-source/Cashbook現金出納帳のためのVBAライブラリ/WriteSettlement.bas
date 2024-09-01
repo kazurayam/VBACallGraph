@@ -238,7 +238,7 @@ Public Sub 小計の表を作る(ByRef ws現金出納記録 As Worksheet)
     
     '勘定科目の一覧（重複なし）を取得する
     Dim unique勘定科目名の列 As Variant
-    unique勘定科目名の列 = KzRange.KzGetUniqueItems(tbl記録.ListColumns(1).DataBodyRange)
+    unique勘定科目名の列 = BbRange.GetUniqueItems(tbl記録.ListColumns(1).DataBodyRange)
     
     '勘定科目ごとの小計を算出して[テーブル勘定科目ごとの小計]に行として挿入する
     Dim column As Variant
