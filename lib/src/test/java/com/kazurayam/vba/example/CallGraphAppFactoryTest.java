@@ -12,12 +12,12 @@ public class CallGraphAppFactoryTest {
     @Test
     public void test_createKazurayamSeven() throws IOException {
         CallGraphApp app = CallGraphAppFactory.createKazurayamSeven();
-        assertThat(app.size()).isEqualTo(7);
+        assertThat(app.size()).isEqualTo(6);
     }
 
     @Test
     public void test_createKazurayamSevenPlus() throws IOException {
         CallGraphApp app = CallGraphAppFactory.createKazurayamSevenPlus();
-        assertThat(app.size()).isEqualTo(8);
+        assertThat(app.size()).isEqualTo(7);
     }
 }

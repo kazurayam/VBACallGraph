@@ -33,9 +33,9 @@ public class ProcedureToBeIgnoredTest {
         classOutputDir = too.cleanClassOutputDirectory();
         ModelWorkbook wbFeePaymentCheck =
                 new ModelWorkbook(
-                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
-                        .id(MyWorkbook.FeePaymentCheck.getId());
+                        MyWorkbook.FeePaymentControl.resolveWorkbookUnder(),
+                        MyWorkbook.FeePaymentControl.resolveSourceDirUnder())
+                        .id(MyWorkbook.FeePaymentControl.getId());
         VBAModule md = wbFeePaymentCheck.getModule("Xport");
         assert md != null;
         VBAProcedure pr = md.getProcedure("ExportThisWorkbook");

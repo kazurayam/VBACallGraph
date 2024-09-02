@@ -1,18 +1,16 @@
 @startuml
 left to right direction
-package 会費納入状況チェック {
+package 会費納入のお願いと督促 {
+  stereotype 会費納入のお願いを作成 {
+    {method} +MakeLetter
+    {method} -StartsWith
+  }
   stereotype 会費納入状況チェック {
     {method} -FindPaymentBy
-    {method} +Main
     {method} -OpenCashbook
     {method} -PrintFinding
+    {method} +Proc納入状況チェック
     {method} -RecordFindingIntoMemberTable
-  }
-}
-package 会費納入をお願いするletterを作成する {
-  stereotype 会費納入のお願いを作成 {
-    {method} +Main
-    {method} +StartsWith
   }
 }
 package 会員名簿からIDパスワード管理情報を生成する {
@@ -229,17 +227,24 @@ VBACallGraphSetup.VBACallGraphSetup ..> VBACallGraphSetup.ProcedureInfo : Scope
 会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 ..> Backboneライブラリ.BbUtil : ResolveExternalFilePath
 会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 ..> Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
 会員名簿からIDパスワード管理情報を生成する.青眼HPのIDPW一覧CSVを生成 ..> Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
-会費納入をお願いするletterを作成する.会費納入のお願いを作成 ..> Backboneライブラリ.BbDocTransformer : Transform
-会費納入をお願いするletterを作成する.会費納入のお願いを作成 ..> Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
-会費納入をお願いするletterを作成する.会費納入のお願いを作成 ..> Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
-会費納入状況チェック.会費納入状況チェック ..> Backboneライブラリ.BbLog : Clear
-会費納入状況チェック.会費納入状況チェック ..> Backboneライブラリ.BbLog : Info
-会費納入状況チェック.会費納入状況チェック ..> Backboneライブラリ.BbUtil : ResolveExternalFilePath
-会費納入状況チェック.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CashSelector : SelectCashListByMatchingDescription
-会費納入状況チェック.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateCashSelector
-会費納入状況チェック.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateCashbook
-会費納入状況チェック.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateEmptyCashList
-会費納入状況チェック.会費納入状況チェック ..> Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbDocTransformer : Transform
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbDocTransformerFactory : CreateDocTransformer
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbFile : AbsolutifyPath
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbFile : DeleteFolder
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbFile : EnsureFolders
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbLog : Clear
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbLog : Info
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Backboneライブラリ.BbUtil : ResolveExternalFilePath
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Cashbook現金出納帳のためのVBAライブラリ.CashList : Add
+会費納入のお願いと督促.会費納入のお願いを作成 ..> Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
+会費納入のお願いと督促.会費納入状況チェック ..> Backboneライブラリ.BbLog : Clear
+会費納入のお願いと督促.会費納入状況チェック ..> Backboneライブラリ.BbLog : Info
+会費納入のお願いと督促.会費納入状況チェック ..> Backboneライブラリ.BbUtil : ResolveExternalFilePath
+会費納入のお願いと督促.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CashSelector : SelectCashListByMatchingDescription
+会費納入のお願いと督促.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateCashSelector
+会費納入のお願いと督促.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateCashbook
+会費納入のお願いと督促.会費納入状況チェック ..> Cashbook現金出納帳のためのVBAライブラリ.CbFactories : CreateEmptyCashList
+会費納入のお願いと督促.会費納入状況チェック ..> Member会員名簿のためのVBAライブラリ.MbMemberTableUtil : FetchMemberTable
 決算算出ワークブック.決算書作成 ..> Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement : 入出金記録をソートする
 決算算出ワークブック.決算書作成 ..> Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement : 入出金記録を取り込む
 決算算出ワークブック.決算書作成 ..> Cashbook現金出納帳のためのVBAライブラリ.WriteSettlement : 小計の表を作る

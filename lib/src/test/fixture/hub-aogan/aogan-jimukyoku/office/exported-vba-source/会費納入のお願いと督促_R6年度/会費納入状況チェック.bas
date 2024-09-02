@@ -27,7 +27,7 @@ Option Explicit
 '本モジュールを読み取ることができなかっただけかもしれない。
 '会員である先生方に迷惑をかけないよう、十分に注意せよ。
 
-Public Sub Main()
+Public Sub Proc納入状況チェック()
 
     Dim modName As String: modName = "会費納入状況チェック"
     Dim procName As String: procName = "Main"
@@ -54,7 +54,7 @@ Public Sub Main()
     'コピーする。"work会員名簿"シートが作られる。その内容をListObjectとして取り出す。
     Dim memberTable As ListObject
     Set memberTable = MbMemberTableUtil.FetchMemberTable(memberFile, "R6年度", ThisWorkbook)
-    Call BbLog.Info(modName, procName, "会員の人数 memberTable.ListRows.Count=" & memberTable.ListRows.Count)
+    Call BbLog.Info(modName, procName, "会員の人数 memberTable.ListRows.Count=" & memberTable.ListRows.count)
     
     'ListObjectの右端に列を追加する。列の名前を「会費納入状況」とする
     
@@ -62,7 +62,7 @@ Public Sub Main()
     'work現金出納帳ワークシートを作ってCashbookオブジェクトを掴む
     Dim cb As Cashbook
     Set cb = OpenCashbook()
-    Call BbLog.Info(modName, procName, "現金出納帳の行数 cb.Count=" & cb.Count)
+    Call BbLog.Info(modName, procName, "現金出納帳の行数 cb.Count=" & cb.count)
     
     'チェックの対象とすべき開始日と終了日を指定したうえでCashSelectorオブジェクトを取得する
     Dim cs As CashSelector: Set cs = CbFactories.CreateCashSelector(cb, #4/1/2024#, #3/31/2025#)
@@ -71,7 +71,7 @@ Public Sub Main()
     
     '会員名簿の全行についてループ
     Dim i As Long
-    For i = 1 To memberTable.ListRows.Count
+    For i = 1 To memberTable.ListRows.count
         '氏名漢字と氏名カナの２セルに字が書いてある行つまり名簿として有効な行を選ぶ
         Dim nameKanji As Variant: Set nameKanji = memberTable.ListColumns("氏名").DataBodyRange(i)
         Dim nameKana As Variant: Set nameKana = memberTable.ListColumns("氏名カナ").DataBodyRange(i)
@@ -81,15 +81,15 @@ Public Sub Main()
             Dim csList As CashList: Set csList = FindPaymentBy(cs, nameKana)
             '資格がAの人、Bの人、Cの人、Dの人について現金出納帳と照らし合わせる
             If entitlement = "A" Or entitlement = "B" Or entitlement = "C" Or entitlement = "D" Then
-                If csList.Count = 1 Then
+                If csList.count = 1 Then
                     '通常どおり
                     Dim payedAt As String: payedAt = "R" & csList.Items(1).YY & "/" & csList.Items(1).MM & "/" & csList.Items(1).DD
                     Call PrintFinding(i, nameKana, entitlement, "◎ " & payedAt)
                     Call RecordFindingIntoMemberTable(memberTable, i, "◎ " & payedAt)
-                ElseIf csList.Count > 1 Then
+                ElseIf csList.count > 1 Then
                     '同一名義人から2件以上の入金あり。おかしい。？を出力する。
-                    Call PrintFinding(i, nameKana, entitlement, csList.Count & "?")
-                    Call RecordFindingIntoMemberTable(memberTable, i, csList.Count & "?")
+                    Call PrintFinding(i, nameKana, entitlement, csList.count & "?")
+                    Call RecordFindingIntoMemberTable(memberTable, i, csList.count & "?")
                     
                     'ひとりの会員が個人として振り込んだほかに勤務先医院が医院名義で当該会員の会費を振り込んだケースがあった。
                     '別々の名義人からの振込だから、このプログラムが重複を検出することはできなかった。
@@ -135,13 +135,13 @@ Private Function FindPaymentBy(ByVal cs As CashSelector, ByVal nameKana As Strin
     Set csB = cs.SelectCashListByMatchingDescription(AccountType.Income, "会費", "B会員", nameKana)
     Set csC = cs.SelectCashListByMatchingDescription(AccountType.Income, "会費", "C会員", nameKana)
     Set csD = cs.SelectCashListByMatchingDescription(AccountType.Income, "会費", "D会員", nameKana)
-    If csA.Count > 0 Then
+    If csA.count > 0 Then
         Set FindPaymentBy = csA
-    ElseIf csB.Count > 0 Then
+    ElseIf csB.count > 0 Then
         Set FindPaymentBy = csB
-    ElseIf csC.Count > 0 Then
+    ElseIf csC.count > 0 Then
         Set FindPaymentBy = csC
-    ElseIf csD.Count > 0 Then
+    ElseIf csD.count > 0 Then
         Set FindPaymentBy = csD
     Else
         Set FindPaymentBy = CbFactories.CreateEmptyCashList()

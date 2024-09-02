@@ -32,9 +32,9 @@ public class PlantUMLRunnerTest {
         classOutputDir = too.cleanClassOutputDirectory();
         app = new CallGraphApp();
         app.add(new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
-                .id(MyWorkbook.FeePaymentCheck.getId()));
+                MyWorkbook.FeePaymentControl.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentControl.resolveSourceDirUnder())
+                .id(MyWorkbook.FeePaymentControl.getId()));
         app.setOptions(Options.DEFAULT);
         //
     }

@@ -22,14 +22,9 @@ public class CallGraphAppFactory {
         CallGraphApp app = new CallGraphApp();
 
         app.add(new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
-                .id(MyWorkbook.FeePaymentCheck.getId()));
-
-        app.add(new ModelWorkbook(
-                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(),
-                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder())
-                .id(MyWorkbook.PleasePayFeeLetter.getId()));
+                MyWorkbook.FeePaymentControl.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentControl.resolveSourceDirUnder())
+                .id(MyWorkbook.FeePaymentControl.getId()));
 
         app.add(new ModelWorkbook(
                 MyWorkbook.WebCredentials.resolveWorkbookUnder(),

@@ -15,24 +15,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CallGraphGeneratorTest {
 
-    private Logger logger = LoggerFactory.getLogger(CallGraphGeneratorTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(CallGraphGeneratorTest.class);
 
-    private static TestOutputOrganizer too =
+    private static final TestOutputOrganizer too =
             new TestOutputOrganizer.Builder(CallGraphGeneratorTest.class)
                     .outputDirectoryRelativeToProject("build/tmp/testOutput")
                     .subOutputDirectory(CallGraphGeneratorTest.class)
                     .build();
-    private ModelWorkbook wbFeePaymentCheck;
+    private ModelWorkbook wbFeePaymentControl;
     private ModelWorkbook wbCashbook;
     private Path classOutputDir;
     private CallGraphDiagramGenerator pudgen;
 
     @BeforeTest
     public void beforeTest() throws IOException {
-        wbFeePaymentCheck = new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
-                .id(MyWorkbook.FeePaymentCheck.getId());
+        wbFeePaymentControl = new ModelWorkbook(
+                MyWorkbook.FeePaymentControl.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentControl.resolveSourceDirUnder())
+                .id(MyWorkbook.FeePaymentControl.getId());
         wbCashbook = new ModelWorkbook(
                 MyWorkbook.Cashbook.resolveWorkbookUnder(),
                 MyWorkbook.Cashbook.resolveSourceDirUnder())
@@ -55,19 +55,19 @@ public class CallGraphGeneratorTest {
 
     @Test
     public void test_writeStartWorkbook_writeEndWorkbook() {
-        pudgen.writeStartWorkbook(wbFeePaymentCheck);
+        pudgen.writeStartWorkbook(wbFeePaymentControl);
         pudgen.writeEndWorkbook();
         logger.debug("[test_writeStartWorkbook_writeEndWorkbook] " +
                 pudgen.toString());
         assertThat(pudgen.toString()).contains(
-                "package 会費納入状況チェック {\n");
+                "package 会費納入のお願いと督促 {\n");
         assertThat(pudgen.toString()).contains(
                 "}\n");
     }
 
     @Test
     public void test_writeStartModule_writeEndModule() {
-        pudgen.writeStartModule(wbFeePaymentCheck.getModule("会費納入状況チェック"));
+        pudgen.writeStartModule(wbFeePaymentControl.getModule("会費納入状況チェック"));
         pudgen.writeEndModule();
         logger.debug("[test_writeStartModule_writeEndModule] " +
                 pudgen.toString());
@@ -79,7 +79,7 @@ public class CallGraphGeneratorTest {
 
     @Test
     public void test_writeProcedure_as_private_method() {
-        VBAModule module = wbFeePaymentCheck.getModule("会費納入状況チェック");
+        VBAModule module = wbFeePaymentControl.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         pudgen.writeProcedure(module, procedure);
         logger.debug("[test_writeProcedure_as_method] " +
@@ -102,14 +102,14 @@ public class CallGraphGeneratorTest {
     @Test
     public void test_toString() throws IOException {
         Path output = classOutputDir.resolve("test_toString.puml");
-        VBAModule module = wbFeePaymentCheck.getModule("会費納入状況チェック");
+        VBAModule module = wbFeePaymentControl.getModule("会費納入状況チェック");
         VBAProcedure procedure = module.getProcedure("FindPaymentBy");
         assertThat(procedure).isNotNull();
         pudgen.writeStartUml();
-        pudgen.writeStartWorkbook(wbFeePaymentCheck);
+        pudgen.writeStartWorkbook(wbFeePaymentControl);
         pudgen.writeStartModule(module);
         pudgen.writeProcedure(module, module.getProcedure("FindPaymentBy"));
-        pudgen.writeProcedure(module, module.getProcedure("Main"));
+        pudgen.writeProcedure(module, module.getProcedure("Proc納入状況チェック"));
         pudgen.writeProcedure(module, module.getProcedure("OpenCashbook"));
         pudgen.writeProcedure(module, module.getProcedure("PrintFinding"));
         pudgen.writeProcedure(module, module.getProcedure("RecordFindingIntoMemberTable"));

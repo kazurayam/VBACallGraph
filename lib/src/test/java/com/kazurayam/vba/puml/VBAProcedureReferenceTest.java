@@ -30,9 +30,9 @@ public class VBAProcedureReferenceTest {
         //
         ModelWorkbook wbFeePaymentCheck =
                 new ModelWorkbook(
-                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
-                        .id(MyWorkbook.FeePaymentCheck.getId());
+                        MyWorkbook.FeePaymentControl.resolveWorkbookUnder(),
+                        MyWorkbook.FeePaymentControl.resolveSourceDirUnder())
+                        .id(MyWorkbook.FeePaymentControl.getId());
         VBAModule md会費納入状況チェック = wbFeePaymentCheck.getModule("会費納入状況チェック");
         FullyQualifiedVBAModuleId referrer =
                 new FullyQualifiedVBAModuleId(wbFeePaymentCheck, md会費納入状況チェック);

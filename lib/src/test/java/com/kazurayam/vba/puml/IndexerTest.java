@@ -42,9 +42,9 @@ public class IndexerTest {
         // FeePaymentCheck workbook
         ModelWorkbook wbFeePaymentCheck =
                 new ModelWorkbook(
-                        MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
-                        MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
-                        .id(MyWorkbook.FeePaymentCheck.getId());
+                        MyWorkbook.FeePaymentControl.resolveWorkbookUnder(),
+                        MyWorkbook.FeePaymentControl.resolveSourceDirUnder())
+                        .id(MyWorkbook.FeePaymentControl.getId());
         indexer.add(wbFeePaymentCheck);
         VBAModule md会費納入状況チェック = wbFeePaymentCheck.getModule("会費納入状況チェック");
         FullyQualifiedVBAModuleId referrer =
@@ -85,7 +85,7 @@ public class IndexerTest {
         SortedSet<VBAProcedureReference> memo =
                 indexer.findAllProcedureReferences();
         assertThat(memo).isNotNull();
-        assertThat(memo.size()).isEqualTo(16);
+        assertThat(memo.size()).isEqualTo(20);
         Path out = classOutputDir.resolve("test_findAllProcedureReferences.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
         for (VBAProcedureReference ref : memo) {
@@ -103,7 +103,7 @@ public class IndexerTest {
         Set<VBAProcedureReference> references =
                 indexer.findProcedureReferenceTo(referee);
         assertThat(references).isNotNull();
-        assertThat(references).hasSize(3);
+        assertThat(references).hasSize(4);
         assertThat(references).contains(expectedReference);
         Path out = classOutputDir.resolve("test_findProcedureReferenceTo.txt");
         PrintWriter pw = new PrintWriter(Files.newBufferedWriter(out));
@@ -154,7 +154,7 @@ public class IndexerTest {
         Set<VBAProcedureReference> foundReferences =
                 indexer.xref(workbookList, referee);
         assertThat(foundReferences).isNotNull();
-        assertThat(foundReferences).hasSize(3);
+        assertThat(foundReferences).hasSize(4);
         assertThat(foundReferences).contains(expectedReference);
     }
 

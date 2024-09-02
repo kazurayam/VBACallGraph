@@ -46,13 +46,9 @@ public class SourceDirPrinterTest {
                 MyWorkbook.Settlement.resolveSourceDirUnder())
                 .id(MyWorkbook.Settlement.getId()));
         printer.add(new ModelWorkbook(
-                MyWorkbook.FeePaymentCheck.resolveWorkbookUnder(),
-                MyWorkbook.FeePaymentCheck.resolveSourceDirUnder())
-                .id(MyWorkbook.FeePaymentCheck.getId()));
-        printer.add(new ModelWorkbook(
-                MyWorkbook.PleasePayFeeLetter.resolveWorkbookUnder(),
-                MyWorkbook.PleasePayFeeLetter.resolveSourceDirUnder())
-                .id(MyWorkbook.PleasePayFeeLetter.getId()));
+                MyWorkbook.FeePaymentControl.resolveWorkbookUnder(),
+                MyWorkbook.FeePaymentControl.resolveSourceDirUnder())
+                .id(MyWorkbook.FeePaymentControl.getId()));
         printer.add(new ModelWorkbook(
                 MyWorkbook.WebCredentials.resolveWorkbookUnder(),
                 MyWorkbook.WebCredentials.resolveSourceDirUnder())

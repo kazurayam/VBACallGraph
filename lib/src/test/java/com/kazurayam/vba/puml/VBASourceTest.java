@@ -35,7 +35,7 @@ public class VBASourceTest {
     @BeforeTest
     public void beforeTest() throws IOException {
         classOutputDir = too.cleanClassOutputDirectory();
-        source会費納入状況チェック = createFixture(MyWorkbook.FeePaymentCheck,
+        source会費納入状況チェック = createFixture(MyWorkbook.FeePaymentControl,
                         "会費納入状況チェック.bas");
         sourceAccountsFinder = createFixture(MyWorkbook.Cashbook,
                 "CashbookTransformer.cls");
