@@ -91,9 +91,10 @@ public class VBAModule implements Comparable<VBAModule> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof VBAModule other)) {
+        if (!(obj instanceof VBAModule)) {
             return false;
         }
+        VBAModule other = (VBAModule)obj;
         return Objects.equals(this.getName(), other.getName());
     }
 
