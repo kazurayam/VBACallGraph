@@ -135,6 +135,11 @@ public class Indexer {
                 VBAModule subjectModule = subjectWorkbook.getModule(subjectModuleName);
 
                 VBASource moduleSource = subjectModule.getVBASource();
+                if (moduleSource == null) {
+                    throw new IllegalStateException(
+                            String.format("Could not get VBA source of the module %s in the workbook %s",
+                                    subjectModule.getName(), subjectWorkbook.getId()));
+                }
                 // let's scan the VBASource to see if it mentions the referee
                 List<Pattern> patterns =
                         ProcedureNamePatternManager.createPatterns(
