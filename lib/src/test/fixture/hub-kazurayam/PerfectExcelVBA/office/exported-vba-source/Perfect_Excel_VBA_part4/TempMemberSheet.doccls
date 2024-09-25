@@ -1,0 +1,24 @@
+﻿Option Explicit
+
+Private cp As ComposedPersons
+Private logger As BbLogger
+Private currentSelection As Range
+
+Private Sub Worksheet_Activate()
+    Set cp = New ComposedPersons
+    Call cp.Initialize(Me)
+End Sub
+
+Public Sub LoadData()
+    Call cp.LoadData
+End Sub
+
+Private Sub Worksheet_SelectionChange(ByVal target As Range)
+    Set logger = BbLoggerFactory.CreateLogger("TempMemberSheet")
+    logger.procedureName = "Worksheet_SelectionChange"
+    '
+    Me.Unprotect Relay.sheetPW
+    Me.Range("B1").value = target.Address
+    Me.Protect Relay.sheetPW, AllowFiltering:=True
+    'logger.Info "target.Address", target.Address
+End Sub

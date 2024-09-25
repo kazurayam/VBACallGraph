@@ -13,6 +13,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public enum MyWorkbook {
+
+    PerfectExcelVBA("PefectExcelVBA",
+            "src/test/fixture/hub-kazurayam/PerfectExcelVBA",
+            "office/Perfect_Excel_VBA_part4.xlsm",
+            "office/exported-vba-source/Perfect_Excel_VBA_part4"),
+
     VBACallGraphSetup("VBACallGraphSetup",
             "src/test/fixture/hub-kazurayam/VBACallGraphSetup",
             "office/VBACallGraphSetup.xlsm",
@@ -22,22 +28,27 @@ public enum MyWorkbook {
             "src/test/fixture/hub-aogan/backbone-vba-lib",
             "office/Backbone.xlsm",
             "office/exported-vba-source/Backbone"),
+
     Member("Member会員名簿のためのVBAライブラリ",
             "src/test/fixture/hub-aogan/aogan-vba-lib",
             "office/Member会員名簿のためのVBAライブラリ.xlsm",
             "office/exported-vba-source/Member会員名簿のためのVBAライブラリ"),
+
     Cashbook("Cashbook現金出納帳のためのVBAライブラリ",
             "src/test/fixture/hub-aogan/aogan-vba-lib",
             "office/Cashbook現金出納帳のためのVBAライブラリ.xlsm",
             "office/exported-vba-source/Cashbook現金出納帳のためのVBAライブラリ"),
+
     Settlement("決算算出ワークブック",
             "src/test/fixture/hub-aogan/aogan-jimukyoku",
             "office/決算算出ワークブック_令和5年度.xlsm",
             "office/exported-vba-source/決算算出ワークブック_令和5年度"),
+
     FeePaymentControl("会費納入のお願いと督促",
             "src/test/fixture/hub-aogan/aogan-jimukyoku",
             "office/会費納入のお願いと督促_R6年度.xlsm",
             "office/exported-vba-source/会費納入のお願いと督促_R6年度"),
+
     WebCredentials("会員名簿からIDパスワード管理情報を生成する",
             "src/test/fixture/hub-aogan/aogan-jimukyoku",
             "office/会員名簿からIDパスワード管理情報を生成する.xlsm",

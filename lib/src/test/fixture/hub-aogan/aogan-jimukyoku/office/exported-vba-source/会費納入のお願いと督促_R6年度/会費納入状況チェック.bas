@@ -112,6 +112,7 @@ Public Sub Proc納入状況チェック()
             End If
         End If
     Next i
+    
     Call BbLog.Info(modName, procName, "会費納入状況チェックを完了しました")
 End Sub
 

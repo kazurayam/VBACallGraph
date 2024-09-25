@@ -1,0 +1,8 @@
+﻿Option Explicit
+
+Private Sub Workbook_BeforeClose(Cancel As Boolean)
+    If Sheet1.Range("A1").value = "" Then
+        MsgBox "ブックを閉じる前にA1セルになにか入力してください"
+        Cancel = True
+    End If
+End Sub

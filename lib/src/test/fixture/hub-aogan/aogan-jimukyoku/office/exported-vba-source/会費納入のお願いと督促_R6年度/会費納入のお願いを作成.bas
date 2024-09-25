@@ -32,7 +32,7 @@ Public Sub MakeLetter()
     Dim outDir As String: outDir = BbFile.AbsolutifyPath( _
         ThisWorkbook.Path, _
         BbUtil.ResolveExternalFilePath(ThisWorkbook, "外部ファイルのパス", "B5"))
-    Call BbLog.Info("会費納入のお願いを作成", "MakeLetter", "出力フォルダ: " & outDir)
+    Call BbLog.Info("会費納入のお願いを作成", "MakeLetter", "出力先フォルダ: " & outDir)
 
     ' 出力先フォルダがすでにあったら削除する
     Dim FSO As Object

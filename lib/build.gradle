@@ -49,15 +49,18 @@ tasks.register('deleteExternalFixture') {
             .resolve('src/test/fixture/hub-aogan/aogan-jimukyoku').normalize().toFile())
     fixtureDirs.put('aogan-vba-lib', projectDir.toPath()
             .resolve('src/test/fixture/hub-aogan/aogan-vba-lib').normalize().toFile())
-    fixtureDirs.put('kazurayam-vba-lib', projectDir.toPath()
-            .resolve('src/test/fixture/hub-aogan/kazurayam-vba-lib').normalize().toFile())
+    fixtureDirs.put('backbone-vba-lib', projectDir.toPath()
+            .resolve('src/test/fixture/hub-aogan/backbone-vba-lib').normalize().toFile())
     fixtureDirs.put('VBACallGraphSetup', projectDir.toPath()
             .resolve('src/test/fixture/hub-kazurayam/VBACallGraphSetup').normalize().toFile())
+    fixtureDirs.put('PerfectExcelVBA', projectDir.toPath()
+            .resolve('src/test/fixture/hub-kazurayam/PerfectExcelVBA').normalize().toFile())
     doLast {
         delete fixtureDirs.get('aogan-jimukyoku')
         delete fixtureDirs.get('aogan-vba-lib')
-        delete fixtureDirs.get('kazurayam-vba-lib')
+        delete fixtureDirs.get('backbone-vba-lib')
         delete fixtureDirs.get('VBACallGraphSetup')
+        delete fixtureDirs.get('PerfectExcelVBA')
     }
 }
 
@@ -67,11 +70,12 @@ tasks.register('importExternalFixture') {
             .resolve('../../github-aogan/aogan-jimukyoku').normalize().toFile())
     externalRepos.put('aogan-vba-lib', project.rootDir.toPath()
             .resolve('../../github-aogan/aogan-vba-lib').normalize().toFile())
-    externalRepos.put('kazurayam-vba-lib', project.rootDir.toPath()
-            .resolve('../../github-aogan/kazurayam-vba-lib').normalize().toFile())
+    externalRepos.put('backbone-vba-lib', project.rootDir.toPath()
+            .resolve('../../github-aogan/backbone-vba-lib').normalize().toFile())
     externalRepos.put('VBACallGraphSetup', project.rootDir.toPath()
             .resolve('../VBACallGraphSetup').normalize().toFile())
-
+    externalRepos.put('PerfectExcelVBA', project.rootDir.toPath()
+            .resolve('../PerfectExcelVBA').normalize().toFile())
     doFirst {
         externalRepos.each {
             assert it.value.exists()
@@ -82,8 +86,7 @@ tasks.register('importExternalFixture') {
         copy {
             from(externalRepos.get('aogan-jimukyoku')) {
                 include 'office/会員名簿からIDパスワード管理情報を生成する.xlsm'
-                include 'office/会費納入のお願いletterを作成する.xlsm'
-                include 'office/会費納入状況チェック_R6年度.xlsm'
+                include 'office/会費納入のお願いと督促_R6年度.xlsm'
                 include 'office/決算算出ワークブック_令和5年度.xlsm'
                 include 'office/exported-vba-source/**/*'
             }
@@ -100,12 +103,12 @@ tasks.register('importExternalFixture') {
                     .resolve('src/test/fixture/hub-aogan/aogan-vba-lib')
         }
         copy {
-            from(externalRepos.get('kazurayam-vba-lib')) {
+            from(externalRepos.get('backbone-vba-lib')) {
                 include 'office/Backbone.xlsm'
                 include 'office/exported-vba-source/**/*'
             }
             into projectDir.toPath()
-                    .resolve('src/test/fixture/hub-aogan/kazurayam-vba-lib')
+                    .resolve('src/test/fixture/hub-aogan/backbone-vba-lib')
         }
         copy {
             from (externalRepos.get('VBACallGraphSetup')) {
@@ -114,6 +117,14 @@ tasks.register('importExternalFixture') {
             }
             into projectDir.toPath()
                     .resolve('src/test/fixture/hub-kazurayam/VBACallGraphSetup')
+        }
+        copy {
+            from (externalRepos.get('PerfectExcelVBA')) {
+                include 'office/Perfect_Excel_VBA_part4.xlsm'
+                include 'office/exported-vba-source/Perfect_Excel_VBA_part4/'
+            }
+            into projectDir.toPath()
+                    .resolve('src/test/fixture/hub-kazurayam/PerfectExcelVBA')
         }
     }
 }

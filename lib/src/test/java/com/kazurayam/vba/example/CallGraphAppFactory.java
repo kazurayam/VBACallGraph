@@ -37,7 +37,6 @@ public class CallGraphAppFactory {
                 .id(MyWorkbook.Settlement.getId()
                 ));
 
-
         app.add(new ModelWorkbook(
                 MyWorkbook.Cashbook.resolveWorkbookUnder(),
                 MyWorkbook.Cashbook.resolveSourceDirUnder())
@@ -71,4 +70,24 @@ public class CallGraphAppFactory {
 
         return app;
     }
+
+    public static CallGraphApp createPerfectBook() throws IOException {
+        CallGraphApp app = new CallGraphApp();
+        app.add(new ModelWorkbook(
+                MyWorkbook.PerfectExcelVBA.resolveWorkbookUnder(),
+                MyWorkbook.PerfectExcelVBA.resolveSourceDirUnder())
+                .id(MyWorkbook.PerfectExcelVBA.getId()));
+        app.add(new ModelWorkbook(
+                MyWorkbook.Backbone.resolveWorkbookUnder(),
+                MyWorkbook.Backbone.resolveSourceDirUnder())
+                .id(MyWorkbook.Backbone.getId()));
+        app.add(new ModelWorkbook(
+                MyWorkbook.VBACallGraphSetup.resolveWorkbookUnder(),
+                MyWorkbook.VBACallGraphSetup.resolveSourceDirUnder())
+                .id(MyWorkbook.VBACallGraphSetup.getId()));
+        app.setOptions(Options.KAZURAYAM);
+
+        return app;
+    }
+
 }
