@@ -122,6 +122,8 @@ public class VBAModule implements Comparable<VBAModule> {
     public static enum ModuleType {
         Standard(".bas"),
         Class(".cls"),
+        Document(".doccls"),
+        Form(".frm"),
         Unspecified(".unspecified");
         private String extension;
         private ModuleType(String extension) {

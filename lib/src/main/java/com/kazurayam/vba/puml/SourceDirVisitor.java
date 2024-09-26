@@ -20,8 +20,6 @@ public class SourceDirVisitor extends SimpleFileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attr) {
-        if (file.getFileName().toString().endsWith(".bas") ||
-                file.getFileName().toString().endsWith(".cls"))
         sourceFiles.add(file);
         return CONTINUE;
     }

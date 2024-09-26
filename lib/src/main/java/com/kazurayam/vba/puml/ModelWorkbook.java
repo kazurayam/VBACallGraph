@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +25,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class ModelWorkbook {
+
+    private static final Logger logger = LoggerFactory.getLogger(ModelWorkbook.class);
 
     private final Path workbookPath;
     private final Path sourceDirPath;
@@ -74,14 +78,20 @@ public class ModelWorkbook {
             VBAModule module = modules.get(moduleName);
             String expectedSourceFileName =
                     module.getName() + module.getType().getFileExtension();
+            boolean found = false;
             for (Path sourceFile : sourceFiles) {
                 if (sourceFile.getFileName().toString()
                         .equals(expectedSourceFileName)) {
                     VBASource vbaSource = new VBASource(module.getName(), sourceFile);
                     vbaSource.setCharset(vbaSourceCharset);
                     module.setVBASource(vbaSource);
+                    found = true;
                     break;
                 }
+            }
+            if (!found) {
+                logger.warn(String.format("VBA source %s is not found in the directory %s",
+                        expectedSourceFileName, sourceDirPath));
             }
         }
     }

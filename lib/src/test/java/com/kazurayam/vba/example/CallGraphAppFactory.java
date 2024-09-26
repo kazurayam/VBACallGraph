@@ -77,6 +77,7 @@ public class CallGraphAppFactory {
                 MyWorkbook.PerfectExcelVBA.resolveWorkbookUnder(),
                 MyWorkbook.PerfectExcelVBA.resolveSourceDirUnder())
                 .id(MyWorkbook.PerfectExcelVBA.getId()));
+        /*
         app.add(new ModelWorkbook(
                 MyWorkbook.Backbone.resolveWorkbookUnder(),
                 MyWorkbook.Backbone.resolveSourceDirUnder())
@@ -85,8 +86,8 @@ public class CallGraphAppFactory {
                 MyWorkbook.VBACallGraphSetup.resolveWorkbookUnder(),
                 MyWorkbook.VBACallGraphSetup.resolveSourceDirUnder())
                 .id(MyWorkbook.VBACallGraphSetup.getId()));
+        */
         app.setOptions(Options.KAZURAYAM);
-
         return app;
     }
 

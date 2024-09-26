@@ -7,7 +7,12 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -81,14 +86,15 @@ public class VBASource implements Comparable<VBASource> {
         return linesFound;
     }
 
-
     private void cache() {
         if (!codeLoaded) {
             try {
                 code = loadCode();
                 codeLoaded = true;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(
+                        String.format("Failed to load code of Module %s, Source %s", moduleName, sourcePath),
+                        e);
             }
         }
     }
@@ -99,7 +105,16 @@ public class VBASource implements Comparable<VBASource> {
      * @return List of all lines in a .bas file
      */
     List<String> loadCode() throws IOException {
-        return Files.readAllLines(sourcePath, vbaSourceCharset);
+        File f = sourcePath.toFile();
+        BufferedReader rdr = new BufferedReader(
+                new InputStreamReader(
+                        new FileInputStream(f), vbaSourceCharset));
+        List<String> lines = new ArrayList<>();
+        String ln;
+        while ((ln = rdr.readLine()) != null) {
+            lines.add(ln);
+        }
+        return lines;
     }
 
     @Override
